@@ -1,0 +1,474 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Serial Data Display</title>
+    <script src="{% static 'jquery-jquery-f79d5f1/dist/jquery.min.js' %}"></script>
+</head>
+<style>
+
+    
+html, body{
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+  
+}
+
+    body {
+        background-color: black;
+        border: 10px double white;
+        height: 96vh;
+        width: 98vw;
+        padding: 5px;
+    }
+
+    .notification {
+        display: none;
+        background-color: yellow;
+        color: black;
+        padding: 10px;
+        border-radius: 5px;
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .status-message {
+        color: red;
+        font-weight: bold;
+        margin-top: 10px;
+        text-align: center;
+    }
+
+    .frame {
+        border: 2px solid black;
+        padding: 50px;
+        margin: 30px auto;
+        width:40%;
+        height: 50%;
+        background-color: lightblue;
+        border-radius: 10px;
+    }
+
+    .form-group {
+        display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+    }
+
+    .form-label {
+        display: inline-block;
+        width: 40%;
+        font-weight: bold;
+        font-size: 1.5vw;
+        
+       
+    }
+
+    .colon {
+  margin: 0 10px;
+  font-weight: bold;
+}
+
+    .form-select {
+        width:50%;
+        height: 30px;
+        text-align: center;
+        font-size: 1vw;
+        font-weight: bold;
+    }
+
+    .button {
+        width:40%;
+        height: 5vh;
+        margin-top: 10px;
+        border: none;
+        font-weight: bold;
+        cursor: pointer;
+        margin-left: 5%;
+    }
+
+    .button.cancel {
+        background-color: red;
+        color: white;
+        font-size: 1vw;
+    }
+
+    .button.ok {
+        background-color: green;
+        color: white;
+        font-size: 1vw;
+    }
+
+    .serial-output {
+        width: 100%;
+        margin-top: 10px;
+        font-size: 1vw;
+    }
+
+    .title {
+        margin-top: 30px;
+        color: white;
+        font-weight:bold;
+        font-size: 2.5vw;
+        text-shadow: 2px 2px 4px #000000;
+        text-align: center;
+        font-family: 'Courier New', Courier, monospace;
+    }
+</style>
+
+ <body>
+    <div class="notification" id="notification"></div>
+
+    <div class="box-0">
+        <h1 class="title"><b>COMPORT SETTINGS</b></h1>
+    </div>
+
+    <div class="status-message" id="status-message"></div>
+
+    <form id="comport-form">
+        {% csrf_token %}
+        <div class="frame">
+            <div class="form-group">
+                <label for="card" class="form-label">CARD</label>
+                <span class="colon">:</span>
+                <select id="card" name="card" class="form-select">
+                    <option value="LVDT_4CH" selected>IF BOX</option>
+                    <option value="PLC">PLC</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="com_port" class="form-label">COMPORT-NO</label>
+                <span class="colon">:</span>
+                <select id="com_port" name="com_port" class="form-select">
+                    {% for port in com_ports %}
+                        <option value="{{ port }}">{{ port }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="baud_rate" class="form-label">BAUD RATE</label>
+                <span class="colon">:</span>
+                <select id="baud_rate" name="baud_rate" class="form-select">
+                    {% for rate in baud_rates %}
+                        <option id="baud-rate-{{ rate }}" value="{{ rate }}">{{ rate }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="parity" class="form-label">PARITY</label>
+                <span class="colon">:</span>
+                <select id="parity" name="parity" class="form-select">
+                    <option value="N">None</option>
+                    <option value="E">Even</option>
+                    <option value="O">Odd</option>
+                    <option value="M">Mark</option>
+                    <option value="S">Space</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="stopbit" class="form-label">STOPBIT</label>
+                <span class="colon">:</span>
+                <select id="stopbit" name="stopbit" class="form-select">
+                    <option value="1">1</option>
+                    <option value="1.5">1.5</option>
+                    <option value="2">2</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="databit" class="form-label">DATABIT</label>
+                <span class="colon">:</span>
+                <select id="databit" name="databit" class="form-select">
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                </select>
+            </div>
+
+            <textarea id="serial-data-display" cols="50" rows="10" readonly class="serial-output"></textarea>
+
+            <br>
+            <a href="{% url 'index' %}" style="text-decoration: none;">
+                <button type="button" class="button cancel"><b>BACK</b></button>
+            </a>
+            <button type="button" id="start-button" class="button ok"><b>OK</b></button>
+        </div>
+    </form>
+
+
+
+    <script>
+
+// document.getElementById('delete').addEventListener('click', function () {
+//     // Confirm deletion before proceeding
+//     if (confirm('Are you sure you want to delete all COM port settings?')) {
+//         // Send a DELETE request to the comport view
+//         fetch('/comport/', {
+//             method: 'DELETE',
+//             headers: {
+//                 'X-CSRFToken': '{{ csrf_token }}',  // Include CSRF token for Django
+//                 'Content-Type': 'application/json'
+//             },
+//         })
+//         .then(response => {
+//             if (response.ok) {
+//                 return response.json();
+//             } else {
+//                 throw new Error('Failed to delete the records.');
+//             }
+//         })
+//         .then(data => {
+//             // Display a success message or handle the response
+//             alert(data.message);
+//             console.log(data.message);
+//         })
+//         .catch(error => {
+//             // Handle errors
+//             alert('An error occurred: ' + error.message);
+//             console.error('Error:', error);
+//         });
+//     }
+// });
+
+
+$(document).ready(function() {
+    function fetchComportData(selectedCard) {
+        $.ajax({
+            url: '{% url "comport" %}',  
+            type: 'GET',
+            data: { 'card': selectedCard },
+            dataType: 'json',
+            success: function(response) {
+                if (response.filtered_data.length > 0) {  
+                    console.log("Filtered Data:", response.filtered_data);
+                    
+                    let data = response.filtered_data[0];  
+
+                    // ** Clear all select inputs before updating them **
+                    $('#com_port').val('');
+                    $('#baud_rate').val('');
+                    $('#parity').val('');
+                    $('#stopbit').val('');
+                    $('#databit').val('');
+
+                    // ** Handle COM port selection logic **
+                    let availableComPorts = [];
+                    $('#com_port option').each(function() {
+                        availableComPorts.push($(this).val());
+                    });
+
+                    if (availableComPorts.includes(data.com_port)) {
+                        $('#com_port').val(data.com_port).change();
+                    } else {
+                        $('#com_port').append(`<option value="${data.com_port}" selected>${data.com_port}</option>`).change();
+                    }
+
+                    // ** Update other select boxes with retrieved values **
+                    $('#baud_rate').val(data.baud_rate).change();
+                    $('#parity').val(data.parity).change();
+                    $('#stopbit').val(data.stopbits).change();
+                    $('#databit').val(data.bytesize).change();
+
+                } else {
+                    console.log("No data found for the selected card.");
+                }
+            },
+            error: function(xhr, status, error) {
+                console.log("Error fetching data: " + error);
+            }
+        });
+    }
+
+    // ** Fetch data on page load **
+    let initialCard = $('#card').val();  
+    if (initialCard) {
+        fetchComportData(initialCard);
+    }
+
+    // ** Fetch data when the card selection changes **
+    $('#card').on('change', function() {
+        let selectedCard = $(this).val();
+        fetchComportData(selectedCard);
+    });
+});
+
+
+
+
+
+document.getElementById('start-button').addEventListener('click', function () {
+    // Collect form data
+    const formData = {
+        card: document.getElementById('card').value,
+        com_port: document.getElementById('com_port').value,
+        baud_rate: document.getElementById('baud_rate').value,
+        parity: document.getElementById('parity').value,
+        stopbit: document.getElementById('stopbit').value,
+        databit: document.getElementById('databit').value,
+    };
+    console.log('Your data is this:', formData);
+
+    // AJAX POST request
+    fetch('{% url "comport" %}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}',
+        },
+        body: JSON.stringify(formData),
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            const notification = document.getElementById('notification');
+            notification.innerText = data.message;
+            notification.style.display = 'block';
+
+            // Hide the notification after 3 seconds
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+
+            // Update selected option with count display
+            const selectedOption = document.getElementById('baud-rate-' + formData.baud_rate);
+            if (selectedOption) {
+                const currentCount = parseInt(selectedOption.dataset.count || '0', 10) + 1;
+                selectedOption.dataset.count = currentCount;
+                selectedOption.textContent = formData.baud_rate ;
+            }
+        })
+        .catch((error) => console.error('Error:', error));
+});
+       
+
+document.getElementById('start-button').addEventListener('click', function() {
+        // Get the selected baud rate
+        var baudRateSelect = document.getElementById('baud_rate');
+        var selectedBaudRate = baudRateSelect.value;
+        
+        // Get the option element corresponding to the selected baud rate
+        var selectedOption = document.getElementById('baud-rate-' + selectedBaudRate);
+
+        // Update the selected option with a count display
+        var currentCount = parseInt(selectedOption.dataset.count || '0', 10) + 1;
+        selectedOption.dataset.count = currentCount;
+
+        // Optionally, update the display to show the count next to the baud rate
+        selectedOption.textContent = selectedBaudRate + ' (' + currentCount + ')';
+    });
+    $(document).ready(function () {
+    const ws = new WebSocket('ws://localhost:8000/ws/comport/');
+
+    ws.onmessage = function(event) {
+        const data = JSON.parse(event.data);
+
+        if (data.message) {
+            let comPort = data.com_port;  // Get COM port number
+            let message = data.message;
+
+
+            let errorMatch = message.match(/Invalid data length.*for (\w+)\./);
+            if (errorMatch) {
+                let cardId = errorMatch[1]; // Extract card ID (e.g., PIEZO_4CH)
+                // console.log(`Error detected for card: ${cardId}. Deleting from database...`);
+                
+                // Send AJAX request to delete the card ID from the database
+                fetch('/comport/', {  // Ensure this URL matches your Django backend route
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}',
+                    },
+                    body: JSON.stringify({ card_id: cardId }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data.message);
+                })
+                .catch(error => console.error('Error:', error));
+            }
+
+
+            // Extract channel IDs (A-K with + or -)
+            let matches = message.match(/[A-K][\+\-]\d+/g);
+            
+            let channelLength = matches ? matches.length : 0; // Get the number of channels detected
+            
+            // console.log(`COM ${comPort}: ${message} (Channel Length: ${channelLength})`);
+
+            // Display message in the textarea with COM port info
+            let displayText = `COM ${comPort}: ${message} (Channel Length: ${channelLength})\n`;
+
+            // Update textarea content while preserving previous messages
+            let currentText = $('#serial-data-display').val();
+            $('#serial-data-display').val(currentText + displayText);
+
+            // Auto-scroll to bottom of textarea
+            scrollToBottom();
+
+            // Update respective input field dynamically
+            if (matches) {
+                matches.forEach(channelData => {
+                    let channelId = channelData.charAt(0);  // Extract A-K
+                    let value = channelData.substr(2);  // Extract numeric value
+
+                    // Update input field dynamically
+                    $(`#probe-${channelId}`).val(value);
+                });
+            }
+        }
+    };
+
+    $('#start-button').click(function () {
+        const card = $('#card').val();
+        const comPort = $('#com_port').val();
+        const baudRate = $('#baud_rate').val();
+        const parity = $('#parity').val();
+        const stopbit = $('#stopbit').val();
+        const databit = $('#databit').val();
+
+        ws.send(JSON.stringify({
+            command: 'start_serial',
+            card:card,
+            com_port: comPort,
+            baud_rate: baudRate,
+            parity: parity,
+            stopbit: stopbit,
+            databit: databit
+        }));
+    });
+
+    function scrollToBottom() {
+        const textarea = $('#serial-data-display');
+        textarea.scrollTop(textarea[0].scrollHeight);
+    }
+
+    setInterval(function(){
+        $('#serial-data-display').val('');
+    },500);
+   
+});
+
+//////////////////////////////////////////////////////////////////////////////////
+
+
+
+ // JavaScript to update the select boxes based on the selected card
+
+ 
+
+
+    </script>
+
+</body>
+</html>
