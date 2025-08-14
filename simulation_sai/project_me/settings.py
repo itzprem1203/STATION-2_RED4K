@@ -114,7 +114,7 @@ DATABASES = {
         'NAME': 'Royal_Enfield',
         'USER': 'sa',
         'PASSWORD': 'sai@123',
-        'HOST': 'SAC-GATE',
+        'HOST': 'DESKTOP-5FQ94TE',
         'PORT': '1433',  # SQL Server default port is 1433; you can leave it blank if you're using default
         'OPTIONS': {
             'driver': 'ODBC Driver 17 for SQL Server',

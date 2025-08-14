@@ -267,7 +267,7 @@ input[type="radio"] {
          
          #singleMasterBtn{
             width: 15vw;
-             height: 50%;
+             height: 5%;
              font-size: 1.2vw;
              margin-left: 10%;
              margin-top: 10px;
@@ -467,11 +467,11 @@ input[type="radio"] {
     <div>
         <!-- <h5 style="color: white;">RAW COUNT:</h5> -->
         <div class="probe-container">
-            <textarea id="probe-A"></textarea>
+            <textarea id="probe-A" style="display: none;"></textarea>
             <textarea id="probe-B" style="display: none;"></textarea>
             <textarea id="probe-C" style="display: none;"></textarea>
             <textarea id="probe-D" style="display: none;"></textarea>
-            <textarea id="probe-E" ></textarea>
+            <textarea id="probe-E" style="display: none;"></textarea>
             <textarea id="probe-F" style="display: none;"></textarea>
             <textarea id="probe-G" style="display: none;"></textarea>
             <textarea id="probe-H" style="display: none;"></textarea>
@@ -798,12 +798,14 @@ function lowMasteringClick(response) {
                         const oldInterval = containerIntervals[containerId];
                         if (oldInterval) clearInterval(oldInterval);
 
-                        // const intervalId = setTimeout(function () {
-                        //     calculateMastering(response);
-                        // }, 2000);
+                        const intervalId = setTimeout(function () {
+                            inputBox2.value = "";
+                            inputBox2.style.backgroundColor = '';
+                            calculateMastering(response);
+                        }, 2000);
 
-                        // containerIntervals[containerId] = intervalId;
-                        // lowMasteringIntervalIds.push(intervalId);
+                        containerIntervals[containerId] = intervalId;
+                        lowMasteringIntervalIds.push(intervalId);
                     }
                 });
 
@@ -1062,40 +1064,6 @@ function getCombinedTextareaParts(probeNumber) {
 }
 
 
-
-
-function watchA1DifferenceLive(probeNumber, capturedA1, inputBox2) {
-    const textareaId = mapProbeToTextareaId(probeNumber);
-    const textarea = document.getElementById(textareaId);
-
-    if (!textarea) {
-        console.warn(`⚠️ No textarea found for probeNumber: ${probeNumber}, mapped ID: ${textareaId}`);
-        return;
-    }
-
-    const intervalId = setInterval(function () {
-        const { total: currentA1 } = getCombinedTextareaParts(probeNumber);
-        const difference = Math.abs(currentA1 - capturedA1);
-
-        if (difference > 1000) {
-            inputBox2.value = "";
-            inputBox2.style.backgroundColor = "";
-            console.log(`🧹 Cleared inputBox2 for probe ${probeNumber} (Diff: ${difference})`);
-
-            // Optionally trigger mastering calculation
-            setTimeout(function () {
-                calculateMastering(globalResponse);
-            }, 2000);
-
-            clearInterval(intervalId); // ✅ Stop watching after the first clear
-        }
-    }, 200);
-}
-
-
-
-
-
 function processContainers(type, response) {
     const selectedMastering = parseInt(document.getElementById('mastering').value);
 
@@ -1147,17 +1115,12 @@ function processContainers(type, response) {
                 container.dataset.a = a;
                 container.dataset.a1 = a1;
 
-
                 const inputBox2 = container.querySelector('.input2-box');
                 if (inputBox2) {
-                    console.log('ypour digit value is thisfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff :::',digits);
                     inputBox2.value = a.toFixed(digits);
                     inputBox2.style.backgroundColor = '#00ff00';
                     console.log("inputBox2 updated with low value:", a);
                 }
-
-                watchA1DifferenceLive(probeNumber, a1, inputBox2);
-
 
             } else if (type === 'high') {
                 a = parseFloat(container.dataset.a);
@@ -1344,8 +1307,19 @@ function singleMasteringClick(response) {
 
     const preTag = document.getElementById('pre');
     preTag.innerText = `Single Mastering is Started for ${selectedRadioOption}`;
-    var selectedValue = document.getElementById('partModel').value;
-    // const masteringType = document.getElementById('mastering_type').value;
+    const partModelElement = document.getElementById('partModel');
+    const masteringTypeElement = document.getElementById('mastering_type');
+
+    if (!partModelElement || !masteringTypeElement) {
+        console.error("Missing element: 'partModel' or 'mastering_type'");
+        return;
+    }
+
+    const selectedValue = partModelElement.value;
+    const masteringType = masteringTypeElement.value;
+
+
+    console.log('ypur data is this for selected vaue ad this mastering type also itis :',selectedValue,masteringType);
 
     // Process the containers (your existing logic)
     const result = processSingleMastering('singlemastering', response);
@@ -1381,6 +1355,7 @@ function singleMasteringClick(response) {
             url: "/master/",
             data: JSON.stringify({
                 data: result.data,
+                mastering_type: masteringType, // Include mastering_type
                 selectedValue: selectedValue // Include selectedValue
             }),
             contentType: "application/json",
@@ -1396,13 +1371,13 @@ function singleMasteringClick(response) {
                 // Wait for 3 seconds and then retrieve the new values
                 setTimeout(function () {
                     var selectedValue = document.getElementById('partModel').value;
-
+                    const masteringType = document.getElementById('mastering_type').value;
 
                     console.log('Selected Value: ' + selectedValue);
 
                     var data = {
                         selectedValue: selectedValue,
-
+                        mastering_type: masteringType // Include mastering_type
                     };
 
                     console.log("data in high mastering to backend", data);
@@ -1485,8 +1460,10 @@ function processSingleMastering(type, response) {
 
             var textareaId = mapProbeToTextareaId(probeNumber);
 
-            const { total: textareaValue, parts: serialParts } = getCombinedTextareaParts(probeNumber);
-                    
+            if (textareaId) {
+                var textarea = document.getElementById(textareaId);
+                if (textarea) {
+                    var textareaValue = parseFloat(textarea.value);
                     console.log('Container ID:', container.id);
                     console.log('Input Box Value:', inputBoxValue);
                     console.log('Textarea ID:', textareaId);
@@ -1596,8 +1573,10 @@ function processSingleMastering(type, response) {
 
                         dataArray.push(rowData);
                     }
-                 
-             else {
+                } else {
+                    console.error('Textarea not found for probe number:', probeNumber);
+                }
+            } else {
                 console.error('No textarea ID found for probe number:', probeNumber);
             }
         }
@@ -1645,32 +1624,15 @@ function calculateSingleMastering(response) {
             var utl = response.utl[index];
             var digits = response.digits[index];
             var probeNumber = response.probe_no[index];
-            
-            // Function to compute from multiple probe values
-            function getCombinedSerialData() {
-                if (probeNumber.includes('+')) {
-                    return probeNumber.split('+').reduce((sum, part) => {
-                        const el = document.getElementById(mapProbeToTextareaId(part.trim()));
-                        const val = el ? parseFloat(el.value) : 0;
-                        return sum + (isNaN(val) ? 0 : val);
-                    }, 0);
-                } else if (probeNumber.includes('-')) {
-                    const [part1, part2] = probeNumber.split('-').map(p => p.trim());
-                    const val1 = parseFloat(document.getElementById(mapProbeToTextareaId(part1))?.value || 0);
-                    const val2 = parseFloat(document.getElementById(mapProbeToTextareaId(part2))?.value || 0);
-                    return (isNaN(val1) ? 0 : val1) - (isNaN(val2) ? 0 : val2);
-                } else {
-                    const el = document.getElementById(mapProbeToTextareaId(probeNumber));
-                    const val = el ? parseFloat(el.value) : 0;
-                    return isNaN(val) ? 0 : val;
-                }
-            }
-
+            var textareaId = mapProbeToTextareaId(probeNumber);
 
             console.log("id",id);
 
+            if (textareaId) {
+                var textarea = document.getElementById(textareaId);
+                if (textarea) {
                     function updateSingleDisplayOutput() {
-                        const { total: newSerialData } = getCombinedTextareaParts(probeNumber);
+                        var newSerialData = textarea.value === null || textarea.value === '' ? 0 : parseFloat(textarea.value);
                         if (!isNaN(newSerialData)) {
                             const displayOutput1 = (newSerialData -b1)*d;
                             const displayOutput = displayOutput1 + e + b;
@@ -1696,8 +1658,8 @@ function calculateSingleMastering(response) {
                     // Start the interval and store the interval ID for this container
                     var intervalId = setInterval(updateSingleDisplayOutput, 500);
                     containerIntervals[container.id] = intervalId; // Store interval ID for this container
-                
-            
+                }
+            }
         }
     });
 }
@@ -1726,7 +1688,6 @@ function updateMastering(selectedRadioButtonId) {
     console.log("The mastering group is being changed");
 
     var selectedMastering = parseInt(document.getElementById('mastering').value);
-    console.log('ypour data is this :',selectedMastering);
     var filteredData = globalResponse.filtered_data_single; // Array of parameter names
     var containers = document.querySelectorAll('.input-box-container');
     var matchingContainers = [];
@@ -1871,69 +1832,75 @@ function fetchActiveCoils() {
             }
 
             // ✅ Group 1 logic (Start: 74+85, Stop: 75)
-            if (activeCoils.includes(74) ) {
+            if (activeCoils.includes(74) && activeCoils.includes(85)) {
                 if (!group1StartClicked) {
-                    const startBtn = document.getElementById("singleMasterBtn");
+                    const startBtn = document.getElementById("lowMasterBtn");
                     if (startBtn) startBtn.click();
                     console.log("🚀 Group 1: Start clicked (74 + 85)");
                     group1StartClicked = true;
 
                 }
 
-                
+                if (activeCoils.includes(75) && !group1StopClicked) {
+                    const stopBtn = document.getElementById("highMasterBtn");
+                    if (stopBtn) stopBtn.click();
+                    console.log("🛑 Group 1: Stop clicked (75)");
+                    group1StopClicked = true;
+
+                }
             } else {
                 // Reset only if both start and stop coils are inactive
-                if (!activeCoils.includes(73) && !activeCoils.includes(75)) {
+                if (!activeCoils.includes(74) && !activeCoils.includes(85) && !activeCoils.includes(75)) {
                     group1StartClicked = false;
                     group1StopClicked = false;
                 }
             }
 
-            // // ✅ Group 2 logic (Start: 76+86, Stop: 77)
-            // if (activeCoils.includes(76) && activeCoils.includes(86)) {
-            //     if (!group2StartClicked) {
-            //         const startBtn = document.getElementById("lowMasterBtn");
-            //         if (startBtn) startBtn.click();
-            //         console.log("🚀 Group 2: Start clicked (76 + 86)");
-            //         group2StartClicked = true;
-            //     }
+            // ✅ Group 2 logic (Start: 76+86, Stop: 77)
+            if (activeCoils.includes(76) && activeCoils.includes(86)) {
+                if (!group2StartClicked) {
+                    const startBtn = document.getElementById("lowMasterBtn");
+                    if (startBtn) startBtn.click();
+                    console.log("🚀 Group 2: Start clicked (76 + 86)");
+                    group2StartClicked = true;
+                }
 
-            //     if (activeCoils.includes(77) && !group2StopClicked) {
-            //         const stopBtn = document.getElementById("highMasterBtn");
-            //         if (stopBtn) stopBtn.click();
-            //         console.log("🛑 Group 2: Stop clicked (77)");
-            //         group2StopClicked = true;
-            //     }
-            // } else {
-            //     if (!activeCoils.includes(76) && !activeCoils.includes(86) && !activeCoils.includes(77)) {
-            //         group2StartClicked = false;
-            //         group2StopClicked = false;
-            //     }
-            // }
+                if (activeCoils.includes(77) && !group2StopClicked) {
+                    const stopBtn = document.getElementById("highMasterBtn");
+                    if (stopBtn) stopBtn.click();
+                    console.log("🛑 Group 2: Stop clicked (77)");
+                    group2StopClicked = true;
+                }
+            } else {
+                if (!activeCoils.includes(76) && !activeCoils.includes(86) && !activeCoils.includes(77)) {
+                    group2StartClicked = false;
+                    group2StopClicked = false;
+                }
+            }
 
-            // // ✅ Group 3 logic (Start: 78+87, Stop: 79)
-            // if (activeCoils.includes(81) && activeCoils.includes(87)) {
-            //     if (!group3StartClicked) {
-            //         const startBtn = document.getElementById("lowMasterBtn");
-            //         if (startBtn) startBtn.click();
-            //         console.log("🚀 Group 3: Start clicked (78 + 87)");
-            //         group3StartClicked = true;
+            // ✅ Group 3 logic (Start: 78+87, Stop: 79)
+            if (activeCoils.includes(81) && activeCoils.includes(87)) {
+                if (!group3StartClicked) {
+                    const startBtn = document.getElementById("lowMasterBtn");
+                    if (startBtn) startBtn.click();
+                    console.log("🚀 Group 3: Start clicked (78 + 87)");
+                    group3StartClicked = true;
 
                     
-            //     }
+                }
 
-            //     if (activeCoils.includes(83)  && !group3StopClicked) {
-            //         const stopBtn = document.getElementById("highMasterBtn");
-            //         if (stopBtn) stopBtn.click();
-            //         console.log("🛑 Group 3: Stop clicked (79)");
-            //         group3StopClicked = true;
-            //     }
-            // } else {
-            //     if (!activeCoils.includes(83) && !activeCoils.includes(97) && !activeCoils.includes(79)) {
-            //         group3StartClicked = false;
-            //         group3StopClicked = false;
-            //     }
-            // }
+                if (activeCoils.includes(83)  && !group3StopClicked) {
+                    const stopBtn = document.getElementById("highMasterBtn");
+                    if (stopBtn) stopBtn.click();
+                    console.log("🛑 Group 3: Stop clicked (79)");
+                    group3StopClicked = true;
+                }
+            } else {
+                if (!activeCoils.includes(83) && !activeCoils.includes(97) && !activeCoils.includes(79)) {
+                    group3StartClicked = false;
+                    group3StopClicked = false;
+                }
+            }
 
         })
         .catch(error => console.error("❌ PLC fetch error", error));
@@ -2156,17 +2123,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-    // // Send the initial value when the page loads
-    // document.addEventListener('DOMContentLoaded', () => {
-    //     const initialMasteringType = document.getElementById('mastering_type').value;
-    //     updateValues(initialMasteringType);
-    // });
+    // Send the initial value when the page loads
+    document.addEventListener('DOMContentLoaded', () => {
+        const initialMasteringType = document.getElementById('mastering_type').value;
+        updateValues(initialMasteringType);
+    });
 
-    // // Send the updated value whenever the selection changes
-    // document.getElementById('mastering_type').addEventListener('change', (event) => {
-    //     const selectedMasteringType = event.target.value;
-    //     updateValues(selectedMasteringType);
-    // });
+    // Send the updated value whenever the selection changes
+    document.getElementById('mastering_type').addEventListener('change', (event) => {
+        const selectedMasteringType = event.target.value;
+        updateValues(selectedMasteringType);
+    });
 
    
 
@@ -2239,40 +2206,79 @@ function mapProbeToTextareaId(probeNumber) {
     }
 }
 
+///////////////////////////////////////////////////////////////////////////////////////
 $(document).ready(function () {
     const settings = JSON.parse('{{ settings_json|safe }}');
     console.log("Settings:", settings);
 
-    // First available <textarea> IDs (keep original order)
+    // Correct channel mapping per your new logic
+    const cardChannelMap = {
+        'PIEZO_4CH': 11,   // Originally 4, now 11
+        'PIEZO_11CH': 11,
+        'LVDT_4CH': 8      // Originally 4, now 8
+    };
+
+    // Display order based on card type (fixed, not based on COM port)
+    const cardDisplayOrder = ['PIEZO_4CH', 'PIEZO_11CH', 'LVDT_4CH'];
+
+    // All probe <textarea> IDs in order (DO NOT change these)
     const probeIds = [
-        "probe-A", "probe-B", "probe-C", "probe-D", "probe-E", "probe-F", "probe-G", "probe-H",
-        "probe-I", "probe-J", "probe-K", "probe-L", "probe-M", "probe-N", "probe-O", "probe-P",
-        "probe-Q", "probe-R", "probe-S", "probe-T", "probe-U", "probe-V", "probe-W", "probe-X",
-        "probe-Y", "probe-Z", "probe-AA", "probe-AB", "probe-AC", "probe-AD", "probe-AE",
-        "probe-AF", "probe-AG", "probe-AH", "probe-AI", "probe-AJ", "probe-AK", "probe-AL",
-        "probe-AM", "probe-AN", "probe-AO", "probe-AP"
+        "probe-A", "probe-B", "probe-C", "probe-D", "probe-E", "probe-F", "probe-G", "probe-H", "probe-I",
+        "probe-J", "probe-K", "probe-L", "probe-M", "probe-N", "probe-O", "probe-P", "probe-Q", "probe-R",
+        "probe-S", "probe-T", "probe-U", "probe-V", "probe-W", "probe-X", "probe-Y", "probe-Z",
+        "probe-AA", "probe-AB", "probe-AC", "probe-AD", "probe-AE", "probe-AF", "probe-AG", "probe-AH",
+        "probe-AI", "probe-AJ", "probe-AK", "probe-AL", "probe-AM", "probe-AN", "probe-AO", "probe-AP"
     ];
 
-    // Find COM port for LVDT_4CH
-    const lvdtComPort = settings.find(s => s.card === 'LVDT_4CH')?.com_port;
-    if (!lvdtComPort) {
-        console.error("❌ No LVDT_4CH card found in settings");
-        return;
-    }
+    // Create mapping: card_type -> com_port
+    const cardPortMap = {};
+    settings.forEach(s => {
+        if (!cardPortMap[s.card]) {
+            cardPortMap[s.card] = s.com_port;
+        }
+    });
+
+    const mergedChannels = {};  // com_port -> channel data
 
     const ws = new WebSocket('ws://localhost:8000/ws/comport/');
 
     ws.onmessage = function (event) {
         const data = JSON.parse(event.data);
-        if (!data.message || data.com_port !== lvdtComPort) return;
+        if (!data.message) return;
 
-        const matches = data.message.match(/[A-K][\+\-]\d+/g) || [];
+        const comPort = data.com_port;
+        const message = data.message;
 
-        // Reset all probes
+        const card = settings.find(s => s.com_port === comPort)?.card;
+        const matches = message.match(/[A-K][\+\-]\d+/g) || [];
+
+        // console.log(`📥 Received from ${comPort} (${card}):`, matches);
+
+        mergedChannels[comPort] = matches;
+
+        // Reset all probes first
         probeIds.forEach(id => $(`#${id}`).val(""));
 
-        // Assign incoming values to first available probe IDs
-        matches.forEach((channelData, index) => {
+        // Final channel values in correct card type order
+        let allChannelValues = [];
+
+        cardDisplayOrder.forEach(cardType => {
+            const comPort = cardPortMap[cardType];
+            const channelCount = cardChannelMap[cardType] || 0;
+            const values = comPort && mergedChannels[comPort] ? mergedChannels[comPort] : [];
+
+            if (values.length > 0) {
+                allChannelValues = allChannelValues.concat(values.slice(0, channelCount));
+            } else {
+                const dummy = Array(channelCount).fill("A+000");
+                allChannelValues = allChannelValues.concat(dummy);
+            }
+        });
+
+        // console.log("🧾 Final Display Channel Values:", allChannelValues);
+
+        // Assign values to corresponding textareas
+        allChannelValues.forEach((channelData, index) => {
             if (index < probeIds.length) {
                 const value = channelData.includes('-') ? channelData.substring(1) : channelData.substring(2);
                 $(`#${probeIds[index]}`).val(value);

@@ -89,7 +89,7 @@ def master(request):
                 hide_checkbox=False,
                 attribute=False
             ).exclude(
-                measurement_mode__in=["TIR", "TAP", "DTM"]  # Exclude records with "TIR" or "TAP" in measurement_mode
+                measurement_mode__in=["TIR", "TAP"]  # Exclude records with "TIR" or "TAP" in measurement_mode
             ).values().order_by('id')
 
 

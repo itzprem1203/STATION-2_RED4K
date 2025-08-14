@@ -325,9 +325,9 @@ input[type=checkbox] {
 
 
 #save-btn{
-    margin-top: 10px;
+    margin-top: 7px;
     width: 8vw;
-            height: 10vh;
+            height: 8vh;
             margin-left: 1%;
             font-size: 1.5vw;
             font-weight: bold;
@@ -335,7 +335,7 @@ input[type=checkbox] {
             
         }
         #master-btn{
-            margin-top: 5%;
+            margin-top: 2%;
             width: 8vw;
             height: 10vh;
             margin-left: 1%;
@@ -345,11 +345,13 @@ input[type=checkbox] {
             
         }
 
+       
+
         #start-btn{
             width: 8vw;
             height: 10vh;
             margin-left: 1%;
-            margin-top: 10px;
+            margin-top: 5px;
             font-size: 1.5vw;
             font-weight: bold;
             background-color: lightgreen;
@@ -359,7 +361,7 @@ input[type=checkbox] {
             width: 8vw;
             height: 10vh;
             margin-left: 1%;
-            margin-top: 10px;
+            margin-top: 5px;
             font-size: 1.5vw;
             font-weight: bold;
             background-color: coral;
@@ -370,7 +372,7 @@ input[type=checkbox] {
             margin-left: 1%;
             font-size: 1.5vw;
             font-weight: bold;
-            margin-top: 10px;
+            margin-top: 5px;
             background-color: rgb(233, 177, 73);
         }
 
@@ -382,7 +384,7 @@ input[type=checkbox] {
         }
 
         .container-3{
-    height: 53vh;
+    height: 50vh;
     width: 15vw;
    
     margin-left: 1%;
@@ -390,7 +392,7 @@ input[type=checkbox] {
 }
 
 #box3{
-    height: 60vh;
+    height: 55vh;
     width: 15vw;
     background-color:lightgray;
     margin-left:0;
@@ -496,6 +498,112 @@ input[type=checkbox] {
 
 .hidden {
   display: none;
+}
+
+
+
+ #communication{
+    margin-top: 3%;
+    width: 8vw;
+    height: 12vh;
+    margin-left: 1%;
+    font-size: 1vw;
+    font-weight: bold;
+    background-color: rgb(247, 132, 247);
+    
+}
+
+#handshaking{
+    margin-top: 8%;
+    width: 30vw;
+    height: 16vh;
+
+    font-size: 1vw;
+    font-weight: bold;
+    background-color: rgb(247, 132, 247);
+    
+}
+
+
+.plc-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.plc-label {
+    font-weight: bold;
+    font-size: 0.9vw;
+    color: white;
+    text-shadow: 1px 1px 2px black;
+    width: 80px; /* fixed width for alignment */
+    
+}
+
+.plc-light {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: red;
+    padding: 3px;
+
+
+}
+
+
+
+
+.comm-status-container {
+    height: 29vh;
+    width: 25vw;
+    display: flex;
+    background: black;
+    border: 1px solid #ccc;
+    margin-top: -4%;
+    margin-left: 73%;
+    box-sizing: border-box;
+}
+
+.status-section {
+    flex: 1;
+    padding: 2px;
+    border-right: 1px solid #ccc;
+}
+.status-section:last-child {
+    border-right: none;
+}
+
+.status-section h4 {
+    text-align: center;
+    margin: 0 0 5px;
+    font-size: 0.9vw;
+    background: #ddd;
+    padding: 1px;
+}
+
+.plc-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1px;
+}
+.plc-label {
+    flex: 1;
+    font-size: 0.8vw;
+    width: 20px;
+}
+.plc-light {
+    width: 14px;
+    height: 14px;
+    background: red;
+    border-radius: 50%;
+    border: 1px solid #333;
+}
+.plc-light.green {
+    background: green;
+}
+
+.plc-light.on{
+    background: green;
 }
 
 
@@ -634,14 +742,67 @@ input[type=checkbox] {
 
     </div>
 
+    
 <div class="btn-container">
+<div id="communication" class="btn_outline">
+<!-- 🔆 PLC Status Lights -->
+<div class="plc-item">
+        <span class="plc-label">PLC</span>
+        <div id="coil73-light" class="plc-light"></div>
+    </div>
+    <div class="plc-item">
+        <span class="plc-label">COM 1</span>
+        <div id="com1-light" class="plc-light"></div>
+    </div>
+    <div class="plc-item">
+        <span class="plc-label">COM 2</span>
+        <div id="com2-light" class="plc-light"></div>
+    </div>
+    <div class="plc-item">
+        <span class="plc-label">COM 3</span>
+        <div id="com3-light" class="plc-light"></div>
+    </div>
+</div>
 <div><button type="button" class="btn_outline" id="master-btn">Master<br>[F1]</button></div>
 <div><button type="button" class="btn_outline" id="start-btn"> Start<br>[F4]</button></div>
 <div><button type="button" class="btn_outline" id="stop-btn">Stop<br>[F5]</button></div>
 <div><button type="button" class="btn_outline" id="save-btn" disabled style="filter: blur(2px);"> Save</button></div>
-<div><button type="button" class="btn_outline" id="back-btn">Back<br>[F7]</button></div>
+<div><button type="button" class="btn_outline" id="back-btn" hidden>Back<br>[F7]</button></div>
+
+</div><br>
+
+
+
 </div>
+<div class="comm-status-container">
+    <!-- PLC to PC Section -->
+    <div class="status-section">
+        <h4>PLC → PC</h4>
+        <div class="plc-item"><span class="plc-label">Step1 Start</span><div id="step1-start-light" class="plc-light"></div></div>
+        <div class="plc-item"><span class="plc-label">Step1 Stop</span><div id="step1-stop-light" class="plc-light"></div></div>
+        <div class="plc-item"><span class="plc-label">Step2 Start</span><div id="step2-start-light" class="plc-light"></div></div>
+        <div class="plc-item"><span class="plc-label">Step2 Stop</span><div id="step2-stop-light" class="plc-light"></div></div>
+        <div class="plc-item"><span class="plc-label">Step3 Start</span><div id="step3-start-light" class="plc-light"></div></div>
+        <div class="plc-item"><span class="plc-label">Step3 Stop</span><div id="step3-stop-light" class="plc-light"></div></div>
+        <div class="plc-item"><span class="plc-label">PLC Ready</span><div id="plc-ready-light" class="plc-light"></div></div>
+        <div class="plc-item"><span class="plc-label">Air Low</span><div id="air-low-light" class="plc-light"></div></div>
+        <div class="plc-item"><span class="plc-label">Rejection Bin</span><div id="rejection-bin-light" class="plc-light"></div></div>
+    </div>
+
+    <!-- PC to PLC Section -->
+    <div class="status-section">
+        <h4>PC → PLC</h4>
+        <div class="plc-item"><span class="plc-label">PC Ready</span><div id="pc-ready-light" class="plc-light"></div></div>
+        <div class="plc-item"><span class="plc-label">Accept</span><div id="accept-light" class="plc-light"></div></div>
+        <div class="plc-item"><span class="plc-label">Reject</span><div id="reject-light" class="plc-light"></div></div>
+        <div class="plc-item"><span class="plc-label">Rework</span><div id="rework-light" class="plc-light"></div></div>
+        <div class="plc-item"><span class="plc-label">Step1 Done</span><div id="step1-done-light" class="plc-light"></div></div>
+        <div class="plc-item"><span class="plc-label">Step2 Done</span><div id="step2-done-light" class="plc-light"></div></div>
+        <div class="plc-item"><span class="plc-label">Step3 Done</span><div id="step3-done-light" class="plc-light"></div></div>
+        <div class="plc-item"><span class="plc-label">Counter</span><div id="counter-light" class="plc-light"></div></div>
+    </div>
 </div>
+
 </div>
 <div class="notification-container" id="notification-container">
     <pre style="margin-top: 10px; font-size: large; font-weight: bold;">Enter Your Punch Number here:</pre>
@@ -781,6 +942,10 @@ input[type=checkbox] {
     text-align: center;
 ">
     ❌ Coil 64 not active — waiting to start process...
+</div>
+
+
+
 </div>
 
 
@@ -1334,8 +1499,8 @@ $(document).ready(function() {
                     console.log("O1 Value:", response.o1_values[i]);
                     console.log("D Value:", response.d_values[i]);
                     console.log("E Value:", response.e_values[i]);
-                    console.log("E Value:", response.b_values[i]);
-                    console.log("E Value:", response.b1_values[i]);
+                    console.log("B Value:", response.b_values[i]);
+                    console.log("B1 Value:", response.b1_values[i]);
                     console.log("Probe Value:", response.probe_values[i]);
                     console.log("Step No Value:", response.step_no_values[i]);
                     console.log("customer_name_values:", response.customer_name_values);
@@ -1351,6 +1516,7 @@ $(document).ready(function() {
                         response.o1_values[i], 
                         readingsInput, 
                         response.measurementModeValues[i],
+                        response.digitsValues[i],
                         response.step_no_values[i],
                         response.lslValues[i], 
                         response.uslValues[i],
@@ -1721,6 +1887,7 @@ function showCustomConfirmationModal() {
     // Handle No button click
     document.getElementById("confirm-no").onclick = function () {
         document.getElementById("confirmation-modal").style.display = "none";
+        location.reload();
     };
 
     // Handle Enter key press
@@ -1917,6 +2084,147 @@ function moveToNextStep() {
 }
 
 
+        
+let isVisible = false;
+let typingTimer = null;
+
+function typeMessage(message, element, speed = 100) {
+    element.innerText = "";
+    let index = 0;
+    typingTimer = setInterval(() => {
+        element.innerText += message[index];
+        index++;
+        if (index >= message.length) {
+            clearInterval(typingTimer);
+        }
+    }, speed);
+}
+
+function showNotificationWithHuman() {
+    if (isVisible) return;
+    isVisible = true;
+
+    const box = document.getElementById("plc-notification");
+    const human = document.getElementById("human-inside");
+    const msg = document.getElementById("plc-message");
+
+    // Step 1: Show box
+    box.style.animation = "fadeInBox 0.5s forwards, pulse 1s infinite";
+    box.style.opacity = "1";
+
+    // Step 2: Animate human walking inside box
+    setTimeout(() => {
+        human.style.animation = "walkInBox 2s forwards";
+    }, 300);
+
+    // Step 3: Start typing after human walks in
+    setTimeout(() => {
+        typeMessage("⚠ PLEASE CHECK AIR! ⚠", msg, 150);
+    }, 2300);
+}
+
+function hideNotificationAndHuman() {
+    clearInterval(typingTimer);
+    const box = document.getElementById("plc-notification");
+    const human = document.getElementById("human-inside");
+    box.style.opacity = "0";
+    box.style.animation = "";
+    human.style.left = "-200px"; // reset
+    human.style.animation = "";
+    isVisible = false;
+}
+
+function fetchActiveCoils() {
+    fetch("/get_plc_status/")
+        .then(response => response.json())
+        .then(data => {
+            const activeCoils = data.active_coils || [];
+            console.log("✅ Step 1 coils:", activeCoils);
+
+            const rejectionBin = document.getElementById("rejection-bin-light");
+            const airLow = document.getElementById("air-low-light");
+            const plcReady =document.getElementById("plc-ready-light")
+            const pcReady = document.getElementById("pc-ready-light");
+            const acceptCount = document.getElementById("accept-light");
+            const rejectCount =document.getElementById("reject-light")
+            const reworkCount =document.getElementById("rework-light")
+
+            const signalLight = document.getElementById("coil73-light");
+
+
+
+            if (activeCoils.includes(63)) {
+                // Coil 73 is active - show green light
+                signalLight.style.backgroundColor = "limegreen";
+                signalLight.style.boxShadow = "0 0 20px limegreen";
+            } else {
+                // Coil 73 not active - show red light
+                signalLight.style.backgroundColor = "red";
+                signalLight.style.boxShadow = "0 0 10px red";
+            }
+
+            if (activeCoils.includes(116)) {
+                
+                rejectionBin.classList.add("on");
+                console.log("u");
+            } else {
+                rejectionBin.classList.remove("on");
+            }
+
+            if (activeCoils.includes(89)) {
+                
+                acceptCount.classList.add("on");
+                console.log("u");
+            } else {
+                acceptCount.classList.remove("on");
+            }
+            if (activeCoils.includes(90)) {
+                
+                rejectCount.classList.add("on");
+                console.log("u");
+            } else {
+                rejectCount.classList.remove("on");
+            }
+
+            if (activeCoils.includes(91)) {
+                
+                reworkCount.classList.add("on");
+                console.log("u");
+            } else {
+                reworkCount.classList.remove("on");
+            }
+
+            if (activeCoils.includes(98)) {
+                
+                pcReady.classList.add("on");
+                console.log("u");
+            } else {
+                pcReady.classList.remove("on");
+            }
+
+            if (activeCoils.includes(73)) {
+                
+                plcReady.classList.add("on");
+                console.log("u");
+            } else {
+                plcReady.classList.remove("on");
+            }
+            if (activeCoils.includes(113)) {
+                
+                airLow.classList.add("on");
+                console.log("u");
+            } else {
+                airLow.classList.remove("on");
+            }
+
+
+            
+        })
+        .catch(error => console.error("❌ PLC fetch error", error));
+}
+
+// Start checking every 500 ms
+setInterval(fetchActiveCoils, 500);
 
 
 
@@ -1929,12 +2237,15 @@ let step1Notified = false;
 let step2Notified = false;
 let step3Notified = false;
 
+let d1003StartTriggered = false;
+let d1003StopTriggered = false;
+
 function stopPreviousInterval() {
     if (coilCheckIntervalId) {
         clearInterval(coilCheckIntervalId);
         coilCheckIntervalId = null;
         coilCheckIntervalStarted = false;
-        // console.log("🔁 Previous coil interval stopped");
+        console.log("🔁 Previous coil interval stopped");
     }
 }
 
@@ -1942,16 +2253,15 @@ function startCoilCheckForStep(step_no) {
     stopPreviousInterval(); // Ensure previous interval is cleared
 
     if (step_no === 1) {
-        coilCheckIntervalId = setInterval(() => checkCoilsAndHandleStep1(), 200);
-        // console.log("✅ Coil check interval started for Step 1");
+        coilCheckIntervalId = setInterval(() => checkCoilsAndHandleStep1(), 100);
+        console.log("✅ Coil + Register check interval started for Step 1");
     } else if (step_no === 2) {
         coilCheckIntervalId = setInterval(() => checkCoilsAndHandleStep2(), 200);
-        // console.log("✅ Coil check interval started for Step 2");
+        console.log("✅ Coil check interval started for Step 2");
     } else if (step_no === 3) {
         coilCheckIntervalId = setInterval(() => checkCoilsAndHandleStep3(), 200);
-        // console.log("✅ Coil check interval started for Step 3");
-    }
-      else {
+        console.log("✅ Coil check interval started for Step 3");
+    } else {
         console.log("❗ Unknown step number:", step_no);
     }
 
@@ -1959,76 +2269,110 @@ function startCoilCheckForStep(step_no) {
 }
 
 
+ window.addEventListener("DOMContentLoaded", () => {
+        console.log("🌐 DOM Loaded. Starting Coil Check...");
+        startCoilCheckForStep(1);  // Start checking for Step 1
+    });
+
+
+// function checkCoilsAndHandleStep1() {
+//     // Fetch register value every 200ms
+//     fetch("/get_register_value/")
+//         .then(res => res.json())
+//         .then(data => {
+//             const rawValue = parseInt(data.register_value);  // make sure it's an integer
+//             const degree = rawValue / 10;  // Convert to degree
+
+//             console.log(`📥 Fetched D1003 = ${rawValue} → Degree = ${degree}`);
+
+//             if (degree >= 5 && degree <= 10) {
+//                 const startBtn = document.getElementById("start-btn");
+//                 if (startBtn) startBtn.click();
+               
+//                 console.log("🚀 Degree = 24.0 — Start clicked");
+//             }
+
+//             if (degree >= 175 && degree <= 178) {
+//                 const stopBtn = document.getElementById("stop-btn");
+//                 if (stopBtn) stopBtn.click();
+                
+//                 console.log("🛑 Degree = 35.0 — Stop clicked");
+//             }
+//         })
+//         .catch(err => {
+//             console.error("❌ Error fetching register value:", err);
+//         });
+// }
+
 
 function checkCoilsAndHandleStep1() {
-    fetch("/get_plc_status/")
+    // First, get start_time and stop_time from Django
+    fetch("/get_time/")
         .then(res => res.json())
-        .then(data => {
-            const activeCoils = data.active_coils || [];
+        .then(timeData => {
+            const startDegree = parseFloat(timeData.start_time);
+            const stopDegree = parseFloat(timeData.stop_time);
 
+            // Now fetch register value
+            fetch("/get_register_value/")
+                .then(res => res.json())
+                .then(data => {
+                    const rawValue = parseInt(data.register_value); // Ensure integer
+                    const degree = rawValue / 10; // Convert to degree
 
-            if (activeCoils.includes(64)) {
-                if (step1Notified) {
-                    hideNotification_plc();
-                    step1Notified = false;
-                }
+                    console.log(`📥 D1003 = ${rawValue} → Degree = ${degree}`);
+                    console.log(`⏱ Start Degree: ${startDegree}, Stop Degree: ${stopDegree}`);
 
-                const startBtn = document.getElementById("start-btn");
-                if (startBtn) startBtn.click();
+                    if (degree >= startDegree && degree <= startDegree + 5) {
+                        const startBtn = document.getElementById("start-btn");
+                        if (startBtn) startBtn.click();
+                        console.log(`🚀 Degree = ${degree} — Start clicked`);
+                    }
 
-                console.log("u");
-
-                if (activeCoils.includes(67)) {
-                    const stopBtn = document.getElementById("stop-btn");
-                    if (stopBtn) stopBtn.click();
-
-                    console.log("u");
-                }
-
-            } else if (!step1Notified) {
-                showNotification_plc("❌ Step 1: Coil 64 not active");
-                step1Notified = true;
-            }
+                    if (degree >= stopDegree && degree <= stopDegree + 5) {
+                        const stopBtn = document.getElementById("stop-btn");
+                        if (stopBtn) stopBtn.click();
+                        console.log(`🛑 Degree = ${degree} — Stop clicked`);
+                    }
+                })
+                .catch(err => {
+                    console.error("❌ Error fetching register value:", err);
+                });
+        })
+        .catch(err => {
+            console.error("❌ Error fetching start/stop times:", err);
         });
 }
 
 
+
+
 function checkCoilsAndHandleStep2() {
-    fetch("/get_plc_status/")
+    // Fetch register value every 200ms
+    fetch("/get_register_value/")
         .then(res => res.json())
         .then(data => {
-            const activeCoils = data.active_coils || [];
+            const rawValue = parseInt(data.register_value);  // make sure it's an integer
+            const degree = rawValue / 10;  // Convert to degree
 
+            console.log(`📥 Fetched D1003 = ${rawValue} → Degree = ${degree}`);
 
-
-
-
-            if (activeCoils.includes(65)) {
-                
-                    hideNotification_plc();
-                    step2Notified = false;
-
-                    const startBtn = document.getElementById("start-btn");
-                    if (startBtn) {
-                        startBtn.click();
-                        console.log("y");
-                    }
-                
-
-                if (activeCoils.includes(68)) {
-                    const stopBtn = document.getElementById("stop-btn");
-                    if (stopBtn) {
-                        stopBtn.click();
-                        console.log("y");
-                    }
-                }
-
-            } else {
-                if (!step2Notified) {
-                    showNotification_plc("❌ Step 2: Coil 65 not active");
-                    step2Notified = true;
-                }
+            if (degree >= 190 && degree <= 195) {
+                const startBtn = document.getElementById("start-btn");
+                if (startBtn) startBtn.click();
+               
+                console.log("🚀 Degree = 24.0 — Start clicked");
             }
+
+            if (degree >= 240 && degree <= 248) {
+                const stopBtn = document.getElementById("stop-btn");
+                if (stopBtn) stopBtn.click();
+                
+                console.log("🛑 Degree = 35.0 — Stop clicked");
+            }
+        })
+        .catch(err => {
+            console.error("❌ Error fetching register value:", err);
         });
 }
 
@@ -2236,305 +2580,273 @@ function getCombinedTextareaParts(probeNumber) {
 
 
 
-function displaySerialData(parameterNameValues, probe_value, e_value, d_value, o1_value, readingsInput, measurementMode, step_no, lsl, 
-usl, ltl, utl, indicatorBox, indicatorBox1, statusCell, parameterFactorValues, parameter_name_single, b_value, b1_value) {
+function displaySerialData(parameterNameValues, probe_value, e_value, d_value, o1_value, readingsInput, measurementMode, digitsValues, step_no, lsl,
+    usl, ltl, utl, indicatorBox, indicatorBox1, statusCell, parameterFactorValues, parameter_name_single, b_value, b1_value) {
 
-    console.log("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh",step_no);
+    console.log("digitsValues:", digitsValues);
 
-if (!coilCheckIntervalStarted) {
-    startCoilCheckForStep(step_no);
-} else {
-    console.warn("⚠️ Coil check already running. Continuing displaySerialData logic for step:", step_no);
-}
-
-
-
-
-            
-    console.log("parameterNameValues:", parameterNameValues);
-    console.log("parameter_name_single:", parameter_name_single);
-    console.log("parameterFactorValues:", parameterFactorValues);
-    console.log("step_no:", step_no);
-    console.log("indicatorBox, indicatorBox1:", indicatorBox, indicatorBox1, readingsInput);
-    console.log("your probe_vau is thissssssssssssssssssssssssssssssssssss:",probe_value);
+    if (!coilCheckIntervalStarted) {
+        startCoilCheckForStep(step_no);
+    } else {
+        console.warn("⚠️ Coil check already running. Continuing displaySerialData logic for step:", step_no);
+    }
 
     // Retrieve textarea ID based on probeValue
     const { total: newSerialData, parts: probeParts } = getCombinedTextareaParts(probe_value);
 
+    // Ensure persistent storage across ticks
+    if (!window.measurementMap) window.measurementMap = {};
 
-        // Function to calculate and update the displayOutput
-        function updateDisplayOutput() {
-            const { total: newSerialData } = getCombinedTextareaParts(probe_value);
+    // Function to calculate and update the displayOutput
+    function updateDisplayOutput() {
+        const { total: newSerialData } = getCombinedTextareaParts(probe_value);
 
+        // Base calculation for displayOutput
+        let displayOutput = e_value + (newSerialData * d_value + o1_value);
 
-            // Base calculation for displayOutput
-            let displayOutput = e_value + (newSerialData * d_value + o1_value);
+        if (isNaN(displayOutput)) {
+            displayOutput = 0;
+        }
 
-            if (isNaN(displayOutput)) {
-                displayOutput = 0;
-            }
+        // Modify displayOutput based on parameterFactorValues
+        for (let i = 0; i < parameterFactorValues.length; i++) {
+            const factor = parameterFactorValues[i]; // {parameter_name, method, value}
+            const parameterName = factor.parameter_name;
+            const method = factor.method; // '+' or '-'
+            const value = parseFloat(factor.value);
 
-            // Modify displayOutput based on parameterFactorValues
-            for (let i = 0; i < parameterFactorValues.length; i++) {
-                const factor = parameterFactorValues[i]; // {parameter_name, method, value}
-                const parameterName = factor.parameter_name;
-                const method = factor.method; // '+' or '-'
-                const value = parseFloat(factor.value);
-
-                if (parameterName === parameterNameValues) {
-                    if (method === '+') {
-                        displayOutput += value;
-                    } else if (method === '-') {
-                        displayOutput -= value;
-                    }
+            if (parameterName === parameterNameValues) {
+                if (method === '+') {
+                    displayOutput += value;
+                } else if (method === '-') {
+                    displayOutput -= value;
                 }
             }
+        }
 
-            // Handle case where parameter_name_single is an array
-            let matchFound = false;
-            if (Array.isArray(parameter_name_single)) {
-                matchFound = parameter_name_single.some(
-                    (name) => String(name).trim().toLowerCase() === String(parameterNameValues).trim().toLowerCase()
-                );
-            } else {
-                matchFound =
-                    String(parameter_name_single).trim().toLowerCase() ===
-                    String(parameterNameValues).trim().toLowerCase();
+        // Handle case where parameter_name_single is an array
+        let matchFound = false;
+        if (Array.isArray(parameter_name_single)) {
+            matchFound = parameter_name_single.some(
+                (name) => String(name).trim().toLowerCase() === String(parameterNameValues).trim().toLowerCase()
+            );
+        } else {
+            matchFound =
+                String(parameter_name_single).trim().toLowerCase() ===
+                String(parameterNameValues).trim().toLowerCase();
+        }
+
+        // Update displayOutput based on match
+        if (matchFound) {
+            console.log("Matched parameterNameValues with parameter_name_single. Using alternative formula.");
+            const displayOutput1 = (newSerialData - b1_value) * d_value;
+            displayOutput = displayOutput1 + e_value + b_value;
+        } else {
+            console.log("No match. Keeping original formula.");
+        }
+
+        // Update the readings input only when the continuous update is active and step_no matches
+        if (continuousUpdateInterval && step_no === currentStep) {
+
+            // Update only if measurementMode matches
+            if (["MAX", "MIN", "CUR", "TIR", "AVR", "DTM", "RUNOUT", "DIAMETER"].includes(measurementMode)) {
+                const inputId = readingsInput.id;
+                var currentValue = parseFloat(readingsInput.value);
+
+                // Ensure persistent store for this input
+                if (!window.measurementMap[inputId]) {
+                    window.measurementMap[inputId] = { max: -Infinity, min: Infinity, sum: 0, count: 0, firstUpdateShown: false };
+                }
+                const store = window.measurementMap[inputId];
+
+                // First tick for TIR/AVR/DTM/RUNOUT should show 0
+                if (["TIR", "RUNOUT", "AVR", "DTM"].includes(measurementMode) && !store.firstUpdateShown) {
+                    readingsInput.value = (0).toFixed(digitsValues);
+                    if (displayOutput > store.max) store.max = displayOutput;
+                    if (displayOutput < store.min) store.min = displayOutput;
+                    store.sum += displayOutput;
+                    store.count++;
+                    store.firstUpdateShown = true;
+                    return;
+                }
+
+
+                // Mode-specific display logic
+
+
+                // Update persistent store
+                if (displayOutput > store.max) store.max = displayOutput;
+                if (displayOutput < store.min) store.min = displayOutput;
+                store.sum += displayOutput;
+                store.count++;
+
+                // Default show raw reading
+                readingsInput.value = displayOutput.toFixed(digitsValues);
+
+
+                if (measurementMode === "MAX") {
+                    readingsInput.value = store.max.toFixed(digitsValues);
+                    displayOutput = store.max;
+                } 
+                else if (measurementMode === "MIN") {
+                    readingsInput.value = store.min.toFixed(digitsValues);
+                    displayOutput = store.min;
+                } 
+                else if (measurementMode === "CUR") {
+                    readingsInput.value = displayOutput.toFixed(digitsValues);
+                } 
+
+                // AVR
+                if (measurementMode === "AVR") {
+                    const avr = (store.max - store.min) / 2;
+                    if (!isNaN(avr)) {
+                        readingsInput.value = avr.toFixed(digitsValues);
+                        displayOutput = avr;
+                    }
+                }
+                
+
+                // DTM
+                if (measurementMode === "DTM") {
+                    const dtm = (store.max + store.min) / 2;
+                    if (!isNaN(dtm)) {
+                        readingsInput.value = dtm.toFixed(digitsValues);
+                        displayOutput = dtm;
+                    }
+                }
+
+                if (measurementMode === "DIAMETER") {
+                    if (newSerialData > store.max) store.max = newSerialData;
+                    if (newSerialData < store.min) store.min = newSerialData;
+
+                    // Pick whichever you need: max, min, or average
+                    const counts_current = store.max; 
+
+                    const diameter = b_value + ((counts_current - b1_value) * d_value * 2);
+
+                    readingsInput.value = diameter.toFixed(digitsValues);
+                    displayOutput = diameter;
+                }
+
+
+
+
+                // TIR
+                if (measurementMode === "TIR") {
+                    const tir = (store.max - store.min) / 2; // Using your requested formula
+                    if (!isNaN(tir)) {
+                        readingsInput.value = tir.toFixed(digitsValues);
+                        displayOutput = tir;
+                    }
+                }
+
+                // RUNOUT
+                if (measurementMode === "RUNOUT") {
+                    const runout = (store.max - store.min) / 2;
+                    if (!isNaN(runout)) {
+                        readingsInput.value = runout.toFixed(digitsValues);
+                        displayOutput = runout;
+                    }
+                }
+
+                // Calculate color and widths
+                var totalLength, coloredPortionLength, coloredPortion, uncoloredPortion;
+                var coloredWidth, defaultWidth, color;
+
+                if (displayOutput > e_value) {
+                    totalLength = usl - e_value;
+                    coloredPortionLength = displayOutput - e_value;
+                } else if (displayOutput < e_value) {
+                    totalLength = e_value - lsl;
+                    coloredPortionLength = e_value - displayOutput;
+                } else {
+                    totalLength = usl - lsl || 1;
+                    coloredPortionLength = 0;
+                }
+
+                coloredPortion = totalLength ? (coloredPortionLength / totalLength) : 0;
+                uncoloredPortion = 1 - coloredPortion;
+                coloredWidth = coloredPortion * 100;
+                defaultWidth = uncoloredPortion * 100;
+
+                // Decide color
+                if (displayOutput >= lsl && displayOutput <= usl) {
+                    color = '#00ff00'; // Green
+                } else if ((displayOutput > usl && displayOutput <= utl) || (displayOutput >= ltl && displayOutput < lsl)) {
+                    color = 'yellow';
+                } else {
+                    color = 'red';
+                }
+
+                readingsInput.style.backgroundColor = 'black';
+                readingsInput.style.fontWeight = 'bold';
+                readingsInput.style.fontSize = '22px';
+                readingsInput.style.color = color;
+
+                // === Update indicator gradient ===
+                if (displayOutput > e_value) {
+                    var indicatorBoxElement = document.getElementById(indicatorBox.id);
+                    var indicatorBox1Element = document.getElementById(indicatorBox1.id);
+                    indicatorBoxElement.style.background = 'white';
+                    indicatorBox1Element.style.background = `linear-gradient(to right, ${color} ${coloredWidth}%, white ${coloredWidth}% ${defaultWidth}%, white 100%)`;
+                } else if (displayOutput < e_value) {
+                    var indicatorBoxElement = document.getElementById(indicatorBox.id);
+                    var indicatorBox1Element = document.getElementById(indicatorBox1.id);
+                    indicatorBox1Element.style.background = 'white';
+                    indicatorBoxElement.style.background = `linear-gradient(to left, ${color} ${coloredWidth}%, white ${coloredWidth}% ${defaultWidth}%, white 100%)`;
+                }
             }
-
-            // Update displayOutput based on match
-            if (matchFound) {
-                console.log("Matched parameterNameValues with parameter_name_single. Using alternative formula.");
-                const displayOutput1 = (newSerialData - b1_value) * d_value;
-                displayOutput = displayOutput1 + e_value + b_value;
-            } else {
-                console.log("No match. Keeping original formula.");
-            }
-
-            // console.log("Updated displayOutput:", displayOutput);
-
-
-            let avrValuesMap = {};
-            let dtmValuesMap = {};
-
-            // Update the readings input only when the continuous update is active and step_no matches
-            if (continuousUpdateInterval && step_no === currentStep) {
-             
-                // Update the readings input based on measurement mode
-                if (measurementMode === "MAX" || measurementMode === "MIN" || measurementMode === "CUR" || measurementMode === "TIR" || measurementMode === "AVR" || measurementMode === "DTM") {
-                    // Update only if the new value is greater than or less than the current value
-                    const inputId = readingsInput.id;
-                    var currentValue = parseFloat(readingsInput.value);
-                    if (isNaN(currentValue) || (measurementMode === "MAX" && displayOutput > currentValue) ||
-                        (measurementMode === "MIN" && displayOutput < currentValue) ||
-                        (measurementMode === "CUR" || measurementMode === "TIR" || measurementMode === "AVR"|| measurementMode === "DTM")) {
-                        readingsInput.value = displayOutput.toFixed(4);
-                         if (measurementMode === "AVR") {
-                            if (!avrValuesMap[inputId]) {
-                                avrValuesMap[inputId] = { max: displayOutput, min: displayOutput };
-                            }
-
-                            if (displayOutput > avrValuesMap[inputId].max) {
-                                avrValuesMap[inputId].max = displayOutput;
-                            }
-                            if (displayOutput < avrValuesMap[inputId].min) {
-                                avrValuesMap[inputId].min = displayOutput;
-                            }
-
-                            const max = avrValuesMap[inputId].max;
-                            const min = avrValuesMap[inputId].min;
-                            if (max !== min) {
-                                const avr = (max + min) / 2;
-                                if (!isNaN(avr)) {
-                                    readingsInput.value = avr.toFixed(4);
-                                    displayOutput = avr;
-                                }
-                            }
-                        }
-
-                        // === DTM Mode Logic ===
-                        if (measurementMode === "DTM") {
-                            if (!dtmValuesMap[inputId]) {
-                                dtmValuesMap[inputId] = { max: displayOutput, min: displayOutput };
-                            }
-
-                            if (displayOutput > dtmValuesMap[inputId].max) {
-                                dtmValuesMap[inputId].max = displayOutput;
-                            }
-                            if (displayOutput < dtmValuesMap[inputId].min) {
-                                dtmValuesMap[inputId].min = displayOutput;
-                            }
-
-                            const max = dtmValuesMap[inputId].max;
-                            const min = dtmValuesMap[inputId].min;
-                            if (max !== min) {
-                                const dtm = (max + min) / 2;
-                                if (!isNaN(dtm)) {
-                                    readingsInput.value = dtm.toFixed(4);
-                                    displayOutput = dtm;
-                                }
-                            }
-                        }
-
-                        if (measurementMode === "TIR") {
-                            readingsInput.value = tirValue.toFixed(4);
-                        }
-
-                        // Calculate total length and colored portion length
-                        var totalLength, coloredPortionLength, coloredPortion, uncoloredPortion;
-                        var coloredWidth, defaultWidth, color;
-
-                        if (displayOutput > e_value) {
-                            totalLength = usl - e_value;
-                            coloredPortionLength = displayOutput - e_value;
-                        } else if (displayOutput < e_value){
-                            totalLength = e_value - lsl;
-                            coloredPortionLength = e_value - displayOutput;
-                        }
-
-                        coloredPortion = coloredPortionLength / totalLength;
-                        uncoloredPortion = 1 - coloredPortion;
-                        coloredWidth = coloredPortion * 100;
-                        defaultWidth = uncoloredPortion * 100;
-
-                        // Set background color based on measurement mode and displayOutput ranges
-                        if ((measurementMode === "MAX" && displayOutput >= lsl && displayOutput <= usl) ||
-                            (measurementMode === "MIN" && displayOutput >= lsl && displayOutput <= usl) ||
-                            (measurementMode === "CUR" && displayOutput >= lsl && displayOutput <= usl) ||
-                            (measurementMode === "AVR" && displayOutput >= lsl && displayOutput <= usl) ||
-                            (measurementMode === "DTM" && displayOutput >= lsl && displayOutput <= usl) ||
-                            (measurementMode === "TIR" && tirValue >= lsl && tirValue <= usl)) {
-                            color = '#00ff00'; // Green
-                            if (color === '#00ff00') {
-                                readingsInput.style.backgroundColor = 'black';
-                                readingsInput.style.fontWeight = 'bold';
-                                readingsInput.style.fontSize = '22px'; // Adjust the size as needed
-
-                            } 
-                        } else if ((measurementMode === "MAX" &&((displayOutput > usl && displayOutput <= utl) || 
-                                                                    (displayOutput >= ltl && displayOutput < lsl))) || 
-                                    (measurementMode === "MIN" &&((displayOutput > usl && displayOutput <= utl) || 
-                                                                    (displayOutput >= ltl && displayOutput < lsl))) || 
-                                    (measurementMode === "CUR" && ((displayOutput > usl && displayOutput <= utl) || 
-                                                                    (displayOutput >= ltl && displayOutput < lsl))) ||
-                                    (measurementMode === "AVR" && ((displayOutput > usl && displayOutput <= utl) || 
-                                                                    (displayOutput >= ltl && displayOutput < lsl))) ||
-                                    (measurementMode === "DTM" && ((displayOutput > usl && displayOutput <= utl) || 
-                                                                    (displayOutput >= ltl && displayOutput < lsl))) ||                                
-                                    (measurementMode === "TIR" && ((tirValue > usl && tirValue <= utl) || 
-                                                                  (tirValue >= ltl && tirValue < lsl)))) 
-                                    {
-                            color = 'yellow';
-                            if (color === 'yellow') {
-                                readingsInput.style.backgroundColor = 'black';
-                                readingsInput.style.fontWeight = 'bold';
-                                readingsInput.style.fontSize = '22px'; // Adjust the size as needed
-                            }
-                        } else if ((measurementMode === "MAX" && displayOutput > utl || displayOutput <ltl) ||
-                            (measurementMode === "MIN" && displayOutput > utl || displayOutput <ltl) ||
-                            (measurementMode === "CUR" && displayOutput > utl || displayOutput <ltl) ||
-                            (measurementMode === "AVR" && displayOutput > utl || displayOutput <ltl) ||
-                            (measurementMode === "DTM" && displayOutput > utl || displayOutput <ltl) ||
-                            (measurementMode === "TIR" && tirValue > utl || tirValue <ltl)) {
-                            color = 'red'; // Green
-                            if (color === 'red') {
-                                readingsInput.style.backgroundColor = 'black';
-                                readingsInput.style.fontWeight = 'bold';
-                                readingsInput.style.fontSize = '22px'; // Adjust the size as needed
-                            }
-                            
-                        }
-                        
-                        readingsInput.style.color = color;
-                        // readingsInput.style.textShadow = (color === 'red') ? '0 0 2px white' : '0 0 2px black';
-
-
-
-document.getElementById('stop-btn').addEventListener('click', function() {
-    var indices = [];
-    // Assuming step_no_values and currentStep are defined somewhere
-    for (var i = 0; i < step_no_values.length; i++) {
-        if (step_no_values[i] === currentStep) {
-            indices.push(i);
         }
     }
 
-    indices.forEach(function(index) {
-        var readingsInput = document.getElementById('readings-input-' + index);
-        var color = readingsInput.style.color;
-        var statusCell = document.getElementById('status_cell-' + index); // Assuming 'status-cell' is the class of your status cells
-        statusCell.style.backgroundColor = color;
-        if (color === "rgb(0, 255, 0)" || color === "#00ff00") { // Different browsers might return color in different formats
-            statusCell.textContent = "ACCEPT";
-            statusCell.style.fontWeight = "bold";
-        } else if (color === "red" || color === "#ff0000") {
-            statusCell.textContent = "REJECT";
-            statusCell.style.fontWeight = "bold";
-        } else if (color === "yellow" || color === "#ffff00") {
-            statusCell.textContent = "REWORK";
-            statusCell.style.fontWeight = "bold";
+    // Attach listener for live changes
+    probeParts.forEach(({ id }) => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.addEventListener('input', updateDisplayOutput);
         }
     });
-});
 
-
-
-
-
-
-if (displayOutput > e_value) {
-    var indicatorBoxElement = document.getElementById(indicatorBox.id);
-    var indicatorBox1Element = document.getElementById(indicatorBox1.id);
-    
-    // Set indicatorBoxElement to default color
-    indicatorBoxElement.style.background = 'white';
-
-    // Set indicatorBox1Element to colored gradient
-    indicatorBox1Element.style.background = `linear-gradient(to right, ${color} ${coloredWidth}%, white ${coloredWidth}% ${defaultWidth}%, white 100%)`;
-} else if (displayOutput < e_value) {
-    var indicatorBoxElement = document.getElementById(indicatorBox.id);
-    var indicatorBox1Element = document.getElementById(indicatorBox1.id);
-    
-    // Set indicatorBox1Element to default color
-    indicatorBox1Element.style.background = 'white';
-
-    // Set indicatorBoxElement to colored gradient
-    indicatorBoxElement.style.background = `linear-gradient(to left, ${color} ${coloredWidth}%, white ${coloredWidth}% ${defaultWidth}%, white 100%)`;
-}
-
-            }
-        }
+    // Start continuous update
+    function startContinuousUpdate() {
+        window.measurementMap[readingsInput.id] = { max: -Infinity, min: Infinity, sum: 0, count: 0, firstUpdateShown: false };
+        continuousUpdateInterval = setInterval(updateDisplayOutput, 100);
     }
-}
 
-        probeParts.forEach(({ id }) => {
-            const el = document.getElementById(id);
-            if (el) {
-                el.addEventListener('input', updateDisplayOutput);
+    function stopContinuousUpdate() {
+        clearInterval(continuousUpdateInterval);
+        continuousUpdateInterval = null;
+    }
+
+    document.getElementById('start-btn').addEventListener('click', startContinuousUpdate);
+    document.getElementById('stop-btn').addEventListener('click', stopContinuousUpdate);
+
+    // Status cell update on stop
+    document.getElementById('stop-btn').addEventListener('click', function () {
+        var indices = [];
+        for (var i = 0; i < step_no_values.length; i++) {
+            if (step_no_values[i] === currentStep) {
+                indices.push(i);
             }
+        }
+        indices.forEach(function (index) {
+            var readingsInputEl = document.getElementById('readings-input-' + index);
+            var color = readingsInputEl.style.color;
+            var statusCellEl = document.getElementById('status_cell-' + index);
+            statusCellEl.style.backgroundColor = color;
+            if (color === "rgb(0, 255, 0)" || color === "#00ff00") {
+                statusCellEl.textContent = "ACCEPT";
+            } else if (color === "red" || color === "#ff0000") {
+                statusCellEl.textContent = "REJECT";
+            } else if (color === "yellow" || color === "#ffff00") {
+                statusCellEl.textContent = "REWORK";
+            }
+            statusCellEl.style.fontWeight = "bold";
         });
+    });
 
-
-        // Function to start continuous update
-        function startContinuousUpdate() {
-            continuousUpdateInterval = setInterval(updateDisplayOutput, 100); // Update every half a second
-        }
-
-        // Function to stop continuous update
-        function stopContinuousUpdate() {
-            clearInterval(continuousUpdateInterval);
-            continuousUpdateInterval = null; // Reset continuousUpdateInterval
-        }
-
-        // Event listener for start-btn
-        document.getElementById('start-btn').addEventListener('click', startContinuousUpdate);
-
-        // Event listener for stop-btn
-        document.getElementById('stop-btn').addEventListener('click', stopContinuousUpdate);
-
-        // Call the function once to initially display the value
-        updateDisplayOutput();
-    
+    // Initial display
+    updateDisplayOutput();
 }
 
 function showNotification(message) {
@@ -2590,7 +2902,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function handleEnterKeyPress(event) {
-    var buttons = document.querySelectorAll('#master-btn, #start-btn, #stop-btn, #save-btn, #back-btn');
+    var buttons = document.querySelectorAll('#start-btn, #stop-btn, #save-btn, #back-btn');
 
     if (event.key === 'Enter') {
         var punchValue = $('#punch_textarea').val();
@@ -3556,6 +3868,25 @@ $(document).ready(function () {
                 $('#reject').val(response.reject_occurrence);
                 $('#rework').val(response.rework_occurrence);
                 $('#total').val(response.total_occurrence);
+
+                $.ajax({
+                    url: "/send_counts_to_plc/",
+                    type: "POST",
+                    headers: { "X-CSRFToken": csrftoken },
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                        accept: response.accept_occurrence,
+                        reject: response.reject_occurrence,
+                        rework: response.rework_occurrence,
+                        total:response.total_occurrence
+                    }),
+                    success: function (res) {
+                        console.log("✅ Successfully posted counts to PLC");
+                    },
+                    error: function (xhr) {
+                        console.error("❌ Failed to send counts to PLC:", xhr.responseText);
+                    }
+                });
             },
             error: function (xhr, status, error) {
                 console.log("Error:", xhr.responseText);
@@ -3644,74 +3975,36 @@ $(document).ready(function () {
     const settings = JSON.parse('{{ settings_json|safe }}');
     console.log("Settings:", settings);
 
-    // Correct channel mapping per your new logic
-    const cardChannelMap = {
-        'PIEZO_4CH': 11,   // Originally 4, now 11
-        'PIEZO_11CH': 11,
-        'LVDT_4CH': 8      // Originally 4, now 8
-    };
-
-    // Display order based on card type (fixed, not based on COM port)
-    const cardDisplayOrder = ['PIEZO_4CH', 'PIEZO_11CH', 'LVDT_4CH'];
-
-    // All probe <textarea> IDs in order (DO NOT change these)
+    // First available <textarea> IDs (keep original order)
     const probeIds = [
-        "probe-A", "probe-B", "probe-C", "probe-D", "probe-E", "probe-F", "probe-G", "probe-H", "probe-I",
-        "probe-J", "probe-K", "probe-L", "probe-M", "probe-N", "probe-O", "probe-P", "probe-Q", "probe-R",
-        "probe-S", "probe-T", "probe-U", "probe-V", "probe-W", "probe-X", "probe-Y", "probe-Z",
-        "probe-AA", "probe-AB", "probe-AC", "probe-AD", "probe-AE", "probe-AF", "probe-AG", "probe-AH",
-        "probe-AI", "probe-AJ", "probe-AK", "probe-AL", "probe-AM", "probe-AN", "probe-AO", "probe-AP"
+        "probe-A", "probe-B", "probe-C", "probe-D", "probe-E", "probe-F", "probe-G", "probe-H",
+        "probe-I", "probe-J", "probe-K", "probe-L", "probe-M", "probe-N", "probe-O", "probe-P",
+        "probe-Q", "probe-R", "probe-S", "probe-T", "probe-U", "probe-V", "probe-W", "probe-X",
+        "probe-Y", "probe-Z", "probe-AA", "probe-AB", "probe-AC", "probe-AD", "probe-AE",
+        "probe-AF", "probe-AG", "probe-AH", "probe-AI", "probe-AJ", "probe-AK", "probe-AL",
+        "probe-AM", "probe-AN", "probe-AO", "probe-AP"
     ];
 
-    // Create mapping: card_type -> com_port
-    const cardPortMap = {};
-    settings.forEach(s => {
-        if (!cardPortMap[s.card]) {
-            cardPortMap[s.card] = s.com_port;
-        }
-    });
-
-    const mergedChannels = {};  // com_port -> channel data
+    // Find COM port for LVDT_4CH
+    const lvdtComPort = settings.find(s => s.card === 'LVDT_4CH')?.com_port;
+    if (!lvdtComPort) {
+        console.error("❌ No LVDT_4CH card found in settings");
+        return;
+    }
 
     const ws = new WebSocket('ws://localhost:8000/ws/comport/');
 
     ws.onmessage = function (event) {
         const data = JSON.parse(event.data);
-        if (!data.message) return;
+        if (!data.message || data.com_port !== lvdtComPort) return;
 
-        const comPort = data.com_port;
-        const message = data.message;
+        const matches = data.message.match(/[A-K][\+\-]\d+/g) || [];
 
-        const card = settings.find(s => s.com_port === comPort)?.card;
-        const matches = message.match(/[A-K][\+\-]\d+/g) || [];
-
-        //console.log(`📥 Received from ${comPort} (${card}):`, matches);
-
-        mergedChannels[comPort] = matches;
-
-        // Reset all probes first
+        // Reset all probes
         probeIds.forEach(id => $(`#${id}`).val(""));
 
-        // Final channel values in correct card type order
-        let allChannelValues = [];
-
-        cardDisplayOrder.forEach(cardType => {
-            const comPort = cardPortMap[cardType];
-            const channelCount = cardChannelMap[cardType] || 0;
-            const values = comPort && mergedChannels[comPort] ? mergedChannels[comPort] : [];
-
-            if (values.length > 0) {
-                allChannelValues = allChannelValues.concat(values.slice(0, channelCount));
-            } else {
-                const dummy = Array(channelCount).fill("A+000");
-                allChannelValues = allChannelValues.concat(dummy);
-            }
-        });
-
-        //console.log("🧾 Final Display Channel Values:", allChannelValues);
-
-        // Assign values to corresponding textareas
-        allChannelValues.forEach((channelData, index) => {
+        // Assign incoming values to first available probe IDs
+        matches.forEach((channelData, index) => {
             if (index < probeIds.length) {
                 const value = channelData.includes('-') ? channelData.substring(1) : channelData.substring(2);
                 $(`#${probeIds[index]}`).val(value);
@@ -3719,6 +4012,18 @@ $(document).ready(function () {
         });
     };
 });
+
+
+// Helper to change light color
+function setLightColor(lightId, color) {
+    const el = document.getElementById(lightId);
+    if (!el) return;
+
+    el.style.backgroundColor = color;
+    el.style.boxShadow = color === "green"
+        
+        "0 0 10px red";
+}
 
 </script>
         

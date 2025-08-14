@@ -1,9 +1,9 @@
 from django.conf import settings
 from django.urls import path
 from django.conf.urls.static import static
-from .views import home,index,comport,probe,trace,parameter,master,measurebox,measurement,get_plc_status,write_coil,reset_counter
+from .views import home,index,comport,probe,trace,parameter,master,measurebox,measurement,get_plc_status,write_coil,reset_counter,get_register_value
 from .views import utility,report,spc,srno,withoutsrno,paraReport,jobReport,xBar,xBarRchart,backup,xBarSchart,shift_change_alert,get_time,save_time
-from .views import histogram,pieChart,measure,masterReport,measurement_count,shift_report,get_parameters, get_parameter_value,zzz,post_part_status
+from .views import histogram,pieChart,measure,masterReport,measurement_count,shift_report,get_parameters, get_parameter_value,zzz,post_part_status,send_counts_to_plc
 urlpatterns = [
     path('',home,name="home"),
     path('index/',index,name="index"),
@@ -41,6 +41,9 @@ urlpatterns = [
     path('get_time/', get_time, name='get_time'),
     path('save_time/', save_time, name='save_time'),
     path('reset_counter/', reset_counter, name='reset_counter'),
+    path('get_register_value/', get_register_value, name='get_register_value'),
+    path('send_counts_to_plc/', send_counts_to_plc, name='send_counts_to_plc'),
+
     ]
 
 if settings.DEBUG:

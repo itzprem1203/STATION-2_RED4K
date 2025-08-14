@@ -253,9 +253,6 @@ Selected Probe:
             <input type="text" class="container-e" readonly value="0.00" id="container-e-1" oninput="checkAndEnterValue('Probe-1', this.value),allowOnlyNumbers(this)">
             <input type="text" readonly class="container-f" id="container-f-1" oninput="allowOnlyNumbers(this)">
             <input type="text" readonly class="container-g" hidden id="container-g-probe-1" oninput="allowOnlyNumbers(this)">
-            <div class="indicator-bar" id="bar-probe-A">
-                <span class="percentage-label" id="percent-probe-A"></span>
-            </div>
         </div>
             
             
@@ -269,9 +266,6 @@ Selected Probe:
             <input type="text" class="container-e" readonly value="0.00" id="container-e-2" oninput="checkAndEnterValue('Probe-2', this.value),allowOnlyNumbers(this)">
             <input type="text" readonly class="container-f" id="container-f-2" oninput="allowOnlyNumbers(this)">
             <input type="text" readonly class="container-g" hidden id="container-g-probe-2" oninput="allowOnlyNumbers(this)">
-            <div class="indicator-bar" id="bar-probe-B">
-                <span class="percentage-label" id="percent-probe-B"></span>
-            </div>
         </div>
 
         <div class="card" id="card-3" data-probe-id="probe-3">
@@ -284,9 +278,6 @@ Selected Probe:
             <input type="text" class="container-e" readonly value="0.00" id="container-e-3" oninput="checkAndEnterValue('Probe-3', this.value),allowOnlyNumbers(this)">
             <input type="text" readonly class="container-f" id="container-f-3" oninput="allowOnlyNumbers(this)">
             <input type="text" readonly class="container-g" hidden id="container-g-probe-3" oninput="allowOnlyNumbers(this)">
-            <div class="indicator-bar" id="bar-probe-C">
-                <span class="percentage-label" id="percent-probe-C"></span>
-            </div>
         </div>
 
         <div class="card" id="card-4" data-probe-id="probe-4">
@@ -299,9 +290,6 @@ Selected Probe:
             <input type="text" class="container-e" readonly value="0.00" id="container-e-4" oninput="checkAndEnterValue('Probe-4', this.value),allowOnlyNumbers(this)">
             <input type="text" readonly class="container-f" id="container-f-4" oninput="allowOnlyNumbers(this)">
             <input type="text" readonly class="container-g" hidden id="container-g-probe-4" oninput="allowOnlyNumbers(this)">
-            <div class="indicator-bar" id="bar-probe-D">
-                <span class="percentage-label" id="percent-probe-D"></span>
-            </div>
         </div>
 
         <div class="card" id="card-5" data-probe-id="probe-5">
@@ -314,9 +302,6 @@ Selected Probe:
             <input type="text" class="container-e" readonly value="0.00" id="container-e-5" oninput="checkAndEnterValue('Probe-5', this.value),allowOnlyNumbers(this)">
             <input type="text" readonly class="container-f" id="container-f-5" oninput="allowOnlyNumbers(this)">
             <input type="text" readonly class="container-g" hidden id="container-g-probe-5" oninput="allowOnlyNumbers(this)">
-            <div class="indicator-bar" id="bar-probe-E">
-                <span class="percentage-label" id="percent-probe-E"></span>
-            </div>
         </div>
 
         <div class="card" id="card-6" data-probe-id="probe-6">
@@ -329,9 +314,6 @@ Selected Probe:
             <input type="text" class="container-e" readonly value="0.00" id="container-e-6" oninput="checkAndEnterValue('Probe-6', this.value),allowOnlyNumbers(this)">
             <input type="text" readonly class="container-f" id="container-f-6" oninput="allowOnlyNumbers(this)">
             <input type="text" readonly class="container-g" hidden id="container-g-probe-6" oninput="allowOnlyNumbers(this)">
-            <div class="indicator-bar" id="bar-probe-F">
-                <span class="percentage-label" id="percent-probe-F"></span>
-            </div>
         </div>
 
         <div class="card" id="card-7" data-probe-id="probe-7">
@@ -344,9 +326,6 @@ Selected Probe:
             <input type="text" class="container-e" readonly value="0.00" id="container-e-7" oninput="checkAndEnterValue('Probe-7', this.value),allowOnlyNumbers(this)">
             <input type="text" readonly class="container-f" id="container-f-7" oninput="allowOnlyNumbers(this)">
             <input type="text" readonly class="container-g" hidden id="container-g-probe-7" oninput="allowOnlyNumbers(this)">
-            <div class="indicator-bar" id="bar-probe-G">
-                <span class="percentage-label" id="percent-probe-G"></span>
-            </div>
         </div>
     </div>
 
@@ -1315,43 +1294,82 @@ $(document).ready(function () {
     const settings = JSON.parse('{{ settings_json|safe }}');
     console.log("Settings:", settings);
 
-    // First available <textarea> IDs (keep original order)
+    // Correct channel mapping per your new logic
+    const cardChannelMap = {
+        'PIEZO_4CH': 11,   // Originally 4, now 11
+        'PIEZO_11CH': 11,
+        'LVDT_4CH': 8      // Originally 4, now 8
+    };
+
+    // Display order based on card type (fixed, not based on COM port)
+    const cardDisplayOrder = ['PIEZO_4CH', 'PIEZO_11CH', 'LVDT_4CH'];
+
+    // All probe <textarea> IDs in order (DO NOT change these)
     const probeIds = [
-        "probe-A", "probe-B", "probe-C", "probe-D", "probe-E", "probe-F", "probe-G", "probe-H",
-        "probe-I", "probe-J", "probe-K", "probe-L", "probe-M", "probe-N", "probe-O", "probe-P",
-        "probe-Q", "probe-R", "probe-S", "probe-T", "probe-U", "probe-V", "probe-W", "probe-X",
-        "probe-Y", "probe-Z", "probe-AA", "probe-AB", "probe-AC", "probe-AD", "probe-AE",
-        "probe-AF", "probe-AG", "probe-AH", "probe-AI", "probe-AJ", "probe-AK", "probe-AL",
-        "probe-AM", "probe-AN", "probe-AO", "probe-AP"
+        "probe-A", "probe-B", "probe-C", "probe-D", "probe-E", "probe-F", "probe-G", "probe-H", "probe-I",
+        "probe-J", "probe-K", "probe-L", "probe-M", "probe-N", "probe-O", "probe-P", "probe-Q", "probe-R",
+        "probe-S", "probe-T", "probe-U", "probe-V", "probe-W", "probe-X", "probe-Y", "probe-Z",
+        "probe-AA", "probe-AB", "probe-AC", "probe-AD", "probe-AE", "probe-AF", "probe-AG", "probe-AH",
+        "probe-AI", "probe-AJ", "probe-AK", "probe-AL", "probe-AM", "probe-AN", "probe-AO", "probe-AP"
     ];
 
-    // Find COM port for LVDT_4CH
-    const lvdtComPort = settings.find(s => s.card === 'LVDT_4CH')?.com_port;
-    if (!lvdtComPort) {
-        console.error("❌ No LVDT_4CH card found in settings");
-        return;
-    }
+    // Create mapping: card_type -> com_port
+    const cardPortMap = {};
+    settings.forEach(s => {
+        if (!cardPortMap[s.card]) {
+            cardPortMap[s.card] = s.com_port;
+        }
+    });
+
+    const mergedChannels = {};  // com_port -> channel data
 
     const ws = new WebSocket('ws://localhost:8000/ws/comport/');
 
     ws.onmessage = function (event) {
         const data = JSON.parse(event.data);
-        if (!data.message || data.com_port !== lvdtComPort) return;
+        if (!data.message) return;
 
-        const matches = data.message.match(/[A-K][\+\-]\d+/g) || [];
+        const comPort = data.com_port;
+        const message = data.message;
 
-        // Reset all probes
+        const card = settings.find(s => s.com_port === comPort)?.card;
+        const matches = message.match(/[A-K][\+\-]\d+/g) || [];
+
+        //console.log(`📥 Received from ${comPort} (${card}):`, matches);
+
+        mergedChannels[comPort] = matches;
+
+        // Reset all probes first
         probeIds.forEach(id => $(`#${id}`).val(""));
 
-        // Assign incoming values to first available probe IDs
-        matches.forEach((channelData, index) => {
+        // Final channel values in correct card type order
+        let allChannelValues = [];
+
+        cardDisplayOrder.forEach(cardType => {
+            const comPort = cardPortMap[cardType];
+            const channelCount = cardChannelMap[cardType] || 0;
+            const values = comPort && mergedChannels[comPort] ? mergedChannels[comPort] : [];
+
+            if (values.length > 0) {
+                allChannelValues = allChannelValues.concat(values.slice(0, channelCount));
+            } else {
+                const dummy = Array(channelCount).fill("A+000");
+                allChannelValues = allChannelValues.concat(dummy);
+            }
+        });
+
+        //console.log("🧾 Final Display Channel Values:", allChannelValues);
+
+        // Assign values to corresponding textareas
+        allChannelValues.forEach((channelData, index) => {
             if (index < probeIds.length) {
                 const value = channelData.includes('-') ? channelData.substring(1) : channelData.substring(2);
                 $(`#${probeIds[index]}`).val(value);
             }
         });
 
-        updateSelectedProbeIndicators();
+        updateSelectedProbeIndicators(); // ✅ Refresh bars
+
     };
 });
 
@@ -1360,8 +1378,8 @@ $(document).ready(function () {
 
 function updateSelectedProbeIndicators() {
     const targetProbes = [
-        'probe-A','probe-B', 'probe-C', 'probe-D', 'probe-E',
-        'probe-F', 'probe-G'
+        'probe-W', 'probe-X', 'probe-Y', 'probe-Z',
+        'probe-AA', 'probe-AB', 'probe-AC', 'probe-AD'
     ];
 
     targetProbes.forEach(id => {

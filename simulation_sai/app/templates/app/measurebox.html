@@ -156,14 +156,17 @@ body {
 }
 
 #coil73-light {
-    width: 60px;
-    height: 60px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
     background-color: red;
     box-shadow: 0 0 10px red;
     border: 2px solid white;
     transition: background-color 0.3s, box-shadow 0.3s;
 }
+
+
+
 
   </style>
 </head>
@@ -224,7 +227,14 @@ body {
  
   <div id="notification"></div>
 
+
+
+
   <script>
+
+
+
+
 
 
 function fetchActiveCoils() {
@@ -233,6 +243,9 @@ function fetchActiveCoils() {
         .then(data => {
             const activeCoils = data.active_coils || [];
             console.log("✅ Step 1 coils:", activeCoils);
+
+            
+            
 
             const signalLight = document.getElementById("coil73-light");
 

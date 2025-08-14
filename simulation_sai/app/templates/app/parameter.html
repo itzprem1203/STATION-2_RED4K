@@ -191,6 +191,8 @@ body {
 
 
 
+
+
        
 </style>
 
@@ -253,6 +255,7 @@ body {
         <option value="TIR" {% if value.measurement_mode == 'TIR' %}selected{% endif %}>TIR</option>
         <option value="AVR" {% if value.measurement_mode == 'AVR' %}selected{% endif %}>AVR</option>
         <option value="DTM" {% if value.measurement_mode == 'DTM' %}selected{% endif %}>DTM</option>
+        <option value="DIAMETER" {% if value.measurement_mode == 'DIAMETER' %}selected{% endif %}>DIAMETER</option>
     </select>
 
     
@@ -322,8 +325,9 @@ body {
             <button type="button" id="cancel-btn"><b>CANCEL [F4]</b></button>
         </a>
 
-        <script>
 
+
+        <script>
 
 
 
@@ -403,7 +407,6 @@ document.addEventListener('keydown', function(event) {
 document.getElementById("measurement_mode").addEventListener("change", function () {
     const selectedMode = this.value;
 
-    // Get all elements that need to be disabled/enabled
     const analogZero = document.getElementById("analog_zero");
     const highMv = document.getElementById("high_mv");
     const referenceValue = document.getElementById("reference_value");
@@ -413,36 +416,52 @@ document.getElementById("measurement_mode").addEventListener("change", function 
     const jobDia = document.getElementById("job_dia");
 
     if (selectedMode === "TIR") {
-        // Disable and blur fields
+        // Disable all relevant fields for TIR
         [analogZero, highMv, referenceValue, lowMv].forEach(field => {
             field.disabled = true;
-            field.value = ''; // Clear value if required
+            field.value = '';
             field.style.filter = "blur(2px)";
         });
-        
-        // Disable radio buttons
         single.disabled = true;
         double.disabled = true;
-        
-        // Disable job diameter select box
         jobDia.disabled = true;
         jobDia.style.filter = "blur(2px)";
     } else {
-        // Enable and remove blur from fields
+        // Enable fields generally
         [analogZero, highMv, referenceValue, lowMv].forEach(field => {
             field.disabled = false;
             field.style.filter = "";
         });
-        
-        // Enable radio buttons
         single.disabled = false;
         double.disabled = false;
-        
-        // Enable job diameter select box
         jobDia.disabled = false;
         jobDia.style.filter = "";
+
+        // Now apply logic based on selected radio button
+        if (single.checked) {
+            // Apply single mastering rules
+            highMv.disabled = true;
+            highMv.style.filter = "blur(2px)";
+            lowMv.disabled = true;
+            lowMv.style.filter = "blur(2px)";
+            analogZero.disabled = false;
+            analogZero.style.filter = "";
+            referenceValue.disabled = false;
+            referenceValue.style.filter = "";
+        } else if (double.checked) {
+            // Apply double mastering rules
+            analogZero.disabled = true;
+            analogZero.style.filter = "blur(2px)";
+            referenceValue.disabled = true;
+            referenceValue.style.filter = "blur(2px)";
+            highMv.disabled = false;
+            highMv.style.filter = "";
+            lowMv.disabled = false;
+            lowMv.style.filter = "";
+        }
     }
 });
+
 
 
 // Add event listeners for single and double radio buttons

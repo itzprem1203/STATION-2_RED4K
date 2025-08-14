@@ -1,6 +1,4 @@
-simulation_sai/app/static/
-simulation_sai/dist
-simulation_sai/build
-simulation_sai/distcorrect
-simulation_sai/buildcorrect
-simulation_sai/staticfiles
+static/
+dist/
+build/
+staticfiles/

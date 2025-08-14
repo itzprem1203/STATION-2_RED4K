@@ -188,6 +188,7 @@ def measurement(request):
                 'utlValues': list(parameter_settings_qs.values_list('utl', flat=True)),
                 'nominalValues': list(parameter_settings_qs.values_list('nominal', flat=True)),
                 'measurementModeValues': list(parameter_settings_qs.values_list('measurement_mode', flat=True)),
+                'digitsValues': list(parameter_settings_qs.values_list('digits', flat=True)),
                 'o1_values': o1_values,
                 'd_values': d_values,
                 'e_values': e_values,

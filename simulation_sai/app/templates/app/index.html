@@ -1,12 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>Home page</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <link rel="stylesheet" href="{% static 'bootstrap-5.3.3-dist/css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'Font-Awesome-4.7.0/css/font-awesome.min.css' %}">
+{% extends 'app/layouts/main.html' %}
+{% load static %}
+{% block title %}
+Measurement Page
+{% endblock title %}
+{% block content %}
     <style>
         body {
             background-color: black;
@@ -229,14 +226,16 @@
 }
 
 #coil73-light {
-    width: 60px;
-    height: 60px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
     background-color: red;
     box-shadow: 0 0 10px red;
     border: 2px solid white;
     transition: background-color 0.3s, box-shadow 0.3s;
 }
+
+
 
     </style>
 </head>
@@ -327,9 +326,13 @@
     </div> 
 
 
+</div>
+
 
     
     <script>
+
+
 
 function fetchActiveCoils() {
     fetch("/get_plc_status/")
@@ -337,6 +340,8 @@ function fetchActiveCoils() {
         .then(data => {
             const activeCoils = data.active_coils || [];
             console.log("✅ Step 1 coils:", activeCoils);
+
+
 
             const signalLight = document.getElementById("coil73-light");
 
@@ -593,5 +598,4 @@ setInterval(() => {
             }
         });
     </script>
-</body>
-</html>
+{% endblock content %}

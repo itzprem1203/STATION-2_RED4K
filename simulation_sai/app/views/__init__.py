@@ -34,3 +34,5 @@ from .plc import shift_change_alert
 from .cycle_time import save_time
 from .cycle_time import get_time
 from .plc import reset_counter
+from .plc import get_register_value
+from .plc import send_counts_to_plc

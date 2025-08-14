@@ -11,9 +11,12 @@ hiddenimports = collect_submodules('channels') + collect_submodules('whitenoise.
 
 block_cipher = None
 
+
+
+
 a = Analysis(
     ['manage.py'],
-    pathex=['C:/Users/EDP/Desktop/simulation_sai/simulation_sai'],  # Path to your project folder
+    pathex=['C:/Users/india/Desktop/simulation_sai/simulation_sai'],  # Path to your project folder
     binaries=[],
     
     datas=[
@@ -64,7 +67,7 @@ exe = EXE(
     strip=False,
     upx=True,
     console=True,
-    icon='C:\\Users\\EDP\\Desktop\\simulation_sai\\simulation_sai\\app\\static\\images\\Gauge.ico',
+    icon='C:\\Users\\india\\Desktop\\simulation_sai\\simulation_sai\\app\\static\\images\\Gauge.ico',
 )
 
 coll = COLLECT(
