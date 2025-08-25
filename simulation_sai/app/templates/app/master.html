@@ -468,10 +468,10 @@ input[type="radio"] {
         <!-- <h5 style="color: white;">RAW COUNT:</h5> -->
         <div class="probe-container">
             <textarea id="probe-A"></textarea>
-            <textarea id="probe-B" style="display: none;"></textarea>
-            <textarea id="probe-C" style="display: none;"></textarea>
-            <textarea id="probe-D" style="display: none;"></textarea>
-            <textarea id="probe-E" ></textarea>
+            <textarea id="probe-B" ></textarea>
+            <textarea id="probe-C" ></textarea>
+            <textarea id="probe-D" ></textarea>
+            <textarea id="probe-E" style="display: none;"></textarea>
             <textarea id="probe-F" style="display: none;"></textarea>
             <textarea id="probe-G" style="display: none;"></textarea>
             <textarea id="probe-H" style="display: none;"></textarea>
@@ -615,16 +615,32 @@ function getCSRFToken() {
     const machineValues = "{{ machine_values|safe }}";
     
     
-    function MeasureBtnClick() {
-        window.location.href = '/measurement/'; // Replace '/measurement' with the actual URL of the measurement page
+   function MeasureBtnClick() {
+    const btn = document.getElementById("measureBtn");
+    if (btn.disabled) {
+        console.log("⛔ Measurement blocked: button disabled");
+        return; // stop if disabled
     }
-    function redirectToMasterPage() {
-        if (event.key === 'F1') {
-            window.location.href = '/measurement/';
-            event.preventDefault();
-        }
+    window.location.href = '/measurement/';
+}
+
+function redirectToMasterPage(event) {
+    const btn = document.getElementById("measureBtn");
+
+    // ✅ Block F1 when button disabled
+    if (btn.disabled && event.key === 'F1') {
+        console.log("⛔ F1 blocked: button disabled");
+        event.preventDefault();
+        return;
     }
-    document.addEventListener('keydown', redirectToMasterPage);
+
+    if (event.key === 'F1') {
+        event.preventDefault();
+        window.location.href = '/measurement/';
+    }
+}
+
+document.addEventListener('keydown', redirectToMasterPage);
 
  
 
@@ -1853,6 +1869,11 @@ function fetchActiveCoils() {
             console.log("✅ Step 1 coils:", activeCoils);
 
 
+            if (activeCoils.includes(113)) {
+                window.location.href = "/measurement/"
+            } 
+
+
             const masteringSelect = document.getElementById("mastering");
             if (masteringSelect) {
                 if (activeCoils.includes(85)) {
@@ -1870,18 +1891,48 @@ function fetchActiveCoils() {
                 }
             }
 
-            // ✅ Group 1 logic (Start: 74+85, Stop: 75)
-            if (activeCoils.includes(74) ) {
-                if (!group1StartClicked) {
+            // if (activeCoils.includes(76) ) {
+                
+            //         const startBtn = document.getElementById("singleMasterBtn");
+            //         if (startBtn) startBtn.click();
+            //         console.log("🚀 Group 1: Start clicked (74 + 85)");                
+            // }
+
+            // // ✅ Group 1 logic (Start: 74+85, Stop: 75)
+            // if (activeCoils.includes(74) ) {
+                
+            //         const startBtn = document.getElementById("singleMasterBtn");
+            //         if (startBtn) startBtn.click();
+            //         console.log("🚀 Group 1: Start clicked (74 + 85)");
+
+            //     }
+
+                // ✅ Group 1 logic (Start: 74, Stop: 75)
+                if (activeCoils.includes(74) && !group1StartClicked) {
                     const startBtn = document.getElementById("singleMasterBtn");
                     if (startBtn) startBtn.click();
-                    console.log("🚀 Group 1: Start clicked (74 + 85)");
-                    group1StartClicked = true;
+                    console.log("🚀 Group 1: Start clicked (74)");
+                    group1StartClicked = true;   // ✅ mark as clicked so it won't repeat
+                }
 
+                // Stop logic (reset when coil 75 comes)
+                if (activeCoils.includes(76) && !group2StartClicked) {
+                     const startBtn = document.getElementById("singleMasterBtn");
+                    if (startBtn) startBtn.click();
+                    console.log("🛑 Group 1: Stop triggered (75)");
+                    group2StartClicked = true;  // ✅ reset so it can start again later
+                }
+
+                // Reset flags if nothing active
+                if (!activeCoils.includes(74) && !activeCoils.includes(76)) {
+                    group1StartClicked = false;
+                    group2StartClicked = false;
                 }
 
                 
-            } else {
+
+                
+            else {
                 // Reset only if both start and stop coils are inactive
                 if (!activeCoils.includes(73) && !activeCoils.includes(75)) {
                     group1StartClicked = false;
@@ -1940,7 +1991,7 @@ function fetchActiveCoils() {
 }
 
 // Call every second
-setInterval(fetchActiveCoils, 1000);
+setInterval(fetchActiveCoils, 100);
 
 
 

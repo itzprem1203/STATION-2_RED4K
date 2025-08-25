@@ -403,8 +403,8 @@ input[type=checkbox] {
 /* Modal Styling */
 .modal {
     display: none;  
-    margin-left: 20%; 
-    top: 50%; 
+    margin-left: 7%; 
+    top: 72%; 
     width: 60%; 
     height: 30%; 
     background-color: rgba(0, 0, 0, 0.5); /* Dark overlay */
@@ -697,6 +697,18 @@ input[type=checkbox] {
     <div class="table-container">
         <div class="box-2" id="box2" style="overflow-y: auto;">
     
+            <div id="job-absent-msg" style="
+        display: none;
+        width: 80%;
+        height: 15%;
+        margin: 0 auto 20px auto;  /* center horizontally and add bottom margin */
+        font-size: 7vh; 
+        font-weight: bold; 
+        background-color: red;
+        color: white; 
+        text-align: center;">
+        JOB NOT PRESENT
+    </div>
             <table border="1" style="width: 100%;" id="my-table">
               <thead>
                 <tr>
@@ -1121,17 +1133,19 @@ function getCookie(name) {
     }
 /////////////////////////////////////////////
 
-function redirectToMasterPage() {
-        if (event.key === 'F1') {
-            window.location.href = '/master/';
-            event.preventDefault();
-        }
-    }
-    document.addEventListener('keydown', redirectToMasterPage);
+// function redirectToMasterPage() {
+//         if (event.key === 'F1') {
+//             window.location.href = '/master/';
+//             event.preventDefault();
+//         }
+//     }
+//     document.addEventListener('keydown', redirectToMasterPage);
 
 document.getElementById('master-btn').addEventListener('click', function() {
         window.location.href = '/master/'; // Replace '/master' with the actual URL of the master page
     });
+
+
 
 
 document.addEventListener('keydown', function(event) {
@@ -1190,11 +1204,24 @@ function stopAction() {
 
 $(document).ready(function(){
     $("#save-btn").click(function(){
+
+        const hiddenParams = [
+            "CAM BASE CIRCLE DIA-INTAKE",
+            "CAM LOBE HEIGHT-INTAKE",
+            "CAM BASE CIRCLE DIA -EXHAUST",
+            "CAM LOBE HEIGHT-EXHAUST"
+        ];
         // Get form data
         var formDataArray = [];
         var allStatusValid = true;
         $("table tbody tr").each(function(index) {
             var parameterName = $(this).find("td:nth-child(2)").text();
+
+            if (hiddenParams.includes(parameterName)) {
+                $(this).hide(); // optionally hide in UI
+                return true; // continue to next row
+            }
+            
             var readings = $(this).find(".readingInputs").val();
             var nominal = $(this).find("td:nth-child(3)").text();
             var lsl = $(this).find("td:nth-child(5)").text();
@@ -1406,7 +1433,24 @@ $(document).ready(function() {
                 
 
                 for (var i = 0; i < response.parameterNameValues.length; i++) {
+
+                    const paramName = response.parameterNameValues[i];
+
                     var row = document.createElement("tr");
+
+                    const hiddenParams = [
+                        "CAM BASE CIRCLE DIA-INTAKE",
+                        "CAM LOBE HEIGHT-INTAKE",
+                        "CAM BASE CIRCLE DIA -EXHAUST",
+                        "CAM LOBE HEIGHT-EXHAUST"
+                    ];
+                    if (hiddenParams.includes(paramName)) {
+                        row.style.display = "none";   // ✅ hide, but keep in DOM
+                    }
+                    
+
+                    
+
 
                     var srNoCell = document.createElement("td");
                     srNoCell.textContent = i + 1;
@@ -1504,6 +1548,7 @@ $(document).ready(function() {
                     console.log("Probe Value:", response.probe_values[i]);
                     console.log("Step No Value:", response.step_no_values[i]);
                     console.log("customer_name_values:", response.customer_name_values);
+                    console.log("paramweterfactor values is:", response.parameter_factor_values);
 
                     console.log("parameter_name_single",response.parameter_name_single)
                    
@@ -1801,7 +1846,7 @@ document.getElementById("stop-btn").addEventListener("click", function() {
             sendPartStatus("ACCEPT");
         }
 
-        function sendPartStatus(status) {
+function sendPartStatus(status) {
     // Send initial status
     fetch('/post_part_status/', {
         method: 'POST',
@@ -1812,10 +1857,52 @@ document.getElementById("stop-btn").addEventListener("click", function() {
     .then(data => {
         console.log('✅ Status posted:', data);
 
+        if (status.toLowerCase() === "accept") {
+            // Directly enable for Accept
+            enableSaveSection();
+        } else if (status.toLowerCase() === "reject" || status.toLowerCase() === "rework") {
+            // Poll until coil 116 is active
+            waitForCoil116AndEnable();
+        }
     })
     .catch(err => console.error('❌ Failed to post status:', err));
 }
 
+function waitForCoil116AndEnable() {
+    const interval = 1000; // milliseconds
+
+    const poll = () => {
+        fetch("/get_plc_status/")
+            .then(res => res.json())
+            .then(data => {
+                const activeCoils = data.active_coils || [];
+
+                console.log("🔄 Checking coils:", activeCoils);
+
+                if (activeCoils.includes(116)) {
+                    console.log("✅ Coil 116 detected.");
+                    enableSaveSection();
+                } else {
+                    setTimeout(poll, interval); // Wait and try again
+                }
+            })
+            .catch(err => {
+                console.error("❌ Error polling coils:", err);
+                setTimeout(poll, interval); // Retry anyway
+            });
+    };
+
+    poll(); // Start polling
+}
+
+function enableSaveSection() {
+    const saveButton = document.getElementById("save-btn");
+    saveButton.disabled = false;
+    saveButton.style.filter = "none";
+
+    showCustomConfirmationModal();
+    enableButtons();
+}
 
 
 
@@ -1829,12 +1916,12 @@ document.getElementById("stop-btn").addEventListener("click", function() {
             // Display notification to the client
             showNotification("You have completed the measurement for this job. Do Next Job");
 
-            const saveButton = document.getElementById("save-btn");
-            saveButton.disabled = false;        // Enable the button
-            saveButton.style.filter = "none";   // Remove the blur effect
+            // const saveButton = document.getElementById("save-btn");
+            // saveButton.disabled = false;        // Enable the button
+            // saveButton.style.filter = "none";   // Remove the blur effect
 
-            showCustomConfirmationModal();
-            enableButtons();
+            // showCustomConfirmationModal();
+            // enableButtons();
         }
 
         // Stop calculation for the current step
@@ -1847,6 +1934,123 @@ document.getElementById("stop-btn").addEventListener("click", function() {
         moveToNextStep();
     }, 100);
 });
+
+
+
+// document.getElementById("stop-btn").addEventListener("click", function() {
+//     setTimeout(function() {
+//         var statusCells = document.querySelectorAll('.status_cell');
+//         var partStatusInput = document.getElementById("part_status");
+//         var attributeStatuses = document.querySelectorAll("[id^='attributeStatus']"); // Select all attribute status elements
+        
+//         console.log("partStatusInput", partStatusInput);
+
+//         if (currentStep === totalSteps) {
+//             var hasRed = false;
+//             var hasYellow = false;
+//             var hasGreen = false;
+
+//             // Check status cells
+//             statusCells.forEach(function(statusCell) {
+//                 var color = statusCell.style.backgroundColor;
+//                 if (color === 'red') {
+//                     hasRed = true;
+//                 } else if (color === 'yellow') {
+//                     hasYellow = true;
+//                 } else if (color === 'rgb(0, 255, 0)') { // Ensure color comparison is correct
+//                     hasGreen = true;
+//                 }
+//                 console.log("statusCell:", statusCell, "color:", color);
+//             });
+
+//             // Check all attribute statuses
+//         attributeStatuses.forEach(function(attributeStatus) {
+//             var attributeColor = attributeStatus.style.backgroundColor;
+//             if (attributeColor === 'red') {
+//                 hasRed = true;
+//             } else if (attributeColor === 'yellow') {
+//                 hasYellow = true;
+//             } else if (attributeColor === 'rgb(0, 255, 0)' || attributeColor === '#00ff00') { // Ensure green color is handled correctly
+//                 hasGreen = true;
+//             }
+//         });
+
+
+//             console.log("hasRed:", hasRed, "hasYellow:", hasYellow, "hasGreen:", hasGreen);
+
+
+//             // Determine final part status based on the flags
+//             // Reset all Y-coils before setting the right one
+            
+//             if (hasRed) {
+//             partStatusInput.style.backgroundColor = 'red';
+//             partStatusInput.value = "REJECT";
+//             sendPartStatus("REJECT");
+           
+
+//         } else if (hasYellow) {
+//             partStatusInput.style.backgroundColor = 'yellow';
+//             partStatusInput.value = "REWORK";
+//             sendPartStatus("REWORK");
+            
+
+//         } else if (hasGreen) {
+//             partStatusInput.style.backgroundColor = '#00ff00';
+//             partStatusInput.value = "ACCEPT";
+//             sendPartStatus("ACCEPT");
+ 
+//         }
+
+// function sendPartStatus(status) {
+//     // Send initial status
+//     fetch('/post_part_status/', {
+//         method: 'POST',
+//         headers: { 'Content-Type': 'application/json' },
+//         body: JSON.stringify({ status: status })
+//     })
+//     .then(res => res.json())
+//     .then(data => {
+//         console.log('✅ Status posted:', data);
+
+//     })
+//     .catch(err => console.error('❌ Failed to post status:', err));
+// }
+
+
+
+
+
+
+
+
+
+//     partStatusInput.style.fontWeight = "bold";
+//             partStatusInput.style.textAlign = "center";
+
+//             // Display notification to the client
+//             showNotification("You have completed the measurement for this job. Do Next Job");
+
+//             // Display notification to the client
+//             showNotification("You have completed the measurement for this job. Do Next Job");
+
+//             const saveButton = document.getElementById("save-btn");
+//             saveButton.disabled = false;        // Enable the button
+//             saveButton.style.filter = "none";   // Remove the blur effect
+
+//             showCustomConfirmationModal();
+//             enableButtons();
+//         }
+
+//         // Stop calculation for the current step
+//         stopContinuousUpdate();
+
+        
+
+        
+//         // Move to the next step
+//         moveToNextStep();
+//     }, 100);
+// });
 
 
 
@@ -2134,12 +2338,15 @@ function hideNotificationAndHuman() {
     isVisible = false;
 }
 
+let pageReloaded = false;
+let blockDismissed = false; // Track if Enter was pressed
+
 function fetchActiveCoils() {
     fetch("/get_plc_status/")
         .then(response => response.json())
         .then(data => {
             const activeCoils = data.active_coils || [];
-            console.log("✅ Step 1 coils:", activeCoils);
+            // console.log("✅ Step 1 coils:", activeCoils);
 
             const rejectionBin = document.getElementById("rejection-bin-light");
             const airLow = document.getElementById("air-low-light");
@@ -2152,6 +2359,19 @@ function fetchActiveCoils() {
             const signalLight = document.getElementById("coil73-light");
 
 
+
+            const measureBtn = document.getElementById("master-btn");
+            if (measureBtn) {
+                if (activeCoils.includes(114)) {
+                    measureBtn.disabled = false;
+                    measureBtn.style.opacity = "1"; // optional visual feedback
+                    console.log("⛔ Measurement disabled (coil 80 active)");
+                    window.location.href = "/master/"
+                } else {
+                    measureBtn.disabled = true;
+                    measureBtn.style.opacity = "0.5"; 
+                }
+            }
 
             if (activeCoils.includes(63)) {
                 // Coil 73 is active - show green light
@@ -2166,22 +2386,24 @@ function fetchActiveCoils() {
             if (activeCoils.includes(116)) {
                 
                 rejectionBin.classList.add("on");
-                console.log("u");
+                // console.log("u");
             } else {
                 rejectionBin.classList.remove("on");
             }
 
+            
+
             if (activeCoils.includes(89)) {
                 
                 acceptCount.classList.add("on");
-                console.log("u");
+                // console.log("u");
             } else {
                 acceptCount.classList.remove("on");
             }
             if (activeCoils.includes(90)) {
                 
                 rejectCount.classList.add("on");
-                console.log("u");
+                // console.log("u");
             } else {
                 rejectCount.classList.remove("on");
             }
@@ -2189,7 +2411,7 @@ function fetchActiveCoils() {
             if (activeCoils.includes(91)) {
                 
                 reworkCount.classList.add("on");
-                console.log("u");
+                // console.log("u");
             } else {
                 reworkCount.classList.remove("on");
             }
@@ -2197,7 +2419,7 @@ function fetchActiveCoils() {
             if (activeCoils.includes(98)) {
                 
                 pcReady.classList.add("on");
-                console.log("u");
+                // console.log("u");
             } else {
                 pcReady.classList.remove("on");
             }
@@ -2205,17 +2427,43 @@ function fetchActiveCoils() {
             if (activeCoils.includes(73)) {
                 
                 plcReady.classList.add("on");
-                console.log("u");
+                // console.log("u");
             } else {
                 plcReady.classList.remove("on");
             }
             if (activeCoils.includes(113)) {
                 
                 airLow.classList.add("on");
-                console.log("u");
+                // console.log("u");
             } else {
                 airLow.classList.remove("on");
             }
+
+
+            const notificationContainer = document.getElementById('notification-container');
+            const punchTextarea = document.getElementById('punch_textarea');
+            const jobAbsentMsg = document.getElementById('job-absent-msg');
+
+
+           if (activeCoils.includes(98)) {
+    // If coil 98 is active, hide everything
+    jobAbsentMsg.style.display = 'none';
+    notificationContainer.style.display = 'none';
+    punchTextarea.style.display = 'none';
+} else if (activeCoils.includes(87) && !blockDismissed) {
+    // If coil 87 is active and block not dismissed
+    notificationContainer.style.display = 'block';
+    punchTextarea.style.display = 'block';
+    punchTextarea.focus(); // Auto-focus the textarea
+    jobAbsentMsg.style.display = 'none'; // hide the message
+} else {
+    // If neither 98 nor 87 is active
+    notificationContainer.style.display = 'none';
+    punchTextarea.style.display = 'none';
+    jobAbsentMsg.style.display = 'block'; // show the message
+}
+
+
 
 
             
@@ -2237,9 +2485,6 @@ let step1Notified = false;
 let step2Notified = false;
 let step3Notified = false;
 
-let d1003StartTriggered = false;
-let d1003StopTriggered = false;
-
 function stopPreviousInterval() {
     if (coilCheckIntervalId) {
         clearInterval(coilCheckIntervalId);
@@ -2250,131 +2495,115 @@ function stopPreviousInterval() {
 }
 
 function startCoilCheckForStep(step_no) {
-    stopPreviousInterval(); // Ensure previous interval is cleared
+    stopPreviousInterval();
 
-    if (step_no === 1) {
-        coilCheckIntervalId = setInterval(() => checkCoilsAndHandleStep1(), 100);
-        console.log("✅ Coil + Register check interval started for Step 1");
-    } else if (step_no === 2) {
+    if (step_no === 1 && !step1Notified) {
+        coilCheckIntervalId = setInterval(() => checkCoilsAndHandleStep1(), 200);
+        console.log("✅ Coil check interval started for Step 1");
+    } else if (step_no === 2 && !step2Notified) {
         coilCheckIntervalId = setInterval(() => checkCoilsAndHandleStep2(), 200);
         console.log("✅ Coil check interval started for Step 2");
-    } else if (step_no === 3) {
+    } else if (step_no === 3 && !step3Notified) {
         coilCheckIntervalId = setInterval(() => checkCoilsAndHandleStep3(), 200);
         console.log("✅ Coil check interval started for Step 3");
     } else {
-        console.log("❗ Unknown step number:", step_no);
+        console.log("❗ Unknown step number or already notified:", step_no);
     }
 
     coilCheckIntervalStarted = true;
 }
 
+// -------- Step 1 Handler -------- //
+// -------- Step 1 Handler -------- //
+function checkCoilsAndHandleStep1() {
+    fetch("/get_40011_value/")
+        .then(res => res.json())
+        .then(data => {
+            const coilVal = parseInt(data.coil_40011);
 
- window.addEventListener("DOMContentLoaded", () => {
-        console.log("🌐 DOM Loaded. Starting Coil Check...");
-        startCoilCheckForStep(1);  // Start checking for Step 1
-    });
+            if (coilVal === 1 && !step1Notified) {
+                const startBtn = document.getElementById("start-btn");
+                if (startBtn) {
+                    setTimeout(() => {
+                        startBtn.click();
+                        console.log("🚀 40011 = 1 → Start clicked (after 1s delay)");
+                        step1Notified = true; // only set after clicking
+                    }, 2000);
+                }
+            } else if (coilVal === 0 && step1Notified) {
+                const stopBtn = document.getElementById("stop-btn");
+                if (stopBtn) stopBtn.click();
+                console.log("🛑 40011 = 0 → Stop clicked");
+                step2Notified = false; // Reset so step2 can run
+                startCoilCheckForStep(2); // move to step2
+            }
+        })
+        .catch(err => {
+            console.error("❌ Error fetching 40011:", err);
+        });
+}
 
+// -------- Step 2 Handler -------- //
+function checkCoilsAndHandleStep2() {
+    fetch("/get_40012_value/")
+        .then(res => res.json())
+        .then(data => {
+            const coilVal = parseInt(data.coil_40012);
 
-// function checkCoilsAndHandleStep1() {
-//     // Fetch register value every 200ms
-//     fetch("/get_register_value/")
+            if (coilVal === 1 && !step2Notified) {
+                const startBtn = document.getElementById("start-btn");
+                if (startBtn) {
+                    setTimeout(() => {
+                        startBtn.click();
+                        console.log("🚀 40012 = 1 → Start clicked (after 1s delay)");
+                        step2Notified = true; // only set after clicking
+                    }, 2000);
+                }
+            } else if (coilVal === 0 && step2Notified) {
+                const stopBtn = document.getElementById("stop-btn");
+                if (stopBtn) stopBtn.click();
+                console.log("🛑 40012 = 0 → Stop clicked");
+                step3Notified = false; // Reset so step3 can run
+                startCoilCheckForStep(3); // move to step3
+            }
+        })
+        .catch(err => {
+            console.error("❌ Error fetching 40012:", err);
+        });
+}
+
+// -------- Step 3 Handler -------- //
+// function checkCoilsAndHandleStep3() {
+//     fetch("/get_40013_value/")
 //         .then(res => res.json())
 //         .then(data => {
-//             const rawValue = parseInt(data.register_value);  // make sure it's an integer
-//             const degree = rawValue / 10;  // Convert to degree
+//             const coilVal = parseInt(data.coil_40013);
 
-//             console.log(`📥 Fetched D1003 = ${rawValue} → Degree = ${degree}`);
-
-//             if (degree >= 5 && degree <= 10) {
+//             if (coilVal === 1) {
 //                 const startBtn = document.getElementById("start-btn");
 //                 if (startBtn) startBtn.click();
-               
-//                 console.log("🚀 Degree = 24.0 — Start clicked");
-//             }
-
-//             if (degree >= 175 && degree <= 178) {
+//                 console.log("🚀 40013 = 1 → Start clicked");
+//                 step3Notified = true;
+//             } else if (coilVal === 0 && step3Notified) {
 //                 const stopBtn = document.getElementById("stop-btn");
 //                 if (stopBtn) stopBtn.click();
-                
-//                 console.log("🛑 Degree = 35.0 — Stop clicked");
+//                 console.log("🛑 40013 = 0 → Stop clicked");
+//                 stopPreviousInterval(); // all steps done
 //             }
 //         })
 //         .catch(err => {
-//             console.error("❌ Error fetching register value:", err);
+//             console.error("❌ Error fetching 40013:", err);
 //         });
 // }
 
+// -------- Start Only When Needed -------- //
+window.addEventListener("DOMContentLoaded", () => {
+    console.log("🌐 DOM Loaded. Ready for user action.");
+    // ❌ don't auto-start Step1
+    // ✅ Instead, call this after part selection or user click:
+    // startCoilCheckForStep(1);
+});
 
-function checkCoilsAndHandleStep1() {
-    // First, get start_time and stop_time from Django
-    fetch("/get_time/")
-        .then(res => res.json())
-        .then(timeData => {
-            const startDegree = parseFloat(timeData.start_time);
-            const stopDegree = parseFloat(timeData.stop_time);
-
-            // Now fetch register value
-            fetch("/get_register_value/")
-                .then(res => res.json())
-                .then(data => {
-                    const rawValue = parseInt(data.register_value); // Ensure integer
-                    const degree = rawValue / 10; // Convert to degree
-
-                    console.log(`📥 D1003 = ${rawValue} → Degree = ${degree}`);
-                    console.log(`⏱ Start Degree: ${startDegree}, Stop Degree: ${stopDegree}`);
-
-                    if (degree >= startDegree && degree <= startDegree + 5) {
-                        const startBtn = document.getElementById("start-btn");
-                        if (startBtn) startBtn.click();
-                        console.log(`🚀 Degree = ${degree} — Start clicked`);
-                    }
-
-                    if (degree >= stopDegree && degree <= stopDegree + 5) {
-                        const stopBtn = document.getElementById("stop-btn");
-                        if (stopBtn) stopBtn.click();
-                        console.log(`🛑 Degree = ${degree} — Stop clicked`);
-                    }
-                })
-                .catch(err => {
-                    console.error("❌ Error fetching register value:", err);
-                });
-        })
-        .catch(err => {
-            console.error("❌ Error fetching start/stop times:", err);
-        });
-}
-
-
-
-
-function checkCoilsAndHandleStep2() {
-    // Fetch register value every 200ms
-    fetch("/get_register_value/")
-        .then(res => res.json())
-        .then(data => {
-            const rawValue = parseInt(data.register_value);  // make sure it's an integer
-            const degree = rawValue / 10;  // Convert to degree
-
-            console.log(`📥 Fetched D1003 = ${rawValue} → Degree = ${degree}`);
-
-            if (degree >= 190 && degree <= 195) {
-                const startBtn = document.getElementById("start-btn");
-                if (startBtn) startBtn.click();
-               
-                console.log("🚀 Degree = 24.0 — Start clicked");
-            }
-
-            if (degree >= 240 && degree <= 248) {
-                const stopBtn = document.getElementById("stop-btn");
-                if (stopBtn) stopBtn.click();
-                
-                console.log("🛑 Degree = 35.0 — Stop clicked");
-            }
-        })
-        .catch(err => {
-            console.error("❌ Error fetching register value:", err);
-        });
-}
 
 
 // function checkCoilsAndHandleStep4() {
@@ -2490,7 +2719,7 @@ function checkCoilsAndHandleStep3() {
                 }
 
             } else if (!step3Notified) {
-                showNotification_plc("❌ Step 3: Coil 66 not active");
+                // showNotification_plc("❌ Step 3: Coil 66 not active");
                 step3Notified = true;
             }
         });
@@ -2580,6 +2809,8 @@ function getCombinedTextareaParts(probeNumber) {
 
 
 
+
+
 function displaySerialData(parameterNameValues, probe_value, e_value, d_value, o1_value, readingsInput, measurementMode, digitsValues, step_no, lsl,
     usl, ltl, utl, indicatorBox, indicatorBox1, statusCell, parameterFactorValues, parameter_name_single, b_value, b1_value) {
 
@@ -2596,35 +2827,19 @@ function displaySerialData(parameterNameValues, probe_value, e_value, d_value, o
 
     // Ensure persistent storage across ticks
     if (!window.measurementMap) window.measurementMap = {};
+    if (!window.paramOutputs) window.paramOutputs = {};   // ✅ ensure this exists
 
     // Function to calculate and update the displayOutput
     function updateDisplayOutput() {
         const { total: newSerialData } = getCombinedTextareaParts(probe_value);
 
-        // Base calculation for displayOutput
+        // === 1. Base calculation for displayOutput ===
         let displayOutput = e_value + (newSerialData * d_value + o1_value);
-
         if (isNaN(displayOutput)) {
             displayOutput = 0;
         }
 
-        // Modify displayOutput based on parameterFactorValues
-        for (let i = 0; i < parameterFactorValues.length; i++) {
-            const factor = parameterFactorValues[i]; // {parameter_name, method, value}
-            const parameterName = factor.parameter_name;
-            const method = factor.method; // '+' or '-'
-            const value = parseFloat(factor.value);
-
-            if (parameterName === parameterNameValues) {
-                if (method === '+') {
-                    displayOutput += value;
-                } else if (method === '-') {
-                    displayOutput -= value;
-                }
-            }
-        }
-
-        // Handle case where parameter_name_single is an array
+        // === 2. Handle alternative formula (match check) ===
         let matchFound = false;
         if (Array.isArray(parameter_name_single)) {
             matchFound = parameter_name_single.some(
@@ -2636,7 +2851,6 @@ function displaySerialData(parameterNameValues, probe_value, e_value, d_value, o
                 String(parameterNameValues).trim().toLowerCase();
         }
 
-        // Update displayOutput based on match
         if (matchFound) {
             console.log("Matched parameterNameValues with parameter_name_single. Using alternative formula.");
             const displayOutput1 = (newSerialData - b1_value) * d_value;
@@ -2645,22 +2859,47 @@ function displaySerialData(parameterNameValues, probe_value, e_value, d_value, o
             console.log("No match. Keeping original formula.");
         }
 
-        // Update the readings input only when the continuous update is active and step_no matches
+        // === 3. Apply parameterFactorValues adjustments ===
+        if (Array.isArray(parameterFactorValues)) {
+            const paramNames = Array.isArray(parameter_name_single)
+                ? parameter_name_single.map(n => String(n).trim().toLowerCase())
+                : [String(parameter_name_single).trim().toLowerCase()];
+
+            const targetName = String(parameterNameValues).trim().toLowerCase();
+            const adjustments = [];
+
+            for (let i = 0; i < parameterFactorValues.length; i++) {
+                const factor = parameterFactorValues[i];
+                const factorName = String(factor.parameter_name).trim().toLowerCase();
+
+                // ✅ Match against both the single name and the list
+                if (paramNames.includes(factorName) || targetName === factorName) {
+                    const value = parseFloat(factor.value) || 0;
+                    if (factor.method === "+") {
+                        displayOutput += value;
+                        adjustments.push(`+${value} applied to ${factorName}`);
+                    } else if (factor.method === "-") {
+                        displayOutput -= value;
+                        adjustments.push(`-${value} applied to ${factorName}`);
+                    }
+                }
+            }
+            adjustments.forEach(msg => console.log("✅ " + msg));
+        }
+
+        // === 4. Only update readingsInput when active ===
         if (continuousUpdateInterval && step_no === currentStep) {
 
-            // Update only if measurementMode matches
             if (["MAX", "MIN", "CUR", "TIR", "AVR", "DTM", "RUNOUT", "DIAMETER"].includes(measurementMode)) {
                 const inputId = readingsInput.id;
                 var currentValue = parseFloat(readingsInput.value);
 
-                // Ensure persistent store for this input
                 if (!window.measurementMap[inputId]) {
                     window.measurementMap[inputId] = { max: -Infinity, min: Infinity, sum: 0, count: 0, firstUpdateShown: false };
                 }
                 const store = window.measurementMap[inputId];
 
-                // First tick for TIR/AVR/DTM/RUNOUT should show 0
-                if (["TIR", "RUNOUT", "AVR", "DTM"].includes(measurementMode) && !store.firstUpdateShown) {
+                if (["TIR","DTM"].includes(measurementMode) && !store.firstUpdateShown) {
                     readingsInput.value = (0).toFixed(digitsValues);
                     if (displayOutput > store.max) store.max = displayOutput;
                     if (displayOutput < store.min) store.min = displayOutput;
@@ -2670,86 +2909,126 @@ function displaySerialData(parameterNameValues, probe_value, e_value, d_value, o
                     return;
                 }
 
-
-                // Mode-specific display logic
-
-
-                // Update persistent store
                 if (displayOutput > store.max) store.max = displayOutput;
                 if (displayOutput < store.min) store.min = displayOutput;
                 store.sum += displayOutput;
                 store.count++;
 
-                // Default show raw reading
                 readingsInput.value = displayOutput.toFixed(digitsValues);
 
-
                 if (measurementMode === "MAX") {
+                    if (displayOutput > store.max) store.max = displayOutput;
                     readingsInput.value = store.max.toFixed(digitsValues);
                     displayOutput = store.max;
                 } 
                 else if (measurementMode === "MIN") {
+                    if (displayOutput < store.min) store.min = displayOutput;
                     readingsInput.value = store.min.toFixed(digitsValues);
                     displayOutput = store.min;
                 } 
                 else if (measurementMode === "CUR") {
                     readingsInput.value = displayOutput.toFixed(digitsValues);
                 } 
-
-                // AVR
-                if (measurementMode === "AVR") {
-                    const avr = (store.max - store.min) / 2;
+                else if (measurementMode === "AVR") {
+                    const avr = (store.max + store.min) / 2;
                     if (!isNaN(avr)) {
                         readingsInput.value = avr.toFixed(digitsValues);
                         displayOutput = avr;
                     }
                 }
-                
 
-                // DTM
-                if (measurementMode === "DTM") {
-                    const dtm = (store.max + store.min) / 2;
-                    if (!isNaN(dtm)) {
-                        readingsInput.value = dtm.toFixed(digitsValues);
-                        displayOutput = dtm;
-                    }
-                }
+if (measurementMode === "DIAMETER") {
+    const rx = /^\s*R\s*(\d+)(?:\s*\*\s*([0-9]*\.?[0-9]+))?\s*$/i;
+    const m = rx.exec(String(probe_value).trim());
 
-                if (measurementMode === "DIAMETER") {
-                    if (newSerialData > store.max) store.max = newSerialData;
-                    if (newSerialData < store.min) store.min = newSerialData;
+    if (m) {
+        const refIndex = parseInt(m[1], 10) - 1;
+        const multiplier = m[2] ? parseFloat(m[2]) : 2;
+        const refVal = window.paramOutputs[refIndex];   // ✅ lookup from saved outputs
 
-                    // Pick whichever you need: max, min, or average
-                    const counts_current = store.max; 
+        if (typeof refVal === "number" && !isNaN(refVal)) {
+            const diameter = refVal * multiplier;
 
-                    const diameter = b_value + ((counts_current - b1_value) * d_value * 2);
+            // 🔑 truncate instead of round
+            const factor = Math.pow(10, digitsValues);
+            const truncated = Math.trunc(diameter * factor) / factor;
 
-                    readingsInput.value = diameter.toFixed(digitsValues);
-                    displayOutput = diameter;
-                }
+            readingsInput.value = truncated.toFixed(digitsValues);
+            displayOutput = truncated;
+        } else {
+            readingsInput.value = "";
+            displayOutput = null;
+        }
+    } else {
+        console.log("⚠️ no data received, please check");
+        readingsInput.value = "";
+        displayOutput = null;
+    }
+}
 
 
 
-
-                // TIR
                 if (measurementMode === "TIR") {
-                    const tir = (store.max - store.min) / 2; // Using your requested formula
+                    const tir = (store.max - store.min) / 2;
                     if (!isNaN(tir)) {
                         readingsInput.value = tir.toFixed(digitsValues);
                         displayOutput = tir;
                     }
                 }
 
-                // RUNOUT
                 if (measurementMode === "RUNOUT") {
-                    const runout = (store.max - store.min) / 2;
-                    if (!isNaN(runout)) {
-                        readingsInput.value = runout.toFixed(digitsValues);
-                        displayOutput = runout;
+                    const probeExpr = String(probe_value).trim();
+                    const parts = probeExpr.split(/([+-])/).map(p => p.trim());
+
+                    let total = null;
+                    let operator = null;
+
+                    parts.forEach(part => {
+                        if (part === "+" || part === "-") {
+                            operator = part;
+                        } else {
+                            const rx = /^\s*R\s*(\d+)(?:\s*\*\s*([0-9]*\.?[0-9]+))?\s*$/i;
+                            const m = rx.exec(part);
+                            if (m) {
+                                const refIndex = parseInt(m[1], 10) - 1;
+                                const multiplier = m[2] ? parseFloat(m[2]) : 1;
+
+                                // ✅ use stored raw measurement instead of overwritten displayOutput
+                                const refInput = document.getElementById(`readings-input-${refIndex}`);
+                                const refVal = refInput ? parseFloat(refInput.value) : NaN;
+
+                                const value = (!isNaN(refVal)) ? refVal * multiplier : 0;
+
+                                if (total === null) {
+                                    total = value;
+                                } else if (operator === "+") {
+                                    total += value;
+                                } else if (operator === "-") {
+                                    total -= value;
+                                }
+                            }
+                        }
+                    });
+
+                    if (total !== null) {
+                        readingsInput.value = total.toFixed(digitsValues);
+                        displayOutput = total;
+                    } else {
+                        console.log("do not calculation::");
                     }
                 }
 
-                // Calculate color and widths
+
+                // ✅ store this row’s latest displayOutput
+                {
+                    const mIdx = /readings-input-(\d+)/.exec(readingsInput.id);
+                    if (mIdx) {
+                        const thisIdx = parseInt(mIdx[1], 10);
+                        window.paramOutputs[thisIdx] = displayOutput;
+                    }
+                }
+
+                // === indicator logic (unchanged) ===
                 var totalLength, coloredPortionLength, coloredPortion, uncoloredPortion;
                 var coloredWidth, defaultWidth, color;
 
@@ -2769,9 +3048,8 @@ function displaySerialData(parameterNameValues, probe_value, e_value, d_value, o
                 coloredWidth = coloredPortion * 100;
                 defaultWidth = uncoloredPortion * 100;
 
-                // Decide color
                 if (displayOutput >= lsl && displayOutput <= usl) {
-                    color = '#00ff00'; // Green
+                    color = '#00ff00';
                 } else if ((displayOutput > usl && displayOutput <= utl) || (displayOutput >= ltl && displayOutput < lsl)) {
                     color = 'yellow';
                 } else {
@@ -2783,7 +3061,6 @@ function displaySerialData(parameterNameValues, probe_value, e_value, d_value, o
                 readingsInput.style.fontSize = '22px';
                 readingsInput.style.color = color;
 
-                // === Update indicator gradient ===
                 if (displayOutput > e_value) {
                     var indicatorBoxElement = document.getElementById(indicatorBox.id);
                     var indicatorBox1Element = document.getElementById(indicatorBox1.id);
@@ -2799,7 +3076,6 @@ function displaySerialData(parameterNameValues, probe_value, e_value, d_value, o
         }
     }
 
-    // Attach listener for live changes
     probeParts.forEach(({ id }) => {
         const el = document.getElementById(id);
         if (el) {
@@ -2807,7 +3083,6 @@ function displaySerialData(parameterNameValues, probe_value, e_value, d_value, o
         }
     });
 
-    // Start continuous update
     function startContinuousUpdate() {
         window.measurementMap[readingsInput.id] = { max: -Infinity, min: Infinity, sum: 0, count: 0, firstUpdateShown: false };
         continuousUpdateInterval = setInterval(updateDisplayOutput, 100);
@@ -2821,7 +3096,6 @@ function displaySerialData(parameterNameValues, probe_value, e_value, d_value, o
     document.getElementById('start-btn').addEventListener('click', startContinuousUpdate);
     document.getElementById('stop-btn').addEventListener('click', stopContinuousUpdate);
 
-    // Status cell update on stop
     document.getElementById('stop-btn').addEventListener('click', function () {
         var indices = [];
         for (var i = 0; i < step_no_values.length; i++) {
@@ -2845,9 +3119,13 @@ function displaySerialData(parameterNameValues, probe_value, e_value, d_value, o
         });
     });
 
-    // Initial display
     updateDisplayOutput();
 }
+
+
+
+
+
 
 function showNotification(message) {
     // Get the input element
@@ -2905,6 +3183,8 @@ function handleEnterKeyPress(event) {
     var buttons = document.querySelectorAll('#start-btn, #stop-btn, #save-btn, #back-btn');
 
     if (event.key === 'Enter') {
+
+        blockDismissed = true;
         var punchValue = $('#punch_textarea').val();
         var partModelValue = $('#partModel').val();
 
@@ -2981,8 +3261,31 @@ function handleEnterKeyPress(event) {
             }
         });
 
+
+ sendPcsignal("readysignal");
+        
+
+        function sendPcsignal(signal) {
+    // Send initial status
+    fetch('/post_pc_ready/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ signal: signal })
+    })
+    .then(res => res.json())
+    .then(data => {
+        console.log('✅ signal posted:', data);
+
+    })
+    .catch(err => console.error('❌ Failed to post status:', err));
+        }
+        
+
     }
 }
+
+
+
 
 
 // Function to get CSRF cookie value

@@ -89,7 +89,7 @@ def master(request):
                 hide_checkbox=False,
                 attribute=False
             ).exclude(
-                measurement_mode__in=["TIR", "TAP"]  # Exclude records with "TIR" or "TAP" in measurement_mode
+                measurement_mode__in=["RUNOUT", "DIAMETER", "TAP"]  # Exclude records with "TIR" or "TAP" in measurement_mode
             ).values().order_by('id')
 
 
@@ -98,7 +98,7 @@ def master(request):
                     hide_checkbox=False,
                     attribute=False
                 ).exclude(
-                    measurement_mode__in=["TIR", "TAP"]
+                    measurement_mode__in=["RUNOUT", "DIAMETER", "TAP"]
                 ).filter(
                     analog_zero__isnull=False,
                     reference_value__isnull=False

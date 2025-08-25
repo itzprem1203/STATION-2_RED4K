@@ -36,3 +36,7 @@ from .cycle_time import get_time
 from .plc import reset_counter
 from .plc import get_register_value
 from .plc import send_counts_to_plc
+from .plc import get_40011_value
+from .plc import get_40012_value
+from .plc import post_pc_ready
+from .plc import post_pcreset

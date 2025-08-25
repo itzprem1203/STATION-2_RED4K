@@ -19,53 +19,71 @@
     <title>Parameterwise Report</title>
 
     <style>
-        .data-box {
-            border: 1px solid #ccc;
-            padding: 10px;
-            margin-bottom: 20px;
-            overflow-x: auto;
-            overflow-y: auto;
-        }
-        
-        .first-table {
-            background-color: #fff;
-            border: 1px solid #ccc;
-            text-align: center;
-        }
-        .label {
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 10px;
-        }
-        .value {
-            font-weight: bold;
-            font-size: 13px;
-        }
-        
-        th, td {
-            border: 1px solid #ccc;
-            text-align: center;
-            font-weight: bold;
-            width: 100px;
-            font-size: 15px;
-            border: 1px solid black; /* Add borders to table cells */
-            padding: 4px; /* Add padding to table cells */
-        }
-        
-        .table_data {
-            width: 5000px;
-        }
-        .table_data th:nth-child(3) {
-            width: 300px; /* Specific width for the 2nd th element */
-        }
-        .table_data th:nth-child(2) {
-            width: 200px; /* Specific width for the 2nd th element */
-        }
-        .table_data th:nth-child(1) {
-            width: 20px; /* Specific width for the 2nd th element */
-        }
-        .first-table td{
-            width: 230px;
-        }
+        body {
+    border: 2px solid white;
+    font-family: Arial, sans-serif;
+    font-size: 16px; /* big default text */
+}
+
+.data-box {
+
+    padding: 10px;
+    margin-bottom: 20px;
+    overflow-x: auto;
+    overflow-y: auto;
+}
+
+.first-table {
+    background-color: #fff;
+    border: 2px solid #000;
+    text-align: center;
+    margin-bottom: 20px;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.label {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 14px;
+}
+
+.value {
+    font-weight: bold;
+    font-size: 12px;
+}
+
+/* ==== Main Table ==== */
+.table_data table {
+    width: 100%;              /* full page width */
+    border-collapse: collapse;
+    table-layout: fixed;      /* keep columns uniform */
+    font-size: 12px;          /* nice and readable */
+}
+
+.table_data th,
+.table_data td {
+    border: 1.5px solid black;
+    text-align: center;
+    font-weight: bold;
+    padding: 1px;
+    height: 45px;             /* ~15 rows per page */
+    word-wrap: break-word;
+    page-break-inside: avoid; /* don’t cut rows between pages */
+}
+
+/* Fix header row */
+.table_data th {
+    background-color: #f2f2f2;
+    font-size: 10px;
+}
+
+/* For first summary table */
+.first-table td {
+    border: 1.5px solid black;
+    width: 20%;               /* each column takes space evenly */
+    padding: 6px;
+    font-size: 14px;
+}
         #h1{
             color: red; 
             text-align: center;

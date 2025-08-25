@@ -192,26 +192,15 @@ def jobReport(request):
             # CSS for scaling down the content to fit a single PDF page
             css = CSS(string='''
                 @page {
-                    size: A4; /* Landscape mode to fit more content horizontally */
-                    margin: 0.5cm; /* Adjust margin as needed */
+                    size: A4 landscape; /* Landscape for more width */
+                    margin: 1cm;
                 }
+
                 body {
-                    margin: 0; /* Give body some margin to prevent overflow */
-                    transform: scale(0.8); /* Scale down the entire content */
-                    transform-origin: 0 0; /* Ensure the scaling starts from the top-left corner */
+                    margin: 0;
+                    font-size: 20px; /* Big readable font */
                 }
                 
-                table {
-                    table-layout: fixed; /* Fix the table layout */
-                    font-size: 20px; /* Increase font size */
-                    border-collapse: collapse; /* Collapse table borders */
-                }
-                table, th, td {
-                    border: 1px solid black; /* Add border to table */
-                }
-                th, td {
-                    word-wrap: break-word; /* Break long words */
-                }
                 .no-pdf {
                     display: none;
                 }
