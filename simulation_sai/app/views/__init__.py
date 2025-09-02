@@ -40,3 +40,6 @@ from .plc import get_40011_value
 from .plc import get_40012_value
 from .plc import post_pc_ready
 from .plc import post_pcreset
+from .clearmeasurement import deactivate_punch
+from .clearmeasurement import clearmeasurement
+from .clearmeasurement import get_active_punch

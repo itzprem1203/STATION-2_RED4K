@@ -102,7 +102,7 @@ def xBarRchart(request):
         
         if export_type == 'pdf':
             # Define the path to save the PDF (e.g., Downloads folder)
-            target_folder = r"C:\Program Files\Gauge_Logic\pdf_files"
+            target_folder = r"C:\Program Files\Gauge_Logic\pdf_files\XbarRchart"
 
             # Ensure the target folder exists
             os.makedirs(target_folder, exist_ok=True)

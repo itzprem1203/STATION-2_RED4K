@@ -119,6 +119,17 @@ DATABASES = {
         'OPTIONS': {
             'driver': 'ODBC Driver 17 for SQL Server',
         },
+    },
+     'client_db': {
+        'ENGINE': 'mssql',
+        'NAME': 'Royal_Enfield',
+        'USER': 'sa',
+        'PASSWORD': 'sai@123',
+        'HOST': 'SAC-GATE',
+        'PORT': '1433',  # SQL Server default port is 1433; you can leave it blank if you're using default
+        'OPTIONS': {
+            'driver': 'ODBC Driver 17 for SQL Server',
+        },
     }
 }
 

@@ -257,7 +257,7 @@ def srno(request):
 
             # Get the Downloads folder path
             # Get the Downloads folder path
-            target_folder = r"C:\Program Files\Gauge_Logic\pdf_files"
+            target_folder = r"C:\Program Files\Gauge_Logic\pdf_files\WithSrNo"
 
             # Ensure the target folder exists
             os.makedirs(target_folder, exist_ok=True)
@@ -360,7 +360,7 @@ def srno(request):
                         worksheet.set_column(col_num + 1, col_num + 1, 15, number_format)
 
             # Get the Downloads folder path
-            target_folder = r"C:\Program Files\Gauge_Logic\xlsx_files"
+            target_folder = r"C:\Program Files\Gauge_Logic\xlsx_files\WithSrNo"
 
             # Ensure the target folder exists
             os.makedirs(target_folder, exist_ok=True)

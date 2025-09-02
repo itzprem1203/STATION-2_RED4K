@@ -325,9 +325,9 @@ input[type=checkbox] {
 
 
 #save-btn{
-    margin-top: 10px;
+    margin-top: 7px;
     width: 8vw;
-            height: 10vh;
+            height: 8vh;
             margin-left: 1%;
             font-size: 1.5vw;
             font-weight: bold;
@@ -335,7 +335,7 @@ input[type=checkbox] {
             
         }
         #master-btn{
-            margin-top: 5%;
+            margin-top: 2%;
             width: 8vw;
             height: 10vh;
             margin-left: 1%;
@@ -345,11 +345,13 @@ input[type=checkbox] {
             
         }
 
+       
+
         #start-btn{
             width: 8vw;
             height: 10vh;
             margin-left: 1%;
-            margin-top: 10px;
+            margin-top: 5px;
             font-size: 1.5vw;
             font-weight: bold;
             background-color: lightgreen;
@@ -359,7 +361,7 @@ input[type=checkbox] {
             width: 8vw;
             height: 10vh;
             margin-left: 1%;
-            margin-top: 10px;
+            margin-top: 5px;
             font-size: 1.5vw;
             font-weight: bold;
             background-color: coral;
@@ -370,7 +372,7 @@ input[type=checkbox] {
             margin-left: 1%;
             font-size: 1.5vw;
             font-weight: bold;
-            margin-top: 10px;
+            margin-top: 5px;
             background-color: rgb(233, 177, 73);
         }
 
@@ -382,7 +384,7 @@ input[type=checkbox] {
         }
 
         .container-3{
-    height: 53vh;
+    height: 50vh;
     width: 15vw;
    
     margin-left: 1%;
@@ -390,7 +392,7 @@ input[type=checkbox] {
 }
 
 #box3{
-    height: 60vh;
+    height: 55vh;
     width: 15vw;
     background-color:lightgray;
     margin-left:0;
@@ -401,8 +403,8 @@ input[type=checkbox] {
 /* Modal Styling */
 .modal {
     display: none;  
-    margin-left: 20%; 
-    top: 50%; 
+    margin-left: 7%; 
+    top: 72%; 
     width: 60%; 
     height: 30%; 
     background-color: rgba(0, 0, 0, 0.5); /* Dark overlay */
@@ -457,9 +459,247 @@ input[type=checkbox] {
 }
 
 
+.master-alert-wrapper {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.master-alert-box {
+  background: white;
+  border: 4px solid red;
+  padding: 30px 40px;
+  border-radius: 10px;
+  text-align: center;
+  max-width: 800px;
+}
+
+.master-alert-box p {
+  color: red;
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.master-alert-box button {
+  background: red;
+  color: white;
+  font-size: 18px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.hidden {
+  display: none;
+}
+
+
+
+ #communication{
+    margin-top: 3%;
+    width: 8vw;
+    height: 12vh;
+    margin-left: 1%;
+    font-size: 1vw;
+    font-weight: bold;
+    background-color: rgb(247, 132, 247);
+    
+}
+
+#handshaking{
+    margin-top: 8%;
+    width: 30vw;
+    height: 16vh;
+
+    font-size: 1vw;
+    font-weight: bold;
+    background-color: rgb(247, 132, 247);
+    
+}
+
+
+.plc-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.plc-label {
+    font-weight: bold;
+    font-size: 0.9vw;
+    color: white;
+    text-shadow: 1px 1px 2px black;
+    width: 80px; /* fixed width for alignment */
+    
+}
+
+.plc-light {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: red;
+    padding: 3px;
+
+
+}
+
+
+
+
+.comm-status-container {
+    height: 29vh;
+    width: 25vw;
+    display: flex;
+    background: black;
+    border: 1px solid #ccc;
+    margin-top: -4%;
+    margin-left: 73%;
+    box-sizing: border-box;
+}
+
+.status-section {
+    flex: 1;
+    padding: 2px;
+    border-right: 1px solid #ccc;
+}
+.status-section:last-child {
+    border-right: none;
+}
+
+.status-section h4 {
+    text-align: center;
+    margin: 0 0 5px;
+    font-size: 0.9vw;
+    background: #ddd;
+    padding: 1px;
+}
+
+.plc-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1px;
+}
+.plc-label {
+    flex: 1;
+    font-size: 0.8vw;
+    width: 20px;
+}
+.plc-light {
+    width: 14px;
+    height: 14px;
+    background: red;
+    border-radius: 50%;
+    border: 1px solid #333;
+}
+.plc-light.green {
+    background: green;
+}
+
+.plc-light.on{
+    background: green;
+}
+
+
+
+
+.notify-popup {
+    position: fixed;
+    top: 30%;
+    left: 50%;
+    height: 20%;
+    width: 70%;
+    transform: translate(-50%, -50%) scale(0.8);
+    background: linear-gradient(135deg, #ff4d4d, #ff1a1a);
+    border: 2px solid black;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 0 25px rgba(255,0,0,0.5);
+    z-index: 10000;
+    text-align: center;
+    opacity: 0;
+    transition: all 0.6s ease-in-out;
+    animation: glideIn 0.6s ease-out;
+}
+
+/* Input style */
+.notify-input {
+    width: 100%;
+    height: 20%;
+    margin-top: 5%;
+    font-size: 3vh;
+    font-weight: bold;
+    text-align: center;
+    border: none;
+    background: transparent;
+    color: white;
+    text-shadow: 0 0 50px yellow, 0 0 40px orange;
+}
+
+/* Button style */
+.notify-btn {
+    padding: 10px 25px;
+    font-weight: bold;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    background: black;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Hover effect for button */
+.notify-btn:hover {
+    background: white;
+    color: black;
+    transform: scale(1.5);
+    box-shadow: 0 0 15px yellow, 0 0 30px red;
+}
+
+/* Glide in animation */
+@keyframes glideIn {
+    from {
+        top: -50%;
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.6);
+    }
+    to {
+        top: 30%;
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+/* Glow color shifting effect */
+@keyframes glowShift {
+    0% { box-shadow: 0 0 20px red, 0 0 40px orange; }
+    50% { box-shadow: 0 0 25px yellow, 0 0 50px red; }
+    100% { box-shadow: 0 0 20px orange, 0 0 40px red; }
+}
+
+.notify-popup.active {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    animation: glideIn 0.6s ease-out, glowShift 2s infinite alternate;
+}
 
 </style>
 
+
+
+<div id="master-alert-wrapper" class="master-alert-wrapper hidden">
+  <div class="master-alert-box">
+    <p id="master-alert-message"></p>
+    <button onclick="closeMasterAlert()">OK</button>
+  </div>
+</div>
 
 
 <div class="container-main">
@@ -539,6 +779,18 @@ input[type=checkbox] {
     <div class="table-container">
         <div class="box-2" id="box2" style="overflow-y: auto;">
     
+            <div id="job-absent-msg" style="
+        display: none;
+        width: 80%;
+        height: 15%;
+        margin: 0 auto 20px auto;  /* center horizontally and add bottom margin */
+        font-size: 7vh; 
+        font-weight: bold; 
+        background-color: red;
+        color: white; 
+        text-align: center;">
+        JOB NOT PRESENT
+    </div>
             <table border="1" style="width: 100%;" id="my-table">
               <thead>
                 <tr>
@@ -584,14 +836,67 @@ input[type=checkbox] {
 
     </div>
 
+    
 <div class="btn-container">
+<div id="communication" class="btn_outline">
+<!-- 🔆 PLC Status Lights -->
+<div class="plc-item">
+        <span class="plc-label">PLC</span>
+        <div id="coil73-light" class="plc-light"></div>
+    </div>
+    <div class="plc-item">
+        <span class="plc-label">COM 1</span>
+        <div id="com1-light" class="plc-light"></div>
+    </div>
+    <div class="plc-item">
+        <span class="plc-label">COM 2</span>
+        <div id="com2-light" class="plc-light"></div>
+    </div>
+    <div class="plc-item">
+        <span class="plc-label">COM 3</span>
+        <div id="com3-light" class="plc-light"></div>
+    </div>
+</div>
 <div><button type="button" class="btn_outline" id="master-btn">Master<br>[F1]</button></div>
 <div><button type="button" class="btn_outline" id="start-btn"> Start<br>[F4]</button></div>
 <div><button type="button" class="btn_outline" id="stop-btn">Stop<br>[F5]</button></div>
 <div><button type="button" class="btn_outline" id="save-btn" disabled style="filter: blur(2px);"> Save</button></div>
-<div><button type="button" class="btn_outline" id="back-btn">Back<br>[F7]</button></div>
+<div><button type="button" class="btn_outline" id="back-btn" hidden>Back<br>[F7]</button></div>
+
+</div><br>
+
+
+
 </div>
+<div class="comm-status-container">
+    <!-- PLC to PC Section -->
+    <div class="status-section">
+        <h4>PLC → PC</h4>
+        <div class="plc-item"><span class="plc-label">Step1 Start</span><div id="step1-start-light" class="plc-light"></div></div>
+        <div class="plc-item"><span class="plc-label">Step1 Stop</span><div id="step1-stop-light" class="plc-light"></div></div>
+        <div class="plc-item"><span class="plc-label">Step2 Start</span><div id="step2-start-light" class="plc-light"></div></div>
+        <div class="plc-item"><span class="plc-label">Step2 Stop</span><div id="step2-stop-light" class="plc-light"></div></div>
+        <div class="plc-item"><span class="plc-label">Step3 Start</span><div id="step3-start-light" class="plc-light"></div></div>
+        <div class="plc-item"><span class="plc-label">Step3 Stop</span><div id="step3-stop-light" class="plc-light"></div></div>
+        <div class="plc-item"><span class="plc-label">PLC Ready</span><div id="plc-ready-light" class="plc-light"></div></div>
+        <div class="plc-item"><span class="plc-label">Air Low</span><div id="air-low-light" class="plc-light"></div></div>
+        <div class="plc-item"><span class="plc-label">Rejection Bin</span><div id="rejection-bin-light" class="plc-light"></div></div>
+    </div>
+
+    <!-- PC to PLC Section -->
+    <div class="status-section">
+        <h4>PC → PLC</h4>
+        <div class="plc-item"><span class="plc-label">PC Ready</span><div id="pc-ready-light" class="plc-light"></div></div>
+        <div class="plc-item"><span class="plc-label">Accept</span><div id="accept-light" class="plc-light"></div></div>
+        <div class="plc-item"><span class="plc-label">Reject</span><div id="reject-light" class="plc-light"></div></div>
+        <div class="plc-item"><span class="plc-label">Rework</span><div id="rework-light" class="plc-light"></div></div>
+        <div class="plc-item"><span class="plc-label">Step1 Done</span><div id="step1-done-light" class="plc-light"></div></div>
+        <div class="plc-item"><span class="plc-label">Step2 Done</span><div id="step2-done-light" class="plc-light"></div></div>
+        <div class="plc-item"><span class="plc-label">Step3 Done</span><div id="step3-done-light" class="plc-light"></div></div>
+        <div class="plc-item"><span class="plc-label">Counter</span><div id="counter-light" class="plc-light"></div></div>
+    </div>
 </div>
+
 </div>
 <div class="notification-container" id="notification-container">
     <pre style="margin-top: 10px; font-size: large; font-weight: bold;">Enter Your Punch Number here:</pre>
@@ -735,7 +1040,46 @@ input[type=checkbox] {
 
 
 
+</div>
+
+
+
+
+<div id="server-notify-box" 
+     style="display:none;" 
+     class="notify-popup">
+    
+    <input type="text" id="server-notify-input" 
+           class="notify-input" readonly>
+    <br><br>
+    <button onclick="closeServerNotify()" class="notify-btn">OK</button>
+</div>
+
+
 <script>
+
+
+
+function showServerNotify(message) {
+    let box = document.getElementById("server-notify-box");
+    let input = document.getElementById("server-notify-input");
+    
+    input.value = message;
+    box.style.display = "block";
+    
+    // Add active class for animation
+    setTimeout(() => {
+        box.classList.add("active");
+    }, 50);
+}
+
+function closeServerNotify() {
+    let box = document.getElementById("server-notify-box");
+    box.classList.remove("active");
+    setTimeout(() => {
+        box.style.display = "none";
+    }, 600);
+}
 
 
 function showNotification_plc(message) {
@@ -906,17 +1250,19 @@ function getCookie(name) {
     }
 /////////////////////////////////////////////
 
-function redirectToMasterPage() {
-        if (event.key === 'F1') {
-            window.location.href = '/master/';
-            event.preventDefault();
-        }
-    }
-    document.addEventListener('keydown', redirectToMasterPage);
+// function redirectToMasterPage() {
+//         if (event.key === 'F1') {
+//             window.location.href = '/master/';
+//             event.preventDefault();
+//         }
+//     }
+//     document.addEventListener('keydown', redirectToMasterPage);
 
 document.getElementById('master-btn').addEventListener('click', function() {
         window.location.href = '/master/'; // Replace '/master' with the actual URL of the master page
     });
+
+
 
 
 document.addEventListener('keydown', function(event) {
@@ -975,11 +1321,24 @@ function stopAction() {
 
 $(document).ready(function(){
     $("#save-btn").click(function(){
+
+        // const hiddenParams = [
+        //     "CAM BASE CIRCLE DIA-INTAKE",
+        //     "CAM LOBE HEIGHT-INTAKE",
+        //     "CAM BASE CIRCLE DIA -EXHAUST",
+        //     "CAM LOBE HEIGHT-EXHAUST"
+        // ];
         // Get form data
         var formDataArray = [];
         var allStatusValid = true;
         $("table tbody tr").each(function(index) {
             var parameterName = $(this).find("td:nth-child(2)").text();
+
+            // if (hiddenParams.includes(parameterName)) {
+            //     $(this).hide(); // optionally hide in UI
+            //     return true; // continue to next row
+            // }
+            
             var readings = $(this).find(".readingInputs").val();
             var nominal = $(this).find("td:nth-child(3)").text();
             var lsl = $(this).find("td:nth-child(5)").text();
@@ -1191,7 +1550,24 @@ $(document).ready(function() {
                 
 
                 for (var i = 0; i < response.parameterNameValues.length; i++) {
+
+                    const paramName = response.parameterNameValues[i];
+
                     var row = document.createElement("tr");
+
+                    // const hiddenParams = [
+                    //     "CAM BASE CIRCLE DIA-INTAKE",
+                    //     "CAM LOBE HEIGHT-INTAKE",
+                    //     "CAM BASE CIRCLE DIA -EXHAUST",
+                    //     "CAM LOBE HEIGHT-EXHAUST"
+                    // ];
+                    // if (hiddenParams.includes(paramName)) {
+                    //     row.style.display = "none";   // ✅ hide, but keep in DOM
+                    // }
+                    
+
+                    
+
 
                     var srNoCell = document.createElement("td");
                     srNoCell.textContent = i + 1;
@@ -1284,11 +1660,12 @@ $(document).ready(function() {
                     console.log("O1 Value:", response.o1_values[i]);
                     console.log("D Value:", response.d_values[i]);
                     console.log("E Value:", response.e_values[i]);
-                    console.log("E Value:", response.b_values[i]);
-                    console.log("E Value:", response.b1_values[i]);
+                    console.log("B Value:", response.b_values[i]);
+                    console.log("B1 Value:", response.b1_values[i]);
                     console.log("Probe Value:", response.probe_values[i]);
                     console.log("Step No Value:", response.step_no_values[i]);
                     console.log("customer_name_values:", response.customer_name_values);
+                    console.log("paramweterfactor values is:", response.parameter_factor_values);
 
                     console.log("parameter_name_single",response.parameter_name_single)
                    
@@ -1301,6 +1678,7 @@ $(document).ready(function() {
                         response.o1_values[i], 
                         readingsInput, 
                         response.measurementModeValues[i],
+                        response.digitsValues[i],
                         response.step_no_values[i],
                         response.lslValues[i], 
                         response.uslValues[i],
@@ -1585,7 +1963,7 @@ document.getElementById("stop-btn").addEventListener("click", function() {
             sendPartStatus("ACCEPT");
         }
 
-        function sendPartStatus(status) {
+function sendPartStatus(status) {
     // Send initial status
     fetch('/post_part_status/', {
         method: 'POST',
@@ -1596,23 +1974,52 @@ document.getElementById("stop-btn").addEventListener("click", function() {
     .then(data => {
         console.log('✅ Status posted:', data);
 
-        // ⏱️ Schedule the second message after 2 seconds
-        setTimeout(() => {
-            const secondMessage = status + "1";  // e.g., "ACCEPT1", "REJECT1", "REWORK1"
-            fetch('/post_part_status/', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ status: secondMessage })
-            })
-            .then(res => res.json())
-            .then(data => console.log('✅ Second status posted:', data))
-            .catch(err => console.error('❌ Failed to post second status:', err));
-        }, 2000); // 2000 ms = 2 seconds
-
+        if (status.toLowerCase() === "accept" || status.toLowerCase() === "rework") {
+            // Directly enable for Accept
+            enableSaveSection();
+        } else if (status.toLowerCase() === "reject") {
+            // Poll until coil 116 is active
+            waitForCoil116AndEnable();
+        }
     })
     .catch(err => console.error('❌ Failed to post status:', err));
 }
 
+function waitForCoil116AndEnable() {
+    const interval = 1000; // milliseconds
+
+    const poll = () => {
+        fetch("/get_plc_status/")
+            .then(res => res.json())
+            .then(data => {
+                const activeCoils = data.active_coils || [];
+
+                console.log("🔄 Checking coils:", activeCoils);
+
+                if (activeCoils.includes(116)) {
+                    console.log("✅ Coil 116 detected.");
+                    enableSaveSection();
+                } else {
+                    setTimeout(poll, interval); // Wait and try again
+                }
+            })
+            .catch(err => {
+                console.error("❌ Error polling coils:", err);
+                setTimeout(poll, interval); // Retry anyway
+            });
+    };
+
+    poll(); // Start polling
+}
+
+function enableSaveSection() {
+    const saveButton = document.getElementById("save-btn");
+    saveButton.disabled = false;
+    saveButton.style.filter = "none";
+
+    showCustomConfirmationModal();
+    enableButtons();
+}
 
 
 
@@ -1626,12 +2033,12 @@ document.getElementById("stop-btn").addEventListener("click", function() {
             // Display notification to the client
             showNotification("You have completed the measurement for this job. Do Next Job");
 
-            const saveButton = document.getElementById("save-btn");
-            saveButton.disabled = false;        // Enable the button
-            saveButton.style.filter = "none";   // Remove the blur effect
+            // const saveButton = document.getElementById("save-btn");
+            // saveButton.disabled = false;        // Enable the button
+            // saveButton.style.filter = "none";   // Remove the blur effect
 
-            showCustomConfirmationModal();
-            enableButtons();
+            // showCustomConfirmationModal();
+            // enableButtons();
         }
 
         // Stop calculation for the current step
@@ -1644,6 +2051,123 @@ document.getElementById("stop-btn").addEventListener("click", function() {
         moveToNextStep();
     }, 100);
 });
+
+
+
+// document.getElementById("stop-btn").addEventListener("click", function() {
+//     setTimeout(function() {
+//         var statusCells = document.querySelectorAll('.status_cell');
+//         var partStatusInput = document.getElementById("part_status");
+//         var attributeStatuses = document.querySelectorAll("[id^='attributeStatus']"); // Select all attribute status elements
+        
+//         console.log("partStatusInput", partStatusInput);
+
+//         if (currentStep === totalSteps) {
+//             var hasRed = false;
+//             var hasYellow = false;
+//             var hasGreen = false;
+
+//             // Check status cells
+//             statusCells.forEach(function(statusCell) {
+//                 var color = statusCell.style.backgroundColor;
+//                 if (color === 'red') {
+//                     hasRed = true;
+//                 } else if (color === 'yellow') {
+//                     hasYellow = true;
+//                 } else if (color === 'rgb(0, 255, 0)') { // Ensure color comparison is correct
+//                     hasGreen = true;
+//                 }
+//                 console.log("statusCell:", statusCell, "color:", color);
+//             });
+
+//             // Check all attribute statuses
+//         attributeStatuses.forEach(function(attributeStatus) {
+//             var attributeColor = attributeStatus.style.backgroundColor;
+//             if (attributeColor === 'red') {
+//                 hasRed = true;
+//             } else if (attributeColor === 'yellow') {
+//                 hasYellow = true;
+//             } else if (attributeColor === 'rgb(0, 255, 0)' || attributeColor === '#00ff00') { // Ensure green color is handled correctly
+//                 hasGreen = true;
+//             }
+//         });
+
+
+//             console.log("hasRed:", hasRed, "hasYellow:", hasYellow, "hasGreen:", hasGreen);
+
+
+//             // Determine final part status based on the flags
+//             // Reset all Y-coils before setting the right one
+            
+//             if (hasRed) {
+//             partStatusInput.style.backgroundColor = 'red';
+//             partStatusInput.value = "REJECT";
+//             sendPartStatus("REJECT");
+           
+
+//         } else if (hasYellow) {
+//             partStatusInput.style.backgroundColor = 'yellow';
+//             partStatusInput.value = "REWORK";
+//             sendPartStatus("REWORK");
+            
+
+//         } else if (hasGreen) {
+//             partStatusInput.style.backgroundColor = '#00ff00';
+//             partStatusInput.value = "ACCEPT";
+//             sendPartStatus("ACCEPT");
+ 
+//         }
+
+// function sendPartStatus(status) {
+//     // Send initial status
+//     fetch('/post_part_status/', {
+//         method: 'POST',
+//         headers: { 'Content-Type': 'application/json' },
+//         body: JSON.stringify({ status: status })
+//     })
+//     .then(res => res.json())
+//     .then(data => {
+//         console.log('✅ Status posted:', data);
+
+//     })
+//     .catch(err => console.error('❌ Failed to post status:', err));
+// }
+
+
+
+
+
+
+
+
+
+//     partStatusInput.style.fontWeight = "bold";
+//             partStatusInput.style.textAlign = "center";
+
+//             // Display notification to the client
+//             showNotification("You have completed the measurement for this job. Do Next Job");
+
+//             // Display notification to the client
+//             showNotification("You have completed the measurement for this job. Do Next Job");
+
+//             const saveButton = document.getElementById("save-btn");
+//             saveButton.disabled = false;        // Enable the button
+//             saveButton.style.filter = "none";   // Remove the blur effect
+
+//             showCustomConfirmationModal();
+//             enableButtons();
+//         }
+
+//         // Stop calculation for the current step
+//         stopContinuousUpdate();
+
+        
+
+        
+//         // Move to the next step
+//         moveToNextStep();
+//     }, 100);
+// });
 
 
 
@@ -1663,13 +2187,28 @@ function showCustomConfirmationModal() {
         document.getElementById("confirmation-modal").style.display = "none";
         document.getElementById("save-btn").click();
 
+        // Send initial status
+    fetch('/post_part_status/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ counts: 'COUNTS' })
+    })
+    .then(res => res.json())
+    .then(data => {
+        console.log('✅ Status posted:', data);
+
+    })
+    .catch(err => console.error('❌ Failed to post status:', err));
         
         
     };
 
+
+    
     // Handle No button click
     document.getElementById("confirm-no").onclick = function () {
         document.getElementById("confirmation-modal").style.display = "none";
+        location.reload();
     };
 
     // Handle Enter key press
@@ -1683,7 +2222,7 @@ function showCustomConfirmationModal() {
 
 
 
-document.getElementById("save-btn").addEventListener("click", function() {
+// document.getElementById("save-btn").addEventListener("click", function() {
             function clearValues() {
             var partStatusInput = document.getElementById("part_status");
             var partStatus = partStatusInput.value;
@@ -1754,7 +2293,7 @@ document.getElementById("save-btn").addEventListener("click", function() {
             saveButton.disabled = true;        // Enable the button
             saveButton.style.filter = "blur(2px)";   // Remove the blur effect
         
-        });
+        // });
 
 
    
@@ -1866,6 +2405,191 @@ function moveToNextStep() {
 }
 
 
+        
+let isVisible = false;
+let typingTimer = null;
+
+function typeMessage(message, element, speed = 100) {
+    element.innerText = "";
+    let index = 0;
+    typingTimer = setInterval(() => {
+        element.innerText += message[index];
+        index++;
+        if (index >= message.length) {
+            clearInterval(typingTimer);
+        }
+    }, speed);
+}
+
+function showNotificationWithHuman() {
+    if (isVisible) return;
+    isVisible = true;
+
+    const box = document.getElementById("plc-notification");
+    const human = document.getElementById("human-inside");
+    const msg = document.getElementById("plc-message");
+
+    // Step 1: Show box
+    box.style.animation = "fadeInBox 0.5s forwards, pulse 1s infinite";
+    box.style.opacity = "1";
+
+    // Step 2: Animate human walking inside box
+    setTimeout(() => {
+        human.style.animation = "walkInBox 2s forwards";
+    }, 300);
+
+    // Step 3: Start typing after human walks in
+    setTimeout(() => {
+        typeMessage("⚠ PLEASE CHECK AIR! ⚠", msg, 150);
+    }, 2300);
+}
+
+function hideNotificationAndHuman() {
+    clearInterval(typingTimer);
+    const box = document.getElementById("plc-notification");
+    const human = document.getElementById("human-inside");
+    box.style.opacity = "0";
+    box.style.animation = "";
+    human.style.left = "-200px"; // reset
+    human.style.animation = "";
+    isVisible = false;
+}
+
+let pageReloaded = false;
+let blockDismissed = false; // Track if Enter was pressed
+
+function fetchActiveCoils() {
+    fetch("/get_plc_status/")
+        .then(response => response.json())
+        .then(data => {
+            const activeCoils = data.active_coils || [];
+            // console.log("✅ Step 1 coils:", activeCoils);
+
+            const rejectionBin = document.getElementById("rejection-bin-light");
+            const airLow = document.getElementById("air-low-light");
+            const plcReady =document.getElementById("plc-ready-light")
+            const pcReady = document.getElementById("pc-ready-light");
+            const acceptCount = document.getElementById("accept-light");
+            const rejectCount =document.getElementById("reject-light")
+            const reworkCount =document.getElementById("rework-light")
+
+            const signalLight = document.getElementById("coil73-light");
+
+
+
+            const measureBtn = document.getElementById("master-btn");
+            if (measureBtn) {
+                if (activeCoils.includes(114)) {
+                    measureBtn.disabled = false;
+                    measureBtn.style.opacity = "1"; // optional visual feedback
+                    console.log("⛔ Measurement disabled (coil 80 active)");
+                    window.location.href = "/master/"
+                } else {
+                    measureBtn.disabled = true;
+                    measureBtn.style.opacity = "0.5"; 
+                }
+            }
+
+            if (activeCoils.includes(63)) {
+                // Coil 73 is active - show green light
+                signalLight.style.backgroundColor = "limegreen";
+                signalLight.style.boxShadow = "0 0 20px limegreen";
+            } else {
+                // Coil 73 not active - show red light
+                signalLight.style.backgroundColor = "red";
+                signalLight.style.boxShadow = "0 0 10px red";
+            }
+
+            if (activeCoils.includes(116)) {
+                
+                rejectionBin.classList.add("on");
+                // console.log("u");
+            } else {
+                rejectionBin.classList.remove("on");
+            }
+
+            
+
+            if (activeCoils.includes(89)) {
+                
+                acceptCount.classList.add("on");
+                // console.log("u");
+            } else {
+                acceptCount.classList.remove("on");
+            }
+            if (activeCoils.includes(90)) {
+                
+                rejectCount.classList.add("on");
+                // console.log("u");
+            } else {
+                rejectCount.classList.remove("on");
+            }
+
+            if (activeCoils.includes(91)) {
+                
+                reworkCount.classList.add("on");
+                // console.log("u");
+            } else {
+                reworkCount.classList.remove("on");
+            }
+
+            if (activeCoils.includes(98)) {
+                
+                pcReady.classList.add("on");
+                // console.log("u");
+            } else {
+                pcReady.classList.remove("on");
+            }
+
+            if (activeCoils.includes(73)) {
+                
+                plcReady.classList.add("on");
+                // console.log("u");
+            } else {
+                plcReady.classList.remove("on");
+            }
+            if (activeCoils.includes(113)) {
+                
+                airLow.classList.add("on");
+                // console.log("u");
+            } else {
+                airLow.classList.remove("on");
+            }
+
+
+            const notificationContainer = document.getElementById('notification-container');
+            const punchTextarea = document.getElementById('punch_textarea');
+            const jobAbsentMsg = document.getElementById('job-absent-msg');
+
+
+           if (activeCoils.includes(98)) {
+    // If coil 98 is active, hide everything
+    jobAbsentMsg.style.display = 'none';
+    notificationContainer.style.display = 'none';
+    punchTextarea.style.display = 'none';
+} else if (activeCoils.includes(87) && !blockDismissed) {
+    // If coil 87 is active and block not dismissed
+    notificationContainer.style.display = 'block';
+    punchTextarea.style.display = 'block';
+    punchTextarea.focus(); // Auto-focus the textarea
+    jobAbsentMsg.style.display = 'none'; // hide the message
+} else {
+    // If neither 98 nor 87 is active
+    notificationContainer.style.display = 'none';
+    punchTextarea.style.display = 'none';
+    jobAbsentMsg.style.display = 'block'; // show the message
+}
+
+
+
+
+            
+        })
+        .catch(error => console.error("❌ PLC fetch error", error));
+}
+
+// Start checking every 500 ms
+setInterval(fetchActiveCoils, 500);
 
 
 
@@ -1888,222 +2612,86 @@ function stopPreviousInterval() {
 }
 
 function startCoilCheckForStep(step_no) {
-    stopPreviousInterval(); // Ensure previous interval is cleared
+    stopPreviousInterval();
 
-    if (step_no === 1) {
-        coilCheckIntervalId = setInterval(() => checkCoilsAndHandleStep1(), 1000);
+    if (step_no === 1 && !step1Notified) {
+        coilCheckIntervalId = setInterval(() => checkCoilsAndHandleStep1(), 100);
         // console.log("✅ Coil check interval started for Step 1");
-    } else if (step_no === 2) {
-        coilCheckIntervalId = setInterval(() => checkCoilsAndHandleStep2(), 1000);
+    } else if (step_no === 2 && !step2Notified) {
+        coilCheckIntervalId = setInterval(() => checkCoilsAndHandleStep2(), 100);
         // console.log("✅ Coil check interval started for Step 2");
-    } else if (step_no === 3) {
-        coilCheckIntervalId = setInterval(() => checkCoilsAndHandleStep3(), 1000);
-        // console.log("✅ Coil check interval started for Step 3");
-    }
-     else if (step_no === 4) {
-        coilCheckIntervalId = setInterval(() => checkCoilsAndHandleStep4(), 1000);
-        // console.log("✅ Coil check interval started for Step 4");
-    } else {
-        console.log("❗ Unknown step number:", step_no);
+    }  else {
+        console.log("❗ Unknown step number or already notified:", step_no);
     }
 
     coilCheckIntervalStarted = true;
 }
 
-
-
+// -------- Step 1 Handler -------- //
+// -------- Step 1 Handler -------- //
 function checkCoilsAndHandleStep1() {
-    fetch("/get_plc_status/")
+    fetch("/get_40011_value/")
         .then(res => res.json())
         .then(data => {
-            const activeCoils = data.active_coils || [];
+            const coilVal = parseInt(data.coil_40011);
 
-
-            if (activeCoils.includes(64)) {
-                if (step1Notified) {
-                    hideNotification_plc();
-                    step1Notified = false;
-                }
-
+            if (coilVal === 1 && !step1Notified) {
                 const startBtn = document.getElementById("start-btn");
-                if (startBtn) startBtn.click();
-
-                console.log("u");
-
-                if (activeCoils.includes(67)) {
-                    const stopBtn = document.getElementById("stop-btn");
-                    if (stopBtn) stopBtn.click();
-
-                    console.log("u");
-                }
-
-            } else if (!step1Notified) {
-                showNotification_plc("❌ Step 1: Coil 64 not active");
-                step1Notified = true;
-            }
-        });
-}
-
-
-function checkCoilsAndHandleStep2() {
-    fetch("/get_plc_status/")
-        .then(res => res.json())
-        .then(data => {
-            const activeCoils = data.active_coils || [];
-
-
-
-
-
-            if (activeCoils.includes(65)) {
-                
-                    hideNotification_plc();
-                    step2Notified = false;
-
-                    const startBtn = document.getElementById("start-btn");
-                    if (startBtn) {
+                if (startBtn) {
+                    setTimeout(() => {
                         startBtn.click();
-                        console.log("y");
-                    }
-                
-
-                if (activeCoils.includes(68)) {
-                    const stopBtn = document.getElementById("stop-btn");
-                    if (stopBtn) {
-                        stopBtn.click();
-                        console.log("y");
-                    }
+                        // console.log("🚀 40011 = 1 → Start clicked (after 1s delay)");
+                        step1Notified = true; // only set after clicking
+                    }, 2000);
                 }
-
-            } else {
-                if (!step2Notified) {
-                    showNotification_plc("❌ Step 2: Coil 65 not active");
-                    step2Notified = true;
-                }
-            }
-        });
-}
-
-
-function checkCoilsAndHandleStep4() {
-    fetch("/get_plc_status/")
-        .then(res => res.json())
-        .then(data => {
-            const activeCoils = data.active_coils || [];
-
-            if (activeCoils.includes(112)) {
-                hideNotification_plc();
-                step2Notified = false;
-
-                const startBtn = document.getElementById("start-btn");
+            } else if (coilVal === 0 && step1Notified) {
                 const stopBtn = document.getElementById("stop-btn");
-
-                // Fetch start/stop timing from the server
-                fetch('/get_time/')
-                    .then(response => response.json())
-                    .then(timeData => {
-                        let startDelay = parseFloat(timeData.start_time) || 0;
-                        let stopDelay = parseFloat(timeData.stop_time) || 0;
-
-                        // Convert seconds to milliseconds
-                        startDelay *= 1000;
-                        stopDelay *= 1000;
-
-                        if (startBtn) {
-                            setTimeout(() => {
-                                startBtn.click();
-                                console.log(`✅ START clicked after ${startDelay / 1000} sec`);
-
-                                if (stopBtn) {
-                                    setTimeout(() => {
-                                        stopBtn.click();
-                                        console.log(`🛑 STOP clicked after ${stopDelay / 1000} sec`);
-                                    }, stopDelay);  // delay from start click
-                                }
-
-                            }, startDelay);
-                        }
-
-                    })
-                    .catch(error => {
-                        console.error("❌ Failed to fetch start/stop times:", error);
-                    });
-
-            } else {
-                if (!step2Notified) {
-                    showNotification_plc("❌ Step 2: Coil 112 not active");
-                    step2Notified = true;
+                if (stopBtn)  {
+                    setTimeout(() => {
+                stopBtn.click();
+                // console.log("🛑 40011 = 0 → Stop clicked");
+                step2Notified = false; // Reset so step2 can run
+                startCoilCheckForStep(2); // move to step2
+                }, 1500);
                 }
             }
+        })
+        .catch(err => {
+            console.error("❌ Error fetching 40011:", err);
         });
 }
 
-
-
-function checkCoilsAndHandleStep3() {
-    fetch("/get_plc_status/")
+// -------- Step 2 Handler -------- //
+function checkCoilsAndHandleStep2() {
+    fetch("/get_40012_value/")
         .then(res => res.json())
         .then(data => {
-            const activeCoils = data.active_coils || [];
+            const coilVal = parseInt(data.coil_40012);
 
-
-            if (activeCoils.includes(69)&&activeCoils.includes(71)) {
-                
-                    hideNotification_plc();
-                    step3Notified = false;
-                
-
+            if (coilVal === 1 && !step2Notified) {
                 const startBtn = document.getElementById("start-btn");
-                if (startBtn) startBtn.click();
-
-                console.log("n");
-
-                if (activeCoils.includes(72)) {
-                    const stopBtn = document.getElementById("stop-btn");
-                    if (stopBtn) stopBtn.click();
-
-                    console.log("n");
-
+                if (startBtn) {
+                    setTimeout(() => {
+                        startBtn.click();
+                        // console.log("🚀 40012 = 1 → Start clicked (after 1s delay)");
+                        step2Notified = true; // only set after clicking
+                    }, 2000);
                 }
-
-            } else if (!step3Notified) {
-                showNotification_plc("❌ Step 3: Coil 66 not active");
-                step3Notified = true;
+            } else if (coilVal === 0 && step2Notified) {
+                const stopBtn = document.getElementById("stop-btn");
+                if (stopBtn)  {
+                    setTimeout(() => {
+                stopBtn.click();
+                console.log("🛑 40012 = 0 → Stop clicked");
+               
+                 }, 1000);
+                }
             }
+        })
+        .catch(err => {
+            console.error("❌ Error fetching 40012:", err);
         });
 }
-
-
-
-
-
-// Function to write coil from anywhere
-function writeToCoil(addr, val) {
-    console.clear();
-    // console.log(`📤 Writing to coil Y${addr - 65 + 100} (addr ${addr}) with value: ${val}`);
-
-    fetch("/write_coil/", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ address: addr, value: val })
-    })
-    .then(res => res.json())
-    .then(data => {
-        // console.log("📝 Write response:", data);
-
-        // ✅ Auto reset coil after 1 second
-        if (val === true) {
-            setTimeout(() => {
-                fetch("/write_coil/", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ address: addr, value: false })
-                });
-            }, 1000);
-        }
-    });
-}
-
 
 
 
@@ -2157,306 +2745,325 @@ function getCombinedTextareaParts(probeNumber) {
 
 
 
-function displaySerialData(parameterNameValues, probe_value, e_value, d_value, o1_value, readingsInput, measurementMode, step_no, lsl, 
-usl, ltl, utl, indicatorBox, indicatorBox1, statusCell, parameterFactorValues, parameter_name_single, b_value, b1_value) {
-
-    console.log("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh",step_no);
-
-if (!coilCheckIntervalStarted) {
-    startCoilCheckForStep(step_no);
-} else {
-    console.warn("⚠️ Coil check already running. Continuing displaySerialData logic for step:", step_no);
-}
 
 
+function displaySerialData(parameterNameValues, probe_value, e_value, d_value, o1_value, readingsInput, measurementMode, digitsValues, step_no, lsl,
+    usl, ltl, utl, indicatorBox, indicatorBox1, statusCell, parameterFactorValues, parameter_name_single, b_value, b1_value) {
 
+    console.log("digitsValues:", digitsValues);
 
-            
-    console.log("parameterNameValues:", parameterNameValues);
-    console.log("parameter_name_single:", parameter_name_single);
-    console.log("parameterFactorValues:", parameterFactorValues);
-    console.log("step_no:", step_no);
-    console.log("indicatorBox, indicatorBox1:", indicatorBox, indicatorBox1, readingsInput);
-    console.log("your probe_vau is thissssssssssssssssssssssssssssssssssss:",probe_value);
+    if (!coilCheckIntervalStarted) {
+        startCoilCheckForStep(step_no);
+    } else {
+        console.warn("⚠️ Coil check already running. Continuing displaySerialData logic for step:", step_no);
+    }
 
     // Retrieve textarea ID based on probeValue
     const { total: newSerialData, parts: probeParts } = getCombinedTextareaParts(probe_value);
 
+    // Ensure persistent storage across ticks
+    if (!window.measurementMap) window.measurementMap = {};
+    if (!window.paramOutputs) window.paramOutputs = {};   // ✅ ensure this exists
 
-        // Function to calculate and update the displayOutput
-        function updateDisplayOutput() {
-            const { total: newSerialData } = getCombinedTextareaParts(probe_value);
+    // Function to calculate and update the displayOutput
+    function updateDisplayOutput() {
+        const { total: newSerialData } = getCombinedTextareaParts(probe_value);
+
+        // === 1. Base calculation for displayOutput ===
+       // 1️⃣ Base calculation
+let displayOutput = e_value + (newSerialData * d_value + o1_value);
+if (isNaN(displayOutput)) displayOutput = 0;
+
+// 2️⃣ Alternative formula if matched
+let matchFound = Array.isArray(parameter_name_single)
+    ? parameter_name_single.some(name => String(name).trim().toLowerCase() === String(parameterNameValues).trim().toLowerCase())
+    : String(parameter_name_single).trim().toLowerCase() === String(parameterNameValues).trim().toLowerCase();
+
+if (matchFound) {
+    displayOutput = (newSerialData - b1_value) * d_value + e_value + b_value;
+}
 
 
-            // Base calculation for displayOutput
-            let displayOutput = e_value + (newSerialData * d_value + o1_value);
 
-            if (isNaN(displayOutput)) {
-                displayOutput = 0;
-            }
+        // === 4. Only update readingsInput when active ===
+        if (continuousUpdateInterval && step_no === currentStep) {
 
-            // Modify displayOutput based on parameterFactorValues
-            for (let i = 0; i < parameterFactorValues.length; i++) {
-                const factor = parameterFactorValues[i]; // {parameter_name, method, value}
-                const parameterName = factor.parameter_name;
-                const method = factor.method; // '+' or '-'
-                const value = parseFloat(factor.value);
+            if (["MAX", "MIN", "CUR", "TIR", "AVR", "DTM", "RUNOUT", "DIAMETER"].includes(measurementMode)) {
+                const inputId = readingsInput.id;
+                var currentValue = parseFloat(readingsInput.value);
 
-                if (parameterName === parameterNameValues) {
-                    if (method === '+') {
-                        displayOutput += value;
-                    } else if (method === '-') {
-                        displayOutput -= value;
+                if (!window.measurementMap[inputId]) {
+                    window.measurementMap[inputId] = { max: -Infinity, min: Infinity, sum: 0, count: 0, firstUpdateShown: false };
+                }
+                const store = window.measurementMap[inputId];
+
+                if (["TIR","DTM"].includes(measurementMode) && !store.firstUpdateShown) {
+                    readingsInput.value = (0).toFixed(digitsValues);
+                    if (displayOutput > store.max) store.max = displayOutput;
+                    if (displayOutput < store.min) store.min = displayOutput;
+                    store.sum += displayOutput;
+                    store.count++;
+                    store.firstUpdateShown = true;
+                    return;
+                }
+
+if (!store.maxSerialData) store.maxSerialData = null;
+if (!store.minSerialData) store.minSerialData = null;
+
+if (displayOutput > store.max) {
+    store.max = displayOutput;
+    store.maxSerialData = newSerialData;  // store it silently
+}
+if (displayOutput < store.min) {
+    store.min = displayOutput;
+    store.minSerialData = newSerialData;  // store it silently
+}
+
+
+                store.sum += displayOutput;
+                store.count++;
+
+                readingsInput.value = displayOutput.toFixed(digitsValues);
+
+                if (measurementMode === "MAX") {
+                    if (displayOutput > store.max) store.max = displayOutput;
+                    readingsInput.value = store.max.toFixed(digitsValues);
+                    displayOutput = store.max;
+                } 
+                else if (measurementMode === "MIN") {
+                    if (displayOutput < store.min) store.min = displayOutput;
+                    readingsInput.value = store.min.toFixed(digitsValues);
+                    displayOutput = store.min;
+                } 
+                else if (measurementMode === "CUR") {
+                    readingsInput.value = displayOutput.toFixed(digitsValues);
+                } 
+                else if (measurementMode === "AVR") {
+                    const avr = (store.max + store.min) / 2;
+                    if (!isNaN(avr)) {
+                        readingsInput.value = avr.toFixed(digitsValues);
+                        displayOutput = avr;
                     }
                 }
-            }
+if (measurementMode === "DIAMETER") {
+    const rx = /^\s*R\s*(\d+)(?:\s*\*\s*([0-9]*\.?[0-9]+))?\s*$/i;
+    const m = rx.exec(String(probe_value).trim());
 
-            // Handle case where parameter_name_single is an array
-            let matchFound = false;
-            if (Array.isArray(parameter_name_single)) {
-                matchFound = parameter_name_single.some(
-                    (name) => String(name).trim().toLowerCase() === String(parameterNameValues).trim().toLowerCase()
-                );
-            } else {
-                matchFound =
-                    String(parameter_name_single).trim().toLowerCase() ===
-                    String(parameterNameValues).trim().toLowerCase();
-            }
+    if (m) {
+        const refIndex = parseInt(m[1], 10) - 1;
+        const multiplier = m[2] ? parseFloat(m[2]) : 2;
 
-            // Update displayOutput based on match
-            if (matchFound) {
-                console.log("Matched parameterNameValues with parameter_name_single. Using alternative formula.");
-                const displayOutput1 = (newSerialData - b1_value) * d_value;
-                displayOutput = displayOutput1 + e_value + b_value;
-            } else {
-                console.log("No match. Keeping original formula.");
-            }
+        // ✅ use the raw reading, not processed paramOutputs
+        const refInput = document.getElementById(`readings-input-${refIndex}`);
+        const refVal = refInput ? parseFloat(refInput.value) : NaN;
 
-            // console.log("Updated displayOutput:", displayOutput);
+        if (typeof refVal === "number" && !isNaN(refVal)) {
+            const diameter = refVal * multiplier;
 
+            const factor = Math.pow(10, digitsValues);
+            const rounded = Math.round(diameter * factor) / factor;
 
-            let avrValuesMap = {};
-            let dtmValuesMap = {};
-
-            // Update the readings input only when the continuous update is active and step_no matches
-            if (continuousUpdateInterval && step_no === currentStep) {
-             
-                // Update the readings input based on measurement mode
-                if (measurementMode === "MAX" || measurementMode === "MIN" || measurementMode === "CUR" || measurementMode === "TIR" || measurementMode === "AVR" || measurementMode === "DTM") {
-                    // Update only if the new value is greater than or less than the current value
-                    const inputId = readingsInput.id;
-                    var currentValue = parseFloat(readingsInput.value);
-                    if (isNaN(currentValue) || (measurementMode === "MAX" && displayOutput > currentValue) ||
-                        (measurementMode === "MIN" && displayOutput < currentValue) ||
-                        (measurementMode === "CUR" || measurementMode === "TIR" || measurementMode === "AVR"|| measurementMode === "DTM")) {
-                        readingsInput.value = displayOutput.toFixed(4);
-                         if (measurementMode === "AVR") {
-                            if (!avrValuesMap[inputId]) {
-                                avrValuesMap[inputId] = { max: displayOutput, min: displayOutput };
-                            }
-
-                            if (displayOutput > avrValuesMap[inputId].max) {
-                                avrValuesMap[inputId].max = displayOutput;
-                            }
-                            if (displayOutput < avrValuesMap[inputId].min) {
-                                avrValuesMap[inputId].min = displayOutput;
-                            }
-
-                            const max = avrValuesMap[inputId].max;
-                            const min = avrValuesMap[inputId].min;
-                            if (max !== min) {
-                                const avr = (max + min) / 2;
-                                if (!isNaN(avr)) {
-                                    readingsInput.value = avr.toFixed(4);
-                                    displayOutput = avr;
-                                }
-                            }
-                        }
-
-                        // === DTM Mode Logic ===
-                        if (measurementMode === "DTM") {
-                            if (!dtmValuesMap[inputId]) {
-                                dtmValuesMap[inputId] = { max: displayOutput, min: displayOutput };
-                            }
-
-                            if (displayOutput > dtmValuesMap[inputId].max) {
-                                dtmValuesMap[inputId].max = displayOutput;
-                            }
-                            if (displayOutput < dtmValuesMap[inputId].min) {
-                                dtmValuesMap[inputId].min = displayOutput;
-                            }
-
-                            const max = dtmValuesMap[inputId].max;
-                            const min = dtmValuesMap[inputId].min;
-                            if (max !== min) {
-                                const dtm = (max + min) / 2;
-                                if (!isNaN(dtm)) {
-                                    readingsInput.value = dtm.toFixed(4);
-                                    displayOutput = dtm;
-                                }
-                            }
-                        }
-
-                        if (measurementMode === "TIR") {
-                            readingsInput.value = tirValue.toFixed(4);
-                        }
-
-                        // Calculate total length and colored portion length
-                        var totalLength, coloredPortionLength, coloredPortion, uncoloredPortion;
-                        var coloredWidth, defaultWidth, color;
-
-                        if (displayOutput > e_value) {
-                            totalLength = usl - e_value;
-                            coloredPortionLength = displayOutput - e_value;
-                        } else if (displayOutput < e_value){
-                            totalLength = e_value - lsl;
-                            coloredPortionLength = e_value - displayOutput;
-                        }
-
-                        coloredPortion = coloredPortionLength / totalLength;
-                        uncoloredPortion = 1 - coloredPortion;
-                        coloredWidth = coloredPortion * 100;
-                        defaultWidth = uncoloredPortion * 100;
-
-                        // Set background color based on measurement mode and displayOutput ranges
-                        if ((measurementMode === "MAX" && displayOutput >= lsl && displayOutput <= usl) ||
-                            (measurementMode === "MIN" && displayOutput >= lsl && displayOutput <= usl) ||
-                            (measurementMode === "CUR" && displayOutput >= lsl && displayOutput <= usl) ||
-                            (measurementMode === "AVR" && displayOutput >= lsl && displayOutput <= usl) ||
-                            (measurementMode === "DTM" && displayOutput >= lsl && displayOutput <= usl) ||
-                            (measurementMode === "TIR" && tirValue >= lsl && tirValue <= usl)) {
-                            color = '#00ff00'; // Green
-                            if (color === '#00ff00') {
-                                readingsInput.style.backgroundColor = 'black';
-                                readingsInput.style.fontWeight = 'bold';
-                                readingsInput.style.fontSize = '22px'; // Adjust the size as needed
-
-                            } 
-                        } else if ((measurementMode === "MAX" &&((displayOutput > usl && displayOutput <= utl) || 
-                                                                    (displayOutput >= ltl && displayOutput < lsl))) || 
-                                    (measurementMode === "MIN" &&((displayOutput > usl && displayOutput <= utl) || 
-                                                                    (displayOutput >= ltl && displayOutput < lsl))) || 
-                                    (measurementMode === "CUR" && ((displayOutput > usl && displayOutput <= utl) || 
-                                                                    (displayOutput >= ltl && displayOutput < lsl))) ||
-                                    (measurementMode === "AVR" && ((displayOutput > usl && displayOutput <= utl) || 
-                                                                    (displayOutput >= ltl && displayOutput < lsl))) ||
-                                    (measurementMode === "DTM" && ((displayOutput > usl && displayOutput <= utl) || 
-                                                                    (displayOutput >= ltl && displayOutput < lsl))) ||                                
-                                    (measurementMode === "TIR" && ((tirValue > usl && tirValue <= utl) || 
-                                                                  (tirValue >= ltl && tirValue < lsl)))) 
-                                    {
-                            color = 'yellow';
-                            if (color === 'yellow') {
-                                readingsInput.style.backgroundColor = 'black';
-                                readingsInput.style.fontWeight = 'bold';
-                                readingsInput.style.fontSize = '22px'; // Adjust the size as needed
-                            }
-                        } else if ((measurementMode === "MAX" && displayOutput > utl || displayOutput <ltl) ||
-                            (measurementMode === "MIN" && displayOutput > utl || displayOutput <ltl) ||
-                            (measurementMode === "CUR" && displayOutput > utl || displayOutput <ltl) ||
-                            (measurementMode === "AVR" && displayOutput > utl || displayOutput <ltl) ||
-                            (measurementMode === "DTM" && displayOutput > utl || displayOutput <ltl) ||
-                            (measurementMode === "TIR" && tirValue > utl || tirValue <ltl)) {
-                            color = 'red'; // Green
-                            if (color === 'red') {
-                                readingsInput.style.backgroundColor = 'black';
-                                readingsInput.style.fontWeight = 'bold';
-                                readingsInput.style.fontSize = '22px'; // Adjust the size as needed
-                            }
-                            
-                        }
-                        
-                        readingsInput.style.color = color;
-                        // readingsInput.style.textShadow = (color === 'red') ? '0 0 2px white' : '0 0 2px black';
-
-
-
-document.getElementById('stop-btn').addEventListener('click', function() {
-    var indices = [];
-    // Assuming step_no_values and currentStep are defined somewhere
-    for (var i = 0; i < step_no_values.length; i++) {
-        if (step_no_values[i] === currentStep) {
-            indices.push(i);
+            readingsInput.value = rounded.toFixed(digitsValues);
+            displayOutput = rounded;
+        } else {
+            readingsInput.value = "";
+            displayOutput = null;
         }
-    }
-
-    indices.forEach(function(index) {
-        var readingsInput = document.getElementById('readings-input-' + index);
-        var color = readingsInput.style.color;
-        var statusCell = document.getElementById('status_cell-' + index); // Assuming 'status-cell' is the class of your status cells
-        statusCell.style.backgroundColor = color;
-        if (color === "rgb(0, 255, 0)" || color === "#00ff00") { // Different browsers might return color in different formats
-            statusCell.textContent = "ACCEPT";
-            statusCell.style.fontWeight = "bold";
-        } else if (color === "red" || color === "#ff0000") {
-            statusCell.textContent = "REJECT";
-            statusCell.style.fontWeight = "bold";
-        } else if (color === "yellow" || color === "#ffff00") {
-            statusCell.textContent = "REWORK";
-            statusCell.style.fontWeight = "bold";
-        }
-    });
-});
-
-
-
-
-
-
-if (displayOutput > e_value) {
-    var indicatorBoxElement = document.getElementById(indicatorBox.id);
-    var indicatorBox1Element = document.getElementById(indicatorBox1.id);
-    
-    // Set indicatorBoxElement to default color
-    indicatorBoxElement.style.background = 'white';
-
-    // Set indicatorBox1Element to colored gradient
-    indicatorBox1Element.style.background = `linear-gradient(to right, ${color} ${coloredWidth}%, white ${coloredWidth}% ${defaultWidth}%, white 100%)`;
-} else if (displayOutput < e_value) {
-    var indicatorBoxElement = document.getElementById(indicatorBox.id);
-    var indicatorBox1Element = document.getElementById(indicatorBox1.id);
-    
-    // Set indicatorBox1Element to default color
-    indicatorBox1Element.style.background = 'white';
-
-    // Set indicatorBoxElement to colored gradient
-    indicatorBoxElement.style.background = `linear-gradient(to left, ${color} ${coloredWidth}%, white ${coloredWidth}% ${defaultWidth}%, white 100%)`;
-}
-
-            }
-        }
+    } else {
+        console.log("⚠️ no data received, please check");
+        readingsInput.value = "";
+        displayOutput = null;
     }
 }
 
-        probeParts.forEach(({ id }) => {
-            const el = document.getElementById(id);
-            if (el) {
-                el.addEventListener('input', updateDisplayOutput);
+
+
+
+
+                if (measurementMode === "TIR") {
+                    const tir = (store.max - store.min) / 2;
+                    if (!isNaN(tir)) {
+                        readingsInput.value = tir.toFixed(digitsValues);
+                        displayOutput = tir;
+                    }
+                }
+
+                if (measurementMode === "RUNOUT") {
+                    const probeExpr = String(probe_value).trim();
+                    const parts = probeExpr.split(/([+-])/).map(p => p.trim());
+
+                    let total = null;
+                    let operator = null;
+
+                    parts.forEach(part => {
+                        if (part === "+" || part === "-") {
+                            operator = part;
+                        } else {
+                            const rx = /^\s*R\s*(\d+)(?:\s*\*\s*([0-9]*\.?[0-9]+))?\s*$/i;
+                            const m = rx.exec(part);
+                            if (m) {
+                                const refIndex = parseInt(m[1], 10) - 1;
+                                const multiplier = m[2] ? parseFloat(m[2]) : 1;
+
+                                // ✅ use stored raw measurement instead of overwritten displayOutput
+                                const refInput = document.getElementById(`readings-input-${refIndex}`);
+                                const refVal = refInput ? parseFloat(refInput.value) : NaN;
+
+                                const value = (!isNaN(refVal)) ? refVal * multiplier : 0;
+
+                                if (total === null) {
+                                    total = value;
+                                } else if (operator === "+") {
+                                    total += value;
+                                } else if (operator === "-") {
+                                    total -= value;
+                                }
+                            }
+                        }
+                    });
+
+                    if (total !== null) {
+                        readingsInput.value = total.toFixed(digitsValues);
+                        displayOutput = total;
+                    } else {
+                        console.log("do not calculation::");
+                    }
+                }
+
+                // 4️⃣ **Apply parameter factors at the very end**
+        parameterFactorValues.forEach(factor => {
+            const factorParam = String(factor.parameter_name).trim().toLowerCase();
+            const method = factor.method;
+            const value = parseFloat(factor.value);
+            if (factorParam === String(parameterNameValues).trim().toLowerCase() && !isNaN(value)) {
+                displayOutput = method === '+' ? displayOutput + value : displayOutput - value;
+                // console.log(`Applied factor ${method}${value} to ${parameterNameValues}, new displayOutput: ${displayOutput}`);
             }
         });
 
+        // 5️⃣ Update readingsInput
+        readingsInput.value = displayOutput.toFixed(digitsValues);
+        window.paramOutputs[parameterNameValues] = displayOutput;
 
-        // Function to start continuous update
-        function startContinuousUpdate() {
-            continuousUpdateInterval = setInterval(updateDisplayOutput, 100); // Update every half a second
+
+                // ✅ store this row’s latest displayOutput
+                {
+                    const mIdx = /readings-input-(\d+)/.exec(readingsInput.id);
+                    if (mIdx) {
+                        const thisIdx = parseInt(mIdx[1], 10);
+                        window.paramOutputs[thisIdx] = displayOutput;
+                    }
+                }
+
+                // === indicator logic (unchanged) ===
+                var totalLength, coloredPortionLength, coloredPortion, uncoloredPortion;
+                var coloredWidth, defaultWidth, color;
+
+                if (displayOutput > e_value) {
+                    totalLength = usl - e_value;
+                    coloredPortionLength = displayOutput - e_value;
+                } else if (displayOutput < e_value) {
+                    totalLength = e_value - lsl;
+                    coloredPortionLength = e_value - displayOutput;
+                } else {
+                    totalLength = usl - lsl || 1;
+                    coloredPortionLength = 0;
+                }
+
+                coloredPortion = totalLength ? (coloredPortionLength / totalLength) : 0;
+                uncoloredPortion = 1 - coloredPortion;
+                coloredWidth = coloredPortion * 100;
+                defaultWidth = uncoloredPortion * 100;
+
+                if (displayOutput >= lsl && displayOutput <= usl) {
+                    color = '#00ff00';
+                } else if ((displayOutput > usl && displayOutput <= utl) || (displayOutput >= ltl && displayOutput < lsl)) {
+                    color = 'yellow';
+                } else {
+                    color = 'red';
+                }
+
+                readingsInput.style.backgroundColor = 'black';
+                readingsInput.style.fontWeight = 'bold';
+                readingsInput.style.fontSize = '22px';
+                readingsInput.style.color = color;
+
+                if (displayOutput > e_value) {
+                    var indicatorBoxElement = document.getElementById(indicatorBox.id);
+                    var indicatorBox1Element = document.getElementById(indicatorBox1.id);
+                    indicatorBoxElement.style.background = 'white';
+                    indicatorBox1Element.style.background = `linear-gradient(to right, ${color} ${coloredWidth}%, white ${coloredWidth}% ${defaultWidth}%, white 100%)`;
+                } else if (displayOutput < e_value) {
+                    var indicatorBoxElement = document.getElementById(indicatorBox.id);
+                    var indicatorBox1Element = document.getElementById(indicatorBox1.id);
+                    indicatorBox1Element.style.background = 'white';
+                    indicatorBoxElement.style.background = `linear-gradient(to left, ${color} ${coloredWidth}%, white ${coloredWidth}% ${defaultWidth}%, white 100%)`;
+                }
+            }
         }
+    }
 
-        // Function to stop continuous update
-        function stopContinuousUpdate() {
-            clearInterval(continuousUpdateInterval);
-            continuousUpdateInterval = null; // Reset continuousUpdateInterval
+    probeParts.forEach(({ id }) => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.addEventListener('input', updateDisplayOutput);
         }
+    });
 
-        // Event listener for start-btn
-        document.getElementById('start-btn').addEventListener('click', startContinuousUpdate);
+    function startContinuousUpdate() {
+        window.measurementMap[readingsInput.id] = { max: -Infinity, min: Infinity, sum: 0, count: 0, firstUpdateShown: false };
+        continuousUpdateInterval = setInterval(updateDisplayOutput, 100);
+    }
 
-        // Event listener for stop-btn
-        document.getElementById('stop-btn').addEventListener('click', stopContinuousUpdate);
+    function stopContinuousUpdate() {
+        clearInterval(continuousUpdateInterval);
+        continuousUpdateInterval = null;
+    }
 
-        // Call the function once to initially display the value
-        updateDisplayOutput();
-    
+    document.getElementById('start-btn').addEventListener('click', startContinuousUpdate);
+    document.getElementById('stop-btn').addEventListener('click', stopContinuousUpdate);
+
+    document.getElementById('stop-btn').addEventListener('click', function () {
+        var indices = [];
+        for (var i = 0; i < step_no_values.length; i++) {
+            if (step_no_values[i] === currentStep) {
+                indices.push(i);
+            }
+        }
+        indices.forEach(function (index) {
+            var readingsInputEl = document.getElementById('readings-input-' + index);
+            var color = readingsInputEl.style.color;
+            var statusCellEl = document.getElementById('status_cell-' + index);
+            statusCellEl.style.backgroundColor = color;
+            if (color === "rgb(0, 255, 0)" || color === "#00ff00") {
+                statusCellEl.textContent = "ACCEPT";
+            } else if (color === "red" || color === "#ff0000") {
+                statusCellEl.textContent = "REJECT";
+            } else if (color === "yellow" || color === "#ffff00") {
+                statusCellEl.textContent = "REWORK";
+            }
+            statusCellEl.style.fontWeight = "bold";
+
+            // ✅ log final max/min newSerialData
+
+if (readingsInputEl.id === "readings-input-2" || readingsInputEl.id === "readings-input-4") {
+        const store = window.measurementMap[readingsInputEl.id];
+        if (store) {
+            console.log(`Probe ${readingsInputEl.id} FINAL MAX newSerialData:`, store.maxSerialData);
+            console.log(`Probe ${readingsInputEl.id} FINAL MIN newSerialData:`, store.minSerialData);
+        }
+    }
+            
+        });
+    });
+
+    updateDisplayOutput();
 }
+
+
+
+
+
 
 function showNotification(message) {
     // Get the input element
@@ -2507,13 +3114,39 @@ function getCookie(name) {
 
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('punch_textarea').focus();
-    
 });
 
 function handleEnterKeyPress(event) {
-    var buttons = document.querySelectorAll('#master-btn, #start-btn, #stop-btn, #save-btn, #back-btn');
+    var buttons = document.querySelectorAll('#start-btn, #stop-btn, #save-btn, #back-btn');
+
+    var hide = "{{ hide }}";  // Passed from Django
+    console.log("hide:", hide);
+
+    if (hide === "False") {
+            var notificationBox = document.getElementById('notification-container');
+            notificationBox.style.display = 'block';
+            notificationBox.innerHTML = `
+                <div style="color: white; background: red; padding: 15px;height:70%;width:100% font-size:3vh; border-radius: 8px; text-align: center;">
+                    ⚠️ Please ensure your punch value is enabled in general settings.<br><br>
+                    <button id="ok-btn" 
+                        style="background: white; color: red; font-weight: bold; padding: 6px 15px; border: none; border-radius: 5px; cursor: pointer;">
+                        OK
+                    </button>
+                </div>
+            `;
+
+            // ✅ Add click listener for OK button
+            document.getElementById('ok-btn').addEventListener('click', function() {
+                notificationBox.style.display = 'none'; // hide message on OK click
+            });
+
+            return; // Stop execution here
+        }
+
 
     if (event.key === 'Enter') {
+
+        blockDismissed = true;
         var punchValue = $('#punch_textarea').val();
         var partModelValue = $('#partModel').val();
 
@@ -2526,6 +3159,9 @@ function handleEnterKeyPress(event) {
          if (isNaN(charLmt) || charLmt < 0) {
             charLmt = 0;
         }
+
+        // Inside handleEnterKeyPress where hide === "False"
+        
 
         // Check if punchValue starts with partNo
         if (!punchValue.startsWith(partNo)) {
@@ -2590,25 +3226,37 @@ function handleEnterKeyPress(event) {
             }
         });
 
-    }
-}
+
+ sendPcsignal("readysignal");
+        
+
+        function sendPcsignal(signal) {
+    // Send initial status
+    fetch('/post_pc_ready/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ signal: signal })
+    })
+    .then(res => res.json())
+    .then(data => {
+        console.log('✅ signal posted:', data);
+        // Clear values after pressing Enter
+setTimeout(clearValues, 1000);  // same delay as save-btn
 
 
-// Function to get CSRF cookie value
-function getCookie(name) {
-    var cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        var cookies = document.cookie.split(';');
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = cookies[i].trim();
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
+    })
+    .catch(err => console.error('❌ Failed to post status:', err));
         }
+        
+
     }
-    return cookieValue;
+
 }
+
+
+
+
+
 
 function punchOverwrite() {
     // Hide the punch_overwrite_container
@@ -2656,6 +3304,9 @@ function punchOverwriteLogin() {
 
 
                     location.reload(); 
+
+
+                    
                 } else {
                     alert('FAILED TO OVERWRITE');
                 }
@@ -2674,10 +3325,18 @@ function punchOverwriteLogin() {
 document.addEventListener('DOMContentLoaded', function() {
     // Retrieve the punch value from localStorage
     var savedPunchValue = localStorage.getItem('punchValue');
+    var hide = "{{ hide }}";  // Django variable
+
     
     if (savedPunchValue) {
         // Set the punch value in the textarea
         document.getElementById('punch_textarea').value = savedPunchValue;
+
+        if (hide === "True") {
+            setTimeout(function() {
+                handleEnterKeyPress({ key: 'Enter' });
+            }, 1000);
+        }
         
         // Clear the localStorage value to avoid persisting it across multiple reloads
         localStorage.removeItem('punchValue');
@@ -2692,11 +3351,7 @@ function punchOverwriteCancel() {
     location.reload();  // Refresh the page
 }
 
-
-
-///////////////////////////////////////////
-
-                
+        
         function closeNotification() {
             // Disable the notification container
             document.getElementById('notification-container').style.display = 'none';
@@ -2728,6 +3383,29 @@ function punchOverwriteCancel() {
             document.getElementById('notification-container').style.display = 'none';
             document.getElementById('punch_textarea').style.display = 'none';
         }
+
+
+
+
+// Function to get CSRF cookie value
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+///////////////////////////////////////////
+
+        
     
     
  
@@ -3017,9 +3695,56 @@ console.log("step_no_values:",step_no_values);
 //             setOverallCounts(overallCounts);
 //         };
 
-      
 
-        document.addEventListener("DOMContentLoaded", function() {
+
+
+
+// function masterAlert(message, callback = null) {
+//     document.getElementById("master-alert-message").innerText = message;
+//     const wrapper = document.getElementById("master-alert-wrapper");
+//     wrapper.classList.remove("hidden");
+
+//     // Store callback if provided
+//     wrapper.dataset.callback = callback ? callback.toString() : "";
+// }
+
+// function closeMasterAlert() {
+//     const wrapper = document.getElementById("master-alert-wrapper");
+//     wrapper.classList.add("hidden");
+
+//     // Optional callback execution
+//     const callbackCode = wrapper.dataset.callback;
+//     if (callbackCode) {
+//         new Function(callbackCode)();
+//     }
+// }
+
+
+
+
+
+let masterAlertCallback = null;
+
+function masterAlert(message, callback = null) {
+    document.getElementById("master-alert-message").innerText = message;
+    document.getElementById("master-alert-wrapper").classList.remove("hidden");
+
+    // Save callback for later execution
+    masterAlertCallback = callback;
+}
+
+function closeMasterAlert() {
+    document.getElementById("master-alert-wrapper").classList.add("hidden");
+
+    // Call the saved callback if it exists
+    if (typeof masterAlertCallback === "function") {
+        masterAlertCallback();
+        masterAlertCallback = null; // Reset after use
+    }
+}
+
+
+    document.addEventListener("DOMContentLoaded", function() {
     var master_date = "{{last_stored_dates}}";
     console.log("master_date", master_date);
 
@@ -3041,6 +3766,11 @@ console.log("step_no_values:",step_no_values);
             const hours = setting.hour;
             const minutes = setting.minute;
 
+            if (hours === 0 && minutes === 0) {
+                console.log("Skipping alert setup — both hour and minute are 0.");
+                return;
+            }
+
             // Calculate the interval in milliseconds
             const interval = (hours * 60 + minutes) * 60 * 1000;
             
@@ -3054,17 +3784,17 @@ console.log("step_no_values:",step_no_values);
 
             // Set a timeout for the first alert
             setTimeout(() => {
-                alert("Timewise alert: DO MASTERING ONCE AGAIN."); {
-                    // Redirect to the master page if OK is clicked
-                    window.location.href = '/master/'; // Replace '/master-page' with the actual URL of your master page
-                }
+              
+               masterAlert("DO MASTERING", () => {
+                    window.location.href = "/master/";
+                });
+
 
                 // Set intervals for subsequent alerts
                 setInterval(() => {
-                    alert("Timewise alert: DO MASTERING ONCE AGAIN"); {
-                        // Redirect to the master page if OK is clicked
-                        window.location.href = '/master/'; // Replace '/master-page' with the actual URL of your master page
-                    }
+                     masterAlert("DO MASTERING", () => {
+                        window.location.href = "/master/";
+                    });
                 }, interval);
 
             }, timeUntilFirstAlert);
@@ -3078,10 +3808,9 @@ console.log("step_no_values:",step_no_values);
             saveButton.addEventListener('click', () => {
                 clickCount++;
                 if (clickCount === componentNo) {
-                    alert("Timewise alert: It's time for mastering! Click OK to go to the master page."); {
-                        // Redirect to the master page if OK is clicked
-                        window.location.href = '/master/'; // Replace '/master/' with the actual URL of your master page
-                    }
+                    masterAlert("DO MASTERING", () => {
+                        window.location.href = "/master/";
+                    });
                     clickCount = 0; // Reset the count after the alert
                 }
             });
@@ -3211,7 +3940,7 @@ function combineShiftTimeWithCurrentDate(shiftName) {
 // Function to send shift data via AJAX
 // Function to send shift data via AJAX with from_date and end_date
 function postShiftData(shiftName) {
-    let fromDate = combineShiftTimeWithCurrentDate(shiftName); // Shift start time (current date + shift time)
+    let fromDate = combineShiftTimeWithCurrentDate(shiftName);
     let now = new Date();
 
     let day = now.getDate().toString().padStart(2, '0');
@@ -3224,10 +3953,22 @@ function postShiftData(shiftName) {
 
     let endDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds} ${ampm}`;
 
-    setTimeout(() => {
-        window.location.href = `/report/?from_date=${encodeURIComponent(fromDate)}&to_date=${encodeURIComponent(endDate)}`;
-    }, 1000);
+    // ✅ First call reset trigger
+    fetch("/reset_counter/", {
+        method: "POST",
+        headers: {
+            "X-CSRFToken": getCookie("csrftoken"),  // you might need to add this
+        },
+    })
+    .then(res => res.json())
+    .then(data => {
+        console.log("✅ Reset requested:", data);
 
+        // ✅ Now redirect
+        setTimeout(() => {
+            window.location.href = `/report/?from_date=${encodeURIComponent(fromDate)}&to_date=${encodeURIComponent(endDate)}`;
+        }, 1000);
+    });
 }
 
 
@@ -3414,6 +4155,29 @@ $(document).ready(function () {
                 $('#reject').val(response.reject_occurrence);
                 $('#rework').val(response.rework_occurrence);
                 $('#total').val(response.total_occurrence);
+
+                if (response.notification) {
+                    showServerNotify(response.notification);
+                }
+
+                $.ajax({
+                    url: "/send_counts_to_plc/",
+                    type: "POST",
+                    headers: { "X-CSRFToken": csrftoken },
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                        accept: response.accept_occurrence,
+                        reject: response.reject_occurrence,
+                        rework: response.rework_occurrence,
+                        total:response.total_occurrence
+                    }),
+                    success: function (res) {
+                        console.log("✅ Successfully posted counts to PLC");
+                    },
+                    error: function (xhr) {
+                        console.error("❌ Failed to send counts to PLC:", xhr.responseText);
+                    }
+                });
             },
             error: function (xhr, status, error) {
                 console.log("Error:", xhr.responseText);
@@ -3502,74 +4266,36 @@ $(document).ready(function () {
     const settings = JSON.parse('{{ settings_json|safe }}');
     console.log("Settings:", settings);
 
-    // Correct channel mapping per your new logic
-    const cardChannelMap = {
-        'PIEZO_4CH': 11,   // Originally 4, now 11
-        'PIEZO_11CH': 11,
-        'LVDT_4CH': 8      // Originally 4, now 8
-    };
-
-    // Display order based on card type (fixed, not based on COM port)
-    const cardDisplayOrder = ['PIEZO_4CH', 'PIEZO_11CH', 'LVDT_4CH'];
-
-    // All probe <textarea> IDs in order (DO NOT change these)
+    // First available <textarea> IDs (keep original order)
     const probeIds = [
-        "probe-A", "probe-B", "probe-C", "probe-D", "probe-E", "probe-F", "probe-G", "probe-H", "probe-I",
-        "probe-J", "probe-K", "probe-L", "probe-M", "probe-N", "probe-O", "probe-P", "probe-Q", "probe-R",
-        "probe-S", "probe-T", "probe-U", "probe-V", "probe-W", "probe-X", "probe-Y", "probe-Z",
-        "probe-AA", "probe-AB", "probe-AC", "probe-AD", "probe-AE", "probe-AF", "probe-AG", "probe-AH",
-        "probe-AI", "probe-AJ", "probe-AK", "probe-AL", "probe-AM", "probe-AN", "probe-AO", "probe-AP"
+        "probe-A", "probe-B", "probe-C", "probe-D", "probe-E", "probe-F", "probe-G", "probe-H",
+        "probe-I", "probe-J", "probe-K", "probe-L", "probe-M", "probe-N", "probe-O", "probe-P",
+        "probe-Q", "probe-R", "probe-S", "probe-T", "probe-U", "probe-V", "probe-W", "probe-X",
+        "probe-Y", "probe-Z", "probe-AA", "probe-AB", "probe-AC", "probe-AD", "probe-AE",
+        "probe-AF", "probe-AG", "probe-AH", "probe-AI", "probe-AJ", "probe-AK", "probe-AL",
+        "probe-AM", "probe-AN", "probe-AO", "probe-AP"
     ];
 
-    // Create mapping: card_type -> com_port
-    const cardPortMap = {};
-    settings.forEach(s => {
-        if (!cardPortMap[s.card]) {
-            cardPortMap[s.card] = s.com_port;
-        }
-    });
-
-    const mergedChannels = {};  // com_port -> channel data
+    // Find COM port for LVDT_4CH
+    const lvdtComPort = settings.find(s => s.card === 'LVDT_4CH')?.com_port;
+    if (!lvdtComPort) {
+        console.error("❌ No LVDT_4CH card found in settings");
+        return;
+    }
 
     const ws = new WebSocket('ws://localhost:8000/ws/comport/');
 
     ws.onmessage = function (event) {
         const data = JSON.parse(event.data);
-        if (!data.message) return;
+        if (!data.message || data.com_port !== lvdtComPort) return;
 
-        const comPort = data.com_port;
-        const message = data.message;
+        const matches = data.message.match(/[A-K][\+\-]\d+/g) || [];
 
-        const card = settings.find(s => s.com_port === comPort)?.card;
-        const matches = message.match(/[A-K][\+\-]\d+/g) || [];
-
-        //console.log(`📥 Received from ${comPort} (${card}):`, matches);
-
-        mergedChannels[comPort] = matches;
-
-        // Reset all probes first
+        // Reset all probes
         probeIds.forEach(id => $(`#${id}`).val(""));
 
-        // Final channel values in correct card type order
-        let allChannelValues = [];
-
-        cardDisplayOrder.forEach(cardType => {
-            const comPort = cardPortMap[cardType];
-            const channelCount = cardChannelMap[cardType] || 0;
-            const values = comPort && mergedChannels[comPort] ? mergedChannels[comPort] : [];
-
-            if (values.length > 0) {
-                allChannelValues = allChannelValues.concat(values.slice(0, channelCount));
-            } else {
-                const dummy = Array(channelCount).fill("A+000");
-                allChannelValues = allChannelValues.concat(dummy);
-            }
-        });
-
-        //console.log("🧾 Final Display Channel Values:", allChannelValues);
-
-        // Assign values to corresponding textareas
-        allChannelValues.forEach((channelData, index) => {
+        // Assign incoming values to first available probe IDs
+        matches.forEach((channelData, index) => {
             if (index < probeIds.length) {
                 const value = channelData.includes('-') ? channelData.substring(1) : channelData.substring(2);
                 $(`#${probeIds[index]}`).val(value);
@@ -3577,6 +4303,18 @@ $(document).ready(function () {
         });
     };
 });
+
+
+// Helper to change light color
+function setLightColor(lightId, color) {
+    const el = document.getElementById(lightId);
+    if (!el) return;
+
+    el.style.backgroundColor = color;
+    el.style.boxShadow = color === "green"
+        
+        "0 0 10px red";
+}
 
 </script>
         

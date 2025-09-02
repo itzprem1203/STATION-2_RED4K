@@ -92,9 +92,10 @@ def read_coils_loop():
                             if val:
                                 abs_addr = addr + i
                                 active.append(abs_addr)
-                                print(f"✅ address {abs_addr} = 1")
+                                # print(f"✅ address {abs_addr} = 1")
 
-                                result_90 = client.write_coil(90, False, slave=SLAVE_ID)
+                                # result_90 = client.write_coil(91, False, slave=SLAVE_ID)
+                                # status_result = client.write_coil(98, False, slave=SLAVE_ID)
 
                                 if abs_addr == 74:
                                     write_result = client.write_coil(92, True, slave=SLAVE_ID)
@@ -153,6 +154,54 @@ def read_coils_loop():
 
 
                                     print("🔄 Reset status write flags for new part")
+
+                                if abs_addr == 121:
+                                    # Reset ACCEPT / REWORK / REJECT output coils
+                                    write_result = client.write_coil(90, False, slave=SLAVE_ID)
+                                    write_result = client.write_coil(91, False, slave=SLAVE_ID)
+                                    write_result = client.write_coil(89, False, slave=SLAVE_ID)
+                                    write_result = client.write_coil(98, False, slave=SLAVE_ID)
+                                    
+
+
+                                    if write_result and not write_result.isError():
+                                        print("✅ Coil 116 triggered → Reset REJECT & REWORK coils (90, 91)")
+                                    else:
+                                        print("❌ Failed to reset coil 90 or 91")
+
+                                    # ✅ Reset write flags for new part
+                                    wrote_accept = False
+                                    wrote_rework = False
+                                    wrote_reject = False
+                                    wrote_signal = False
+
+
+
+                                    print("🔄 Reset status write flags for new part")  
+
+                                if abs_addr == 120:
+                                    # Reset ACCEPT / REWORK / REJECT output coils
+                                    write_result = client.write_coil(90, False, slave=SLAVE_ID)
+                                    write_result = client.write_coil(91, False, slave=SLAVE_ID)
+                                    write_result = client.write_coil(89, False, slave=SLAVE_ID)
+                                    write_result = client.write_coil(98, False, slave=SLAVE_ID)
+                                    
+
+
+                                    if write_result and not write_result.isError():
+                                        print("✅ Coil 116 triggered → Reset REJECT & REWORK coils (90, 91)")
+                                    else:
+                                        print("❌ Failed to reset coil 90 or 91")
+
+                                    # ✅ Reset write flags for new part
+                                    wrote_accept = False
+                                    wrote_rework = False
+                                    wrote_reject = False
+                                    wrote_signal = False
+
+
+
+                                    print("🔄 Reset status write flags for new part")        
                
      
                                         
@@ -197,23 +246,20 @@ def read_coils_loop():
                                             else:
                                                 print("❌ Failed to write to coil 90")
 
-
-
                                 
                                 # Write True if a new signal is received
                                 if latest_signal == "readysignal" and not wrote_signal:
                                     if abs_addr == 87:
                                         status_result = client.write_coil(98, True, slave=SLAVE_ID)
+                                        status_result = client.write_coil(91, False, slave=SLAVE_ID)
+                                        status_result = client.write_coil(89, False, slave=SLAVE_ID)
+                                        
                                         if status_result and not status_result.isError():
                                             print("✅ Ready signal: Wrote True to coil 98")
                                             wrote_signal = True
                                             latest_signal = None  # Clear after writing
-            
-
-
-                                    
-
-                                        
+                                
+                                
 
                 save_active_coils(active)
 

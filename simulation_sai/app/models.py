@@ -356,3 +356,26 @@ class MailSettings(models.Model):
 
     def __str__(self):
         return self.sender_email
+    
+
+class StationOne(models.Model):
+    status_cell = models.CharField(max_length=100)
+    date = models.DateTimeField()
+    operator = models.CharField(max_length=100)
+    part_model = models.CharField(max_length=100)
+    part_status = models.CharField(max_length=100)
+    comp_sr_no = models.CharField(max_length=100)
+    shift = models.CharField(max_length=100)
+    machine = models.CharField(max_length=100)
+
+    class Meta:
+        managed = False   # 🚨 very important, Django will not try to create/migrate this table
+        db_table = 'StationOne'   # 🔥 your exact table name
+
+class PunchData(models.Model):
+    punch_value = models.CharField(max_length=255)
+    part_model = models.CharField(max_length=255)
+    is_active = models.BooleanField(default=True)  # boolean (1/0)
+
+    def __str__(self):
+        return f"{self.punch_value} - {self.part_model} - {self.is_active}"

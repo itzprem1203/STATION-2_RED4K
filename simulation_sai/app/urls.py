@@ -1,9 +1,9 @@
 from django.conf import settings
 from django.urls import path
 from django.conf.urls.static import static
-from .views import home,index,comport,probe,trace,parameter,master,measurebox,measurement,get_plc_status,write_coil,reset_counter,get_register_value,post_pc_ready,post_pcreset
-from .views import utility,report,spc,srno,withoutsrno,paraReport,jobReport,xBar,xBarRchart,backup,xBarSchart,shift_change_alert,get_time,save_time,get_40011_value,get_40012_value
-from .views import histogram,pieChart,measure,masterReport,measurement_count,shift_report,get_parameters, get_parameter_value,zzz,post_part_status,send_counts_to_plc
+from .views import home,index,comport,probe,trace,parameter,master,measurebox,measurement,get_plc_status,write_coil,reset_counter,get_register_value,post_pc_ready,post_pcreset,clearmeasurement
+from .views import utility,report,spc,srno,withoutsrno,paraReport,jobReport,xBar,xBarRchart,backup,xBarSchart,shift_change_alert,get_time,save_time,get_40011_value,get_40012_value,get_active_punch
+from .views import histogram,pieChart,measure,masterReport,measurement_count,shift_report,get_parameters, get_parameter_value,zzz,post_part_status,send_counts_to_plc,deactivate_punch
 urlpatterns = [
     path('',home,name="home"),
     path('index/',index,name="index"),
@@ -47,6 +47,9 @@ urlpatterns = [
     path('get_40012_value/', get_40012_value, name='get_40012_value'),
     path('post_pc_ready/', post_pc_ready, name='post_pc_ready'),
     path('post_pcreset/', post_pcreset, name='post_pcreset'),
+    path('deactivate_punch/', deactivate_punch, name='deactivate_punch'),
+    path('clearmeasurement/', clearmeasurement, name='clearmeasurement'),
+    path('get_active_punch/', get_active_punch, name='get_active_punch'),
 
 
 

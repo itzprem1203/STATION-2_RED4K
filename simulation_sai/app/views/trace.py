@@ -8,7 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 @csrf_exempt
 def trace(request, row_id=None):
-    from app.models import TableFiveData, TableFourData, TableOneData, TableThreeData, TableTwoData, Master_settings, parameter_settings,MeasurementData
+    from app.models import TableFiveData, TableFourData, TableOneData, TableThreeData, TableTwoData, Master_settings, parameter_settings,MeasurementData,ShiftSettings
     if request.method == 'POST':
         try:
               # Ensure the request body is not empty
@@ -166,6 +166,21 @@ def trace(request, row_id=None):
 
                 elif item_id == 'tableBody-2':
                     rows = TableTwoData.objects.filter(id__in=row_ids)
+
+                    for row in rows:
+                        print(f"Received row: ID={row.id}, batch_no={row.batch_no}")
+
+                        # Find matching ShiftSettings (shift == batch_no)
+                        matching_shifts = ShiftSettings.objects.filter(shift=row.batch_no)
+                        if matching_shifts.exists():
+                            print(f"Deleting matching ShiftSettings for batch_no={row.batch_no}")
+                            matching_shifts.delete()
+                        else:
+                            print(f"No ShiftSettings found for batch_no={row.batch_no}")
+
+                    # finally delete the TableTwoData rows themselves
+                    rows.delete()
+
                 elif item_id == 'tableBody-3':
                     rows = TableThreeData.objects.filter(id__in=row_ids)
                 elif item_id == 'tableBody-4':

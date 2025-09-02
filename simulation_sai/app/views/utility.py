@@ -4,7 +4,7 @@ import uuid
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
-from app.models import CustomerDetails, MasterIntervalSettings, ShiftSettings, BackupSettings, MailSettings, TableOneData,parameter_settings,ParameterFactor
+from app.models import CustomerDetails, MasterIntervalSettings, ShiftSettings, BackupSettings, MailSettings, TableOneData,parameter_settings,ParameterFactor,TableTwoData
 from datetime import datetime
 from dateutil.relativedelta import relativedelta  # To handle month addition smoothly
 from django.db.models import Q
@@ -250,6 +250,8 @@ def utility(request):
                 # parameter_settings = ParameterSettings.objects.first()
                 part_model_values = TableOneData.objects.order_by('id').values_list('part_model', flat=True).distinct()
                 print('your data is this part_model_values:',part_model_values)
+
+                table_body_2_data = TableTwoData.objects.all().order_by('id')
     
 
 
@@ -262,6 +264,7 @@ def utility(request):
                     'mac_address': mac_address,  # Pass MAC address to contex
                     'part_model_values': part_model_values,
                     'mail_settings': mail_settings,
+                    'table_body_2_data':table_body_2_data,
 
                 }
 

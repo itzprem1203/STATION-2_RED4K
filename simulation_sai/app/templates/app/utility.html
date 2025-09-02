@@ -590,7 +590,13 @@ document.getElementById('parameter_name').addEventListener('change', function() 
         </center>
         <div class="custom-border" style="margin-top: 30px;">
             <label for="shift" style="margin-top: 30px;">SHIFT:</label>
-            <input type="text" id="shift" name="shift" style="width: 200px;" value="SHIFT-"><br> 
+            <select id="shift" name="shift" style="width: 200px;">
+                <option value="">-- Select Shift --</option>
+                {% for row in table_body_2_data %}
+                    <option value="{{ row.batch_no }}">{{ row.batch_no }}</option>
+                {% endfor %}
+            </select>
+            <br>
             <label for="shift_time" style="margin-top: 30px;">START TIME:</label>
             <input type="text" id="shift_time" name="shift_time" value="08:00:00 AM" oninput="this.value = this.value.toUpperCase()" style="width: 200px;"><br><br>
 

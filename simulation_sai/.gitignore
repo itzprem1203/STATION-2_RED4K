@@ -1,4 +1,8 @@
 static/
 dist/
 build/
+dist02-09-25/
+build02-09-25/
 staticfiles/
+dist_old_comport/
+build_old_comport/

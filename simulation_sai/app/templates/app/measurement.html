@@ -124,7 +124,7 @@ body {
 
         .notification-container {
         position: absolute;
-        top: 60%;
+        top: 80%;
         left: 35%;
         transform: translate(-50%, -50%);
         background-color:orange;
@@ -608,6 +608,88 @@ input[type=checkbox] {
 
 
 
+
+.notify-popup {
+    position: fixed;
+    top: 30%;
+    left: 50%;
+    height: 20%;
+    width: 70%;
+    transform: translate(-50%, -50%) scale(0.8);
+    background: linear-gradient(135deg, #ff4d4d, #ff1a1a);
+    border: 2px solid black;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 0 25px rgba(255,0,0,0.5);
+    z-index: 10000;
+    text-align: center;
+    opacity: 0;
+    transition: all 0.6s ease-in-out;
+    animation: glideIn 0.6s ease-out;
+}
+
+/* Input style */
+.notify-input {
+    width: 100%;
+    height: 20%;
+    margin-top: 5%;
+    font-size: 3vh;
+    font-weight: bold;
+    text-align: center;
+    border: none;
+    background: transparent;
+    color: white;
+    text-shadow: 0 0 50px yellow, 0 0 40px orange;
+}
+
+/* Button style */
+.notify-btn {
+    padding: 10px 25px;
+    font-weight: bold;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    background: black;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Hover effect for button */
+.notify-btn:hover {
+    background: white;
+    color: black;
+    transform: scale(1.5);
+    box-shadow: 0 0 15px yellow, 0 0 30px red;
+}
+
+/* Glide in animation */
+@keyframes glideIn {
+    from {
+        top: -50%;
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.6);
+    }
+    to {
+        top: 30%;
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+/* Glow color shifting effect */
+@keyframes glowShift {
+    0% { box-shadow: 0 0 20px red, 0 0 40px orange; }
+    50% { box-shadow: 0 0 25px yellow, 0 0 50px red; }
+    100% { box-shadow: 0 0 20px orange, 0 0 40px red; }
+}
+
+.notify-popup.active {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    animation: glideIn 0.6s ease-out, glowShift 2s infinite alternate;
+}
+
 </style>
 
 
@@ -663,7 +745,7 @@ input[type=checkbox] {
                     <span class="reset-symbol">&#8634;</span>
                 </button>
                 
-                <button class="arrow-button"  onclick="redirectToMeasurebox()">
+                <button class="arrow-button"  onclick="deactivateAndRedirect()">
                     <div class="arrow-icon">
                         <div class="arrow-tail"> BACK </div>
                     </div> 
@@ -775,7 +857,7 @@ input[type=checkbox] {
         <div id="com3-light" class="plc-light"></div>
     </div>
 </div>
-<div><button type="button" class="btn_outline" id="master-btn">Master<br>[F1]</button></div>
+<div><button type="button" class="btn_outline" id="master-btn" onclick="deactivateAndRedirectmeasure()">Master<br>[F1]</button></div>
 <div><button type="button" class="btn_outline" id="start-btn"> Start<br>[F4]</button></div>
 <div><button type="button" class="btn_outline" id="stop-btn">Stop<br>[F5]</button></div>
 <div><button type="button" class="btn_outline" id="save-btn" disabled style="filter: blur(2px);"> Save</button></div>
@@ -962,7 +1044,42 @@ input[type=checkbox] {
 
 
 
+
+<div id="server-notify-box" 
+     style="display:none;" 
+     class="notify-popup">
+    
+    <input type="text" id="server-notify-input" 
+           class="notify-input" readonly>
+    <br><br>
+    <button onclick="closeServerNotify()" class="notify-btn">OK</button>
+</div>
+
+
 <script>
+
+
+
+function showServerNotify(message) {
+    let box = document.getElementById("server-notify-box");
+    let input = document.getElementById("server-notify-input");
+    
+    input.value = message;
+    box.style.display = "block";
+    
+    // Add active class for animation
+    setTimeout(() => {
+        box.classList.add("active");
+    }, 50);
+}
+
+function closeServerNotify() {
+    let box = document.getElementById("server-notify-box");
+    box.classList.remove("active");
+    setTimeout(() => {
+        box.style.display = "none";
+    }, 600);
+}
 
 
 function showNotification_plc(message) {
@@ -976,12 +1093,51 @@ function hideNotification_plc() {
     note.style.display = "none";
 }
 
-  
+  function deactivateAndRedirectmeasure() {
+    fetch('/deactivate_punch/', {
+        method: 'POST',
+        headers: { 
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify({})
+    })
+    .then(res => res.json())
+    .then(data => {
+        console.log("Punch deactivated:", data);
+        // Redirect only after successful deactivation
+        window.location.href = '/measurement/';
+    })
+    .catch(err => {
+        console.error("Error deactivating punch:", err);
+        // Optional: still redirect even if deactivation failed
+        alert('somethign is wrong ')
+    });
+}
 
 
-function redirectToMeasurebox() {
-            window.location.href = '/measurebox/';
-        }
+function deactivateAndRedirect() {
+    fetch('/deactivate_punch/', {
+        method: 'POST',
+        headers: { 
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify({})
+    })
+    .then(res => res.json())
+    .then(data => {
+        console.log("Punch deactivated:", data);
+        // Redirect only after successful deactivation
+        window.location.href = '/measurebox/';
+    })
+    .catch(err => {
+        console.error("Error deactivating punch:", err);
+        // Optional: still redirect even if deactivation failed
+        window.location.href = '/measurebox/';
+    });
+}
+
 /////////////////////////////////////////////
 window.addEventListener('DOMContentLoaded', (event) => {
             var inputs = document.querySelectorAll('input');
@@ -1205,22 +1361,22 @@ function stopAction() {
 $(document).ready(function(){
     $("#save-btn").click(function(){
 
-        const hiddenParams = [
-            "CAM BASE CIRCLE DIA-INTAKE",
-            "CAM LOBE HEIGHT-INTAKE",
-            "CAM BASE CIRCLE DIA -EXHAUST",
-            "CAM LOBE HEIGHT-EXHAUST"
-        ];
+        // const hiddenParams = [
+        //     "CAM BASE CIRCLE DIA-INTAKE",
+        //     "CAM LOBE HEIGHT-INTAKE",
+        //     "CAM BASE CIRCLE DIA -EXHAUST",
+        //     "CAM LOBE HEIGHT-EXHAUST"
+        // ];
         // Get form data
         var formDataArray = [];
         var allStatusValid = true;
         $("table tbody tr").each(function(index) {
             var parameterName = $(this).find("td:nth-child(2)").text();
 
-            if (hiddenParams.includes(parameterName)) {
-                $(this).hide(); // optionally hide in UI
-                return true; // continue to next row
-            }
+            // if (hiddenParams.includes(parameterName)) {
+            //     $(this).hide(); // optionally hide in UI
+            //     return true; // continue to next row
+            // }
             
             var readings = $(this).find(".readingInputs").val();
             var nominal = $(this).find("td:nth-child(3)").text();
@@ -1339,9 +1495,23 @@ if (parameterAttributes.length > 0 && attributeStatuses.length > 0) {
             success: function(response){
                 console.log("Data saved successfully: ", response);
                 showCustomAlert('DATA SAVED' ,'success');
-                setTimeout(() =>{ 
-                location.reload();
-            },1000);
+
+                const punchTextarea = document.getElementById('punch_textarea');
+    const notificationContainer = document.getElementById('notification-container');
+
+    if(punchTextarea && notificationContainer) {
+        notificationContainer.style.display = 'block';
+        punchTextarea.style.display = 'block';
+
+        // Fill textarea with last punch value
+        // You can use #comp_srno value or store lastServerPunch in a variable
+        const lastPunchValue = document.getElementById('comp_srno').value || '';
+        punchTextarea.value = '';
+
+        // Focus the textarea
+        punchTextarea.focus();
+    }
+                
             },
             error: function(xhr, status, error){
                 console.error("Error occurred while saving data: ", error);
@@ -1439,10 +1609,10 @@ $(document).ready(function() {
                     var row = document.createElement("tr");
 
                     const hiddenParams = [
-                        "CAM BASE CIRCLE DIA-INTAKE",
-                        "CAM LOBE HEIGHT-INTAKE",
-                        "CAM BASE CIRCLE DIA -EXHAUST",
-                        "CAM LOBE HEIGHT-EXHAUST"
+                        "CAM_BASE_CIRCLE_DIA-INTAKE",
+                        "CAM_LOBE_HEIGHT-INTAKE",
+                        "CAM_BASE_CIRCLE_DIA -EXHAUST",
+                        "CAM_LOBE_HEIGHT-EXHAUST"
                     ];
                     if (hiddenParams.includes(paramName)) {
                         row.style.display = "none";   // ✅ hide, but keep in DOM
@@ -1857,10 +2027,10 @@ function sendPartStatus(status) {
     .then(data => {
         console.log('✅ Status posted:', data);
 
-        if (status.toLowerCase() === "accept") {
+        if (status.toLowerCase() === "accept" || status.toLowerCase() === "rework") {
             // Directly enable for Accept
             enableSaveSection();
-        } else if (status.toLowerCase() === "reject" || status.toLowerCase() === "rework") {
+        } else if (status.toLowerCase() === "reject") {
             // Poll until coil 116 is active
             waitForCoil116AndEnable();
         }
@@ -2105,78 +2275,78 @@ function showCustomConfirmationModal() {
 
 
 
-document.getElementById("save-btn").addEventListener("click", function() {
-            function clearValues() {
-            var partStatusInput = document.getElementById("part_status");
-            var partStatus = partStatusInput.value;
-            var acceptInput = document.getElementById("accept");
-            var rejectInput = document.getElementById("reject");
-            var reworkInput = document.getElementById("rework");
-            var attributeStatuses = document.querySelectorAll("[id^='attributeStatus']"); // Select all attribute status elements
+// document.getElementById("save-btn").addEventListener("click", function() {
+//             function clearValues() {
+//             var partStatusInput = document.getElementById("part_status");
+//             var partStatus = partStatusInput.value;
+//             var acceptInput = document.getElementById("accept");
+//             var rejectInput = document.getElementById("reject");
+//             var reworkInput = document.getElementById("rework");
+//             var attributeStatuses = document.querySelectorAll("[id^='attributeStatus']"); // Select all attribute status elements
            
            
 
 
-            if (partStatus === "ACCEPT") {
-                acceptInput.value = parseInt(acceptInput.value) + 1;
-            } else if (partStatus === "REJECT") {
-                rejectInput.value = parseInt(rejectInput.value) + 1;
-            } else if (partStatus === "REWORK") {
-                reworkInput.value = parseInt(reworkInput.value) + 1;
-            }
-            var statusCells = document.querySelectorAll('.status_cell');
-            statusCells.forEach(function(statusCell) {
-                statusCell.textContent = ""; // Clear text content
-                statusCell.style.backgroundColor = ""; // Clear text content
-            });
+//             if (partStatus === "ACCEPT") {
+//                 acceptInput.value = parseInt(acceptInput.value) + 1;
+//             } else if (partStatus === "REJECT") {
+//                 rejectInput.value = parseInt(rejectInput.value) + 1;
+//             } else if (partStatus === "REWORK") {
+//                 reworkInput.value = parseInt(reworkInput.value) + 1;
+//             }
+//             var statusCells = document.querySelectorAll('.status_cell');
+//             statusCells.forEach(function(statusCell) {
+//                 statusCell.textContent = ""; // Clear text content
+//                 statusCell.style.backgroundColor = ""; // Clear text content
+//             });
 
-            var readingInputs = document.querySelectorAll('.readingInputs');
-            readingInputs.forEach(function(readingInput) {
-                readingInput.value = ""; // Clear the value of the input
-                readingInput.color = "";
-            });
+//             var readingInputs = document.querySelectorAll('.readingInputs');
+//             readingInputs.forEach(function(readingInput) {
+//                 readingInput.value = ""; // Clear the value of the input
+//                 readingInput.color = "";
+//             });
 
-            partStatusInput.value = "";
-            partStatusInput.style.backgroundColor = "";
+//             partStatusInput.value = "";
+//             partStatusInput.style.backgroundColor = "";
 
             
-             // Clear attribute statuses
-        attributeStatuses.forEach(function(attributeStatus) {
-            attributeStatus.value = ""; // Clear input value
-            attributeStatus.style.backgroundColor = ""; // Clear background color
-        });
+//              // Clear attribute statuses
+//         attributeStatuses.forEach(function(attributeStatus) {
+//             attributeStatus.value = ""; // Clear input value
+//             attributeStatus.style.backgroundColor = ""; // Clear background color
+//         });
 
-            var compSrNo = document.getElementById("comp_srno");
-            compSrNo.value = "";
+//             var compSrNo = document.getElementById("comp_srno");
+//             compSrNo.value = "";
 
-            var punchTextarea = document.getElementById("punch_textarea");
-            punchTextarea.value = "";
+//             var punchTextarea = document.getElementById("punch_textarea");
+//             punchTextarea.value = "";
 
-            var indicatorBoxes = document.querySelectorAll('.indicator-box, .indicator-box1');
-            indicatorBoxes.forEach(function(indicatorBox) {
-                indicatorBox.style.background = "";
-            });
-        }
+//             var indicatorBoxes = document.querySelectorAll('.indicator-box, .indicator-box1');
+//             indicatorBoxes.forEach(function(indicatorBox) {
+//                 indicatorBox.style.background = "";
+//             });
+//         }
 
-        setTimeout(clearValues, 1000); // Execute clearValues function after 1 second (1000 milliseconds)
+//         setTimeout(clearValues, 1000); // Execute clearValues function after 1 second (1000 milliseconds)
          
-        var buttons = document.querySelectorAll('#master-btn, #start-btn, #stop-btn, #save-btn, #back-btn');
-        if (hide === 'True') {
-            document.getElementById('notification-container').style.display = 'block';
-            document.getElementById('punch_textarea').style.display = 'block';
-            document.getElementById('punch_textarea').focus();
-            buttons.forEach(function(button) {
-                button.disabled = true;
+//         var buttons = document.querySelectorAll('#master-btn, #start-btn, #stop-btn, #save-btn, #back-btn');
+//         if (hide === 'True') {
+//             document.getElementById('notification-container').style.display = 'block';
+//             document.getElementById('punch_textarea').style.display = 'block';
+//             document.getElementById('punch_textarea').focus();
+//             buttons.forEach(function(button) {
+//                 button.disabled = true;
             
-            });
-        }
-        currentStep = 1;
+//             });
+//         }
+//         currentStep = 1;
 
-        const saveButton = document.getElementById("save-btn");
-            saveButton.disabled = true;        // Enable the button
-            saveButton.style.filter = "blur(2px)";   // Remove the blur effect
+//         const saveButton = document.getElementById("save-btn");
+//             saveButton.disabled = true;        // Enable the button
+//             saveButton.style.filter = "blur(2px)";   // Remove the blur effect
         
-        });
+//         });
 
 
    
@@ -2363,15 +2533,19 @@ function fetchActiveCoils() {
             const measureBtn = document.getElementById("master-btn");
             if (measureBtn) {
                 if (activeCoils.includes(114)) {
-                    measureBtn.disabled = false;
-                    measureBtn.style.opacity = "1"; // optional visual feedback
-                    console.log("⛔ Measurement disabled (coil 80 active)");
-                    window.location.href = "/master/"
+                    measureBtn.disabled = false;            // Enable the button
+                    measureBtn.style.opacity = "1";         // Optional visual feedback
+                    console.log("⛔ Measurement disabled (coil 114 active) — Master button enabled");
+
+                    // Automatically click the button
+                    measureBtn.click();
                 } else {
-                    measureBtn.disabled = true;
+                    measureBtn.disabled = true;             // Disable the button
                     measureBtn.style.opacity = "0.5"; 
+                    console.log("Master button disabled — coil 114 not active");
                 }
             }
+
 
             if (activeCoils.includes(63)) {
                 // Coil 73 is active - show green light
@@ -2440,28 +2614,20 @@ function fetchActiveCoils() {
             }
 
 
-            const notificationContainer = document.getElementById('notification-container');
-            const punchTextarea = document.getElementById('punch_textarea');
-            const jobAbsentMsg = document.getElementById('job-absent-msg');
+const notificationContainer = document.getElementById('notification-container');
+const punchTextarea = document.getElementById('punch_textarea');
+const jobAbsentMsg = document.getElementById('job-absent-msg');
 
+var hide = "{{ hide }}";  // passed from Django template
+console.log("hide:", hide);
 
-           if (activeCoils.includes(98)) {
-    // If coil 98 is active, hide everything
+// Hide jobAbsentMsg if 87 is active, regardless of blockDismissed
+if (activeCoils.includes(87) || activeCoils.includes(98)) {
     jobAbsentMsg.style.display = 'none';
-    notificationContainer.style.display = 'none';
-    punchTextarea.style.display = 'none';
-} else if (activeCoils.includes(87) && !blockDismissed) {
-    // If coil 87 is active and block not dismissed
-    notificationContainer.style.display = 'block';
-    punchTextarea.style.display = 'block';
-    punchTextarea.focus(); // Auto-focus the textarea
-    jobAbsentMsg.style.display = 'none'; // hide the message
 } else {
-    // If neither 98 nor 87 is active
-    notificationContainer.style.display = 'none';
-    punchTextarea.style.display = 'none';
-    jobAbsentMsg.style.display = 'block'; // show the message
+    jobAbsentMsg.style.display = 'block';
 }
+
 
 
 
@@ -2490,7 +2656,7 @@ function stopPreviousInterval() {
         clearInterval(coilCheckIntervalId);
         coilCheckIntervalId = null;
         coilCheckIntervalStarted = false;
-        console.log("🔁 Previous coil interval stopped");
+        // console.log("🔁 Previous coil interval stopped");
     }
 }
 
@@ -2498,14 +2664,14 @@ function startCoilCheckForStep(step_no) {
     stopPreviousInterval();
 
     if (step_no === 1 && !step1Notified) {
-        coilCheckIntervalId = setInterval(() => checkCoilsAndHandleStep1(), 200);
-        console.log("✅ Coil check interval started for Step 1");
+        coilCheckIntervalId = setInterval(() => checkCoilsAndHandleStep1(), 100);
+        // console.log("✅ Coil check interval started for Step 1");
     } else if (step_no === 2 && !step2Notified) {
-        coilCheckIntervalId = setInterval(() => checkCoilsAndHandleStep2(), 200);
-        console.log("✅ Coil check interval started for Step 2");
+        coilCheckIntervalId = setInterval(() => checkCoilsAndHandleStep2(), 100);
+        // console.log("✅ Coil check interval started for Step 2");
     } else if (step_no === 3 && !step3Notified) {
-        coilCheckIntervalId = setInterval(() => checkCoilsAndHandleStep3(), 200);
-        console.log("✅ Coil check interval started for Step 3");
+        coilCheckIntervalId = setInterval(() => checkCoilsAndHandleStep3(), 100);
+        // console.log("✅ Coil check interval started for Step 3");
     } else {
         console.log("❗ Unknown step number or already notified:", step_no);
     }
@@ -2526,16 +2692,20 @@ function checkCoilsAndHandleStep1() {
                 if (startBtn) {
                     setTimeout(() => {
                         startBtn.click();
-                        console.log("🚀 40011 = 1 → Start clicked (after 1s delay)");
+                        // console.log("🚀 40011 = 1 → Start clicked (after 1s delay)");
                         step1Notified = true; // only set after clicking
                     }, 2000);
                 }
             } else if (coilVal === 0 && step1Notified) {
                 const stopBtn = document.getElementById("stop-btn");
-                if (stopBtn) stopBtn.click();
-                console.log("🛑 40011 = 0 → Stop clicked");
+                if (stopBtn)  {
+                    setTimeout(() => {
+                stopBtn.click();
+                // console.log("🛑 40011 = 0 → Stop clicked");
                 step2Notified = false; // Reset so step2 can run
                 startCoilCheckForStep(2); // move to step2
+                }, 1500);
+                }
             }
         })
         .catch(err => {
@@ -2555,140 +2725,26 @@ function checkCoilsAndHandleStep2() {
                 if (startBtn) {
                     setTimeout(() => {
                         startBtn.click();
-                        console.log("🚀 40012 = 1 → Start clicked (after 1s delay)");
+                        // console.log("🚀 40012 = 1 → Start clicked (after 1s delay)");
                         step2Notified = true; // only set after clicking
                     }, 2000);
                 }
             } else if (coilVal === 0 && step2Notified) {
                 const stopBtn = document.getElementById("stop-btn");
-                if (stopBtn) stopBtn.click();
-                console.log("🛑 40012 = 0 → Stop clicked");
+                if (stopBtn)  {
+                    setTimeout(() => {
+                stopBtn.click();
+                // console.log("🛑 40012 = 0 → Stop clicked");
                 step3Notified = false; // Reset so step3 can run
                 startCoilCheckForStep(3); // move to step3
+                 }, 1000);
+                }
             }
         })
         .catch(err => {
             console.error("❌ Error fetching 40012:", err);
         });
 }
-
-// -------- Step 3 Handler -------- //
-// function checkCoilsAndHandleStep3() {
-//     fetch("/get_40013_value/")
-//         .then(res => res.json())
-//         .then(data => {
-//             const coilVal = parseInt(data.coil_40013);
-
-//             if (coilVal === 1) {
-//                 const startBtn = document.getElementById("start-btn");
-//                 if (startBtn) startBtn.click();
-//                 console.log("🚀 40013 = 1 → Start clicked");
-//                 step3Notified = true;
-//             } else if (coilVal === 0 && step3Notified) {
-//                 const stopBtn = document.getElementById("stop-btn");
-//                 if (stopBtn) stopBtn.click();
-//                 console.log("🛑 40013 = 0 → Stop clicked");
-//                 stopPreviousInterval(); // all steps done
-//             }
-//         })
-//         .catch(err => {
-//             console.error("❌ Error fetching 40013:", err);
-//         });
-// }
-
-// -------- Start Only When Needed -------- //
-window.addEventListener("DOMContentLoaded", () => {
-    console.log("🌐 DOM Loaded. Ready for user action.");
-    // ❌ don't auto-start Step1
-    // ✅ Instead, call this after part selection or user click:
-    // startCoilCheckForStep(1);
-});
-
-
-
-// function checkCoilsAndHandleStep4() {
-//     fetch("/get_plc_status/")
-//         .then(res => res.json())
-//         .then(data => {
-//             const activeCoils = data.active_coils || [];
-
-//             if (activeCoils.includes(112)) {
-//                 hideNotification_plc();
-//                 step2Notified = false;
-
-//                 const startBtn = document.getElementById("start-btn");
-//                 const stopBtn = document.getElementById("stop-btn");
-
-//                 // Fetch timing from the server
-//                 fetch('/get_time/')
-//                     .then(response => response.json())
-//                     .then(timeData => {
-//                         let startDelay = parseFloat(timeData.start_time);
-//                         let stopDelay = parseFloat(timeData.stop_time);
-
-//                         // If either time is invalid (null, 0, or not a number), use default timing
-//                         const useDefaultTiming = isNaN(startDelay) || isNaN(stopDelay) || startDelay <= 0 || stopDelay <= 0;
-
-//                         if (useDefaultTiming) {
-//                             // Default behavior: START immediately, STOP after 2 seconds
-//                             if (startBtn) {
-//                                 startBtn.click();
-//                                 console.log("✅ Default START clicked immediately");
-
-//                                 if (stopBtn) {
-//                                     setTimeout(() => {
-//                                         stopBtn.click();
-//                                         console.log("🛑 Default STOP clicked after 2 sec");
-//                                     }, 2000);
-//                                 }
-//                             }
-//                         } else {
-//                             // Use custom timing from server
-//                             startDelay *= 1000;
-//                             stopDelay *= 1000;
-
-//                             if (startBtn) {
-//                                 setTimeout(() => {
-//                                     startBtn.click();
-//                                     console.log(`✅ START clicked after ${startDelay / 1000} sec`);
-
-//                                     if (stopBtn) {
-//                                         setTimeout(() => {
-//                                             stopBtn.click();
-//                                             console.log(`🛑 STOP clicked after ${stopDelay / 1000} sec`);
-//                                         }, stopDelay);
-//                                     }
-
-//                                 }, startDelay);
-//                             }
-//                         }
-
-//                     })
-//                     .catch(error => {
-//                         console.error("❌ Failed to fetch start/stop times:", error);
-
-//                         // Fallback to default timing if fetch fails
-//                         if (startBtn) {
-//                             startBtn.click();
-//                             console.log("✅ Fallback START clicked immediately");
-
-//                             if (stopBtn) {
-//                                 setTimeout(() => {
-//                                     stopBtn.click();
-//                                     console.log("🛑 Fallback STOP clicked after 2 sec");
-//                                 }, 2000);
-//                             }
-//                         }
-//                     });
-
-//             } else {
-//                 if (!step2Notified) {
-//                     showNotification_plc("❌ Step 2: Coil 112 not active");
-//                     step2Notified = true;
-//                 }
-//             }
-//         });
-// }
 
 
 
@@ -2719,44 +2775,11 @@ function checkCoilsAndHandleStep3() {
                 }
 
             } else if (!step3Notified) {
-                // showNotification_plc("❌ Step 3: Coil 66 not active");
+
                 step3Notified = true;
             }
         });
 }
-
-
-
-
-
-// Function to write coil from anywhere
-function writeToCoil(addr, val) {
-    console.clear();
-    // console.log(`📤 Writing to coil Y${addr - 65 + 100} (addr ${addr}) with value: ${val}`);
-
-    fetch("/write_coil/", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ address: addr, value: val })
-    })
-    .then(res => res.json())
-    .then(data => {
-        // console.log("📝 Write response:", data);
-
-        // ✅ Auto reset coil after 1 second
-        if (val === true) {
-            setTimeout(() => {
-                fetch("/write_coil/", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ address: addr, value: false })
-                });
-            }, 1000);
-        }
-    });
-}
-
-
 
 
 function getCombinedTextareaParts(probeNumber) {
@@ -2834,58 +2857,20 @@ function displaySerialData(parameterNameValues, probe_value, e_value, d_value, o
         const { total: newSerialData } = getCombinedTextareaParts(probe_value);
 
         // === 1. Base calculation for displayOutput ===
-        let displayOutput = e_value + (newSerialData * d_value + o1_value);
-        if (isNaN(displayOutput)) {
-            displayOutput = 0;
-        }
+       // 1️⃣ Base calculation
+let displayOutput = e_value + (newSerialData * d_value + o1_value);
+if (isNaN(displayOutput)) displayOutput = 0;
 
-        // === 2. Handle alternative formula (match check) ===
-        let matchFound = false;
-        if (Array.isArray(parameter_name_single)) {
-            matchFound = parameter_name_single.some(
-                (name) => String(name).trim().toLowerCase() === String(parameterNameValues).trim().toLowerCase()
-            );
-        } else {
-            matchFound =
-                String(parameter_name_single).trim().toLowerCase() ===
-                String(parameterNameValues).trim().toLowerCase();
-        }
+// 2️⃣ Alternative formula if matched
+let matchFound = Array.isArray(parameter_name_single)
+    ? parameter_name_single.some(name => String(name).trim().toLowerCase() === String(parameterNameValues).trim().toLowerCase())
+    : String(parameter_name_single).trim().toLowerCase() === String(parameterNameValues).trim().toLowerCase();
 
-        if (matchFound) {
-            console.log("Matched parameterNameValues with parameter_name_single. Using alternative formula.");
-            const displayOutput1 = (newSerialData - b1_value) * d_value;
-            displayOutput = displayOutput1 + e_value + b_value;
-        } else {
-            console.log("No match. Keeping original formula.");
-        }
+if (matchFound) {
+    displayOutput = (newSerialData - b1_value) * d_value + e_value + b_value;
+}
 
-        // === 3. Apply parameterFactorValues adjustments ===
-        if (Array.isArray(parameterFactorValues)) {
-            const paramNames = Array.isArray(parameter_name_single)
-                ? parameter_name_single.map(n => String(n).trim().toLowerCase())
-                : [String(parameter_name_single).trim().toLowerCase()];
 
-            const targetName = String(parameterNameValues).trim().toLowerCase();
-            const adjustments = [];
-
-            for (let i = 0; i < parameterFactorValues.length; i++) {
-                const factor = parameterFactorValues[i];
-                const factorName = String(factor.parameter_name).trim().toLowerCase();
-
-                // ✅ Match against both the single name and the list
-                if (paramNames.includes(factorName) || targetName === factorName) {
-                    const value = parseFloat(factor.value) || 0;
-                    if (factor.method === "+") {
-                        displayOutput += value;
-                        adjustments.push(`+${value} applied to ${factorName}`);
-                    } else if (factor.method === "-") {
-                        displayOutput -= value;
-                        adjustments.push(`-${value} applied to ${factorName}`);
-                    }
-                }
-            }
-            adjustments.forEach(msg => console.log("✅ " + msg));
-        }
 
         // === 4. Only update readingsInput when active ===
         if (continuousUpdateInterval && step_no === currentStep) {
@@ -2909,8 +2894,19 @@ function displaySerialData(parameterNameValues, probe_value, e_value, d_value, o
                     return;
                 }
 
-                if (displayOutput > store.max) store.max = displayOutput;
-                if (displayOutput < store.min) store.min = displayOutput;
+if (!store.maxSerialData) store.maxSerialData = null;
+if (!store.minSerialData) store.minSerialData = null;
+
+if (displayOutput > store.max) {
+    store.max = displayOutput;
+    store.maxSerialData = newSerialData;  // store it silently
+}
+if (displayOutput < store.min) {
+    store.min = displayOutput;
+    store.minSerialData = newSerialData;  // store it silently
+}
+
+
                 store.sum += displayOutput;
                 store.count++;
 
@@ -2936,7 +2932,6 @@ function displaySerialData(parameterNameValues, probe_value, e_value, d_value, o
                         displayOutput = avr;
                     }
                 }
-
 if (measurementMode === "DIAMETER") {
     const rx = /^\s*R\s*(\d+)(?:\s*\*\s*([0-9]*\.?[0-9]+))?\s*$/i;
     const m = rx.exec(String(probe_value).trim());
@@ -2944,17 +2939,19 @@ if (measurementMode === "DIAMETER") {
     if (m) {
         const refIndex = parseInt(m[1], 10) - 1;
         const multiplier = m[2] ? parseFloat(m[2]) : 2;
-        const refVal = window.paramOutputs[refIndex];   // ✅ lookup from saved outputs
+
+        // ✅ use the raw reading, not processed paramOutputs
+        const refInput = document.getElementById(`readings-input-${refIndex}`);
+        const refVal = refInput ? parseFloat(refInput.value) : NaN;
 
         if (typeof refVal === "number" && !isNaN(refVal)) {
             const diameter = refVal * multiplier;
 
-            // 🔑 truncate instead of round
             const factor = Math.pow(10, digitsValues);
-            const truncated = Math.trunc(diameter * factor) / factor;
+            const rounded = Math.round(diameter * factor) / factor;
 
-            readingsInput.value = truncated.toFixed(digitsValues);
-            displayOutput = truncated;
+            readingsInput.value = rounded.toFixed(digitsValues);
+            displayOutput = rounded;
         } else {
             readingsInput.value = "";
             displayOutput = null;
@@ -2965,6 +2962,8 @@ if (measurementMode === "DIAMETER") {
         displayOutput = null;
     }
 }
+
+
 
 
 
@@ -3017,6 +3016,21 @@ if (measurementMode === "DIAMETER") {
                         console.log("do not calculation::");
                     }
                 }
+
+                // 4️⃣ **Apply parameter factors at the very end**
+        parameterFactorValues.forEach(factor => {
+            const factorParam = String(factor.parameter_name).trim().toLowerCase();
+            const method = factor.method;
+            const value = parseFloat(factor.value);
+            if (factorParam === String(parameterNameValues).trim().toLowerCase() && !isNaN(value)) {
+                displayOutput = method === '+' ? displayOutput + value : displayOutput - value;
+                // console.log(`Applied factor ${method}${value} to ${parameterNameValues}, new displayOutput: ${displayOutput}`);
+            }
+        });
+
+        // 5️⃣ Update readingsInput
+        readingsInput.value = displayOutput.toFixed(digitsValues);
+        window.paramOutputs[parameterNameValues] = displayOutput;
 
 
                 // ✅ store this row’s latest displayOutput
@@ -3116,6 +3130,17 @@ if (measurementMode === "DIAMETER") {
                 statusCellEl.textContent = "REWORK";
             }
             statusCellEl.style.fontWeight = "bold";
+
+            // ✅ log final max/min newSerialData
+
+if (readingsInputEl.id === "readings-input-2" || readingsInputEl.id === "readings-input-4") {
+        const store = window.measurementMap[readingsInputEl.id];
+        if (store) {
+            console.log(`Probe ${readingsInputEl.id} FINAL MAX newSerialData:`, store.maxSerialData);
+            console.log(`Probe ${readingsInputEl.id} FINAL MIN newSerialData:`, store.minSerialData);
+        }
+    }
+            
         });
     });
 
@@ -3176,11 +3201,12 @@ function getCookie(name) {
 
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('punch_textarea').focus();
-    
 });
 
 function handleEnterKeyPress(event) {
     var buttons = document.querySelectorAll('#start-btn, #stop-btn, #save-btn, #back-btn');
+
+   
 
     if (event.key === 'Enter') {
 
@@ -3262,6 +3288,30 @@ function handleEnterKeyPress(event) {
         });
 
 
+        $.ajax({
+            type: 'POST',
+            url: '/clearmeasurement/',  // Replace with your actual backend endpoint
+            headers: {
+                'X-CSRFToken': csrftoken,  // Include CSRF token in headers
+            },
+            data: JSON.stringify(data),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            success: function(response) {
+
+                if (response.status === 'success') {
+                    $('#comp_srno').val(response.punch_value);  // set received punch value in input
+
+
+                }
+            },
+            error: function(error) {
+                alert('An error occurred while saving settings.');
+                console.log(error);
+            }
+        });
+
+
  sendPcsignal("readysignal");
         
 
@@ -3287,22 +3337,90 @@ function handleEnterKeyPress(event) {
 
 
 
+/** --- 2-step Enter cycle state --- **/
+const STEP_KEY = "punchStep";            // "idle" | "waitForSecondEnter"
+const STEP_IDLE = "idle";
+const STEP_WAIT = "waitForSecondEnter";
 
-// Function to get CSRF cookie value
-function getCookie(name) {
-    var cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        var cookies = document.cookie.split(';');
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = cookies[i].trim();
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
+let lastServerPunch = null;               // keep latest punch from server
+
+/** run on every load **/
+document.addEventListener('DOMContentLoaded', function () {
+  const punchTextarea = document.getElementById('punch_textarea');
+
+  // default state
+  if (!localStorage.getItem(STEP_KEY)) localStorage.setItem(STEP_KEY, STEP_IDLE);
+
+  const step = localStorage.getItem(STEP_KEY);
+
+  // After the refresh triggered by the first Enter:
+  // get punch from server, put it into textarea, then auto-press Enter ONCE.
+  if (step === STEP_WAIT) {
+    fetch('/get_active_punch/')
+      .then(res => res.json())
+      .then(data => {
+        console.log('🔁 reload → server punch:', data);
+        if (data.status === 'success' && data.is_active && data.punch_value) {
+          lastServerPunch = data.punch_value;
+          punchTextarea.value = data.punch_value;
+
+          // auto press Enter for step 2 (no refresh)
+          const enterEvent = new KeyboardEvent('keydown', {
+            key: 'Enter', code: 'Enter', keyCode: 13, which: 13, bubbles: true
+          });
+          punchTextarea.dispatchEvent(enterEvent);
+          console.log("✅ auto second Enter dispatched");
+        } else {
+          // nothing active → reset for next cycle
+          localStorage.setItem(STEP_KEY, STEP_IDLE);
         }
-    }
-    return cookieValue;
-}
+      })
+      .catch(err => {
+        console.error('get_active_punch failed:', err);
+        localStorage.setItem(STEP_KEY, STEP_IDLE);
+      });
+  }
+
+  // focus if visible
+  if (punchTextarea && punchTextarea.style.display !== "none") {
+    punchTextarea.focus();
+  }
+});
+
+/** Key handling for both steps (binds to your existing flow) **/
+document.getElementById('punch_textarea').addEventListener('keydown', function (event) {
+  if (event.key !== 'Enter') return;
+
+  const step = localStorage.getItem(STEP_KEY) || STEP_IDLE;
+
+  // Block duplicate ONLY on step 1 (user press)
+  if (step === STEP_IDLE && lastServerPunch && this.value === lastServerPunch) {
+    console.log("⛔ same as server value, blocking first Enter");
+    event.preventDefault();
+    return;
+  }
+
+  if (step === STEP_IDLE) {
+    // ---- STEP 1: user Enter → run your handler, then refresh once ----
+    event.preventDefault();
+    handleEnterKeyPress(event);                 // your existing function
+    localStorage.setItem(STEP_KEY, STEP_WAIT);  // tell next load to auto-enter
+    setTimeout(() => window.location.reload(), 50);
+    return;
+  }
+
+  if (step === STEP_WAIT) {
+    // ---- STEP 2: auto Enter after reload → run handler, NO refresh ----
+    event.preventDefault();
+    handleEnterKeyPress(event);                 // your existing function
+    localStorage.setItem(STEP_KEY, STEP_IDLE);  // reset for next cycle
+    lastServerPunch = null;                     // clear duplicate guard
+    return;
+  }
+});
+
+
+
 
 function punchOverwrite() {
     // Hide the punch_overwrite_container
@@ -3350,6 +3468,9 @@ function punchOverwriteLogin() {
 
 
                     location.reload(); 
+
+
+                    
                 } else {
                     alert('FAILED TO OVERWRITE');
                 }
@@ -3372,6 +3493,10 @@ document.addEventListener('DOMContentLoaded', function() {
     if (savedPunchValue) {
         // Set the punch value in the textarea
         document.getElementById('punch_textarea').value = savedPunchValue;
+
+        setTimeout(function() {
+            handleEnterKeyPress({ key: 'Enter' });
+        }, 1000);
         
         // Clear the localStorage value to avoid persisting it across multiple reloads
         localStorage.removeItem('punchValue');
@@ -3386,11 +3511,7 @@ function punchOverwriteCancel() {
     location.reload();  // Refresh the page
 }
 
-
-
-///////////////////////////////////////////
-
-                
+        
         function closeNotification() {
             // Disable the notification container
             document.getElementById('notification-container').style.display = 'none';
@@ -3421,7 +3542,33 @@ function punchOverwriteCancel() {
         } else {
             document.getElementById('notification-container').style.display = 'none';
             document.getElementById('punch_textarea').style.display = 'none';
+            
         }
+
+
+
+
+
+
+// Function to get CSRF cookie value
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+///////////////////////////////////////////
+
+        
     
     
  
@@ -4171,6 +4318,10 @@ $(document).ready(function () {
                 $('#reject').val(response.reject_occurrence);
                 $('#rework').val(response.rework_occurrence);
                 $('#total').val(response.total_occurrence);
+
+                if (response.notification) {
+                    showServerNotify(response.notification);
+                }
 
                 $.ajax({
                     url: "/send_counts_to_plc/",
